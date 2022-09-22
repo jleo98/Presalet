@@ -20,7 +20,7 @@ const providerOptions = {
   // users must use this libary to create a custom web3modal provider.
 
   // All custom `web3modal` providers must be registered using the "custom-"
-  // prefix.
+  /* prefix.
   'custom-uauth': {
     // The UI Assets
     display: UAuthWeb3Modal.display,
@@ -34,6 +34,7 @@ const providerOptions = {
     // The SPA libary options
     options: uauthOptions,
   },
+  */
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
@@ -137,9 +138,14 @@ function useWeb3Modal(config = {}) {
   // If autoLoad is enabled and the the wallet had been loaded before, load it automatically now.
   useMemo(() => {
     if (!autoLoaded && web3Modal.cachedProvider) {
-      setAutoLoaded(true);
-      loadWeb3Modal();
-      setNoProvider(true);
+      try{
+        setAutoLoaded(true);
+        loadWeb3Modal();
+        setNoProvider(true);
+      } catch(err){
+        console.log(err)
+        logoutOfWeb3Modal();
+      }
     }
   },[autoLoaded,loadWeb3Modal]);
 
