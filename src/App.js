@@ -28,6 +28,9 @@ import useWeb3Modal from './hooks/useWeb3Modal'
 import useClient from './hooks/useGraphClient';
 
 
+import ClientsLogo from './components/ClientsLogo';
+
+
 export default function App() {
 
   const { state, actions } = useAppState();
@@ -73,7 +76,7 @@ export default function App() {
           </>
         }
       </Header>
-      <Box direction="row" pad="medium" >
+      <Box direction="row-responsive" pad="medium" >
         <Sidebar background="none" width="medium"
           header={
             <Box width="small" align="center">
@@ -157,7 +160,7 @@ export default function App() {
 
           </Nav>
         </Sidebar>
-        <Box direction="row" pad={{top: "xlarge",bottom:"xlarge"}} style={{
+        <Box direction="row-responsive" pad={{top: "xlarge",bottom:"xlarge"}} style={{
           background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
           backgroundSize: 'cover'
         }}>
@@ -196,6 +199,7 @@ export default function App() {
         </Box>
 
       </Box>
+      <ClientsLogo />
       <Footer background="black" pad="medium">
         <Text style={{
           font: "normal normal normal 18px/27px Poppins"
