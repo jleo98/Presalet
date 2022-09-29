@@ -39,48 +39,16 @@ export default function ClientsLogo() {
         Clients Logos
       </Heading>
       <Box pad="large">
-        <Box direction="row-responsive">
+        <Box direction="row-responsive" wrap={true}>
         {
           logos.map((logo,i) => {
-            if(i < 5){
-              return(
-                <Box width="medium" pad="medium">
-                  <Image
-                    src={logo}
-                  />
-                </Box>
-              )
-            }
-          })
-        }
-        </Box>
-        <Box direction="row-responsive">
-        {
-          logos.map((logo,i) => {
-            if(i >= 5 && i < 10){
-              return(
-                <Box width="medium" pad="medium">
-                  <Image
-                    src={logo}
-                  />
-                </Box>
-              )
-            }
-          })
-        }
-        </Box>
-        <Box direction="row-responsive">
-        {
-          logos.map((logo,i) => {
-            if(i >= 10){
-              return(
-                <Box width="medium" pad="medium">
-                  <Image
-                    src={logo}
-                  />
-                </Box>
-              )
-            }
+            return(
+              <Box width="medium" pad="medium">
+                <Image
+                  src={logo}
+                />
+              </Box>
+            )
           })
         }
         </Box>

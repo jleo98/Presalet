@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useMemo } from 'react';
 
 import {
   Header,
@@ -15,7 +15,12 @@ import {
   TextInput,
   Box,
   Tab,
-  Tabs
+  Tabs,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Spinner
 } from 'grommet';
 import { ethers } from "ethers";
 import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
@@ -25,15 +30,19 @@ import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
 import { AppContext, useAppState } from './hooks/useAppState'
 
 import useWeb3Modal from './hooks/useWeb3Modal'
-import useClient from './hooks/useGraphClient';
+import useGraphClient from './hooks/useGraphClient';
 
 
 import ClientsLogo from './components/ClientsLogo';
+import Tokenize from './components/Tokenize';
 
+import ERC721Abi from './contracts/abis/ERC721Abi';
 
 export default function App() {
 
   const { state, actions } = useAppState();
+
+  const [collections,setCollections] = useState();
 
   const {
     provider,
@@ -47,9 +56,29 @@ export default function App() {
   const {
     client,
     initiateClient,
-  } = useClient();
+    getTopCollections
+  } = useGraphClient();
 
 
+  useEffect(() => {
+    initiateClient(1);
+  },[]);
+
+  useMemo(async () => {
+    if(client){
+      const results = await getTopCollections();
+      const newCollections = results.data.trades.map(async item => {
+        const erc721 = new ethers.Contract(item.collection.id,ERC721Abi,provider);
+        /*
+        const uri = await erc721.tokenURI(item.tokenId);
+        console.log(uri)
+        const metadata = JSON.parse(await (await fetch(uri.replace("ipfs://","https://ipfs.io/ipfs/"))).text());
+        */
+        return(item)
+      })
+      setCollections(await Promise.all(newCollections));
+    }
+  },[client])
 
   return (
     <AppContext.Provider value={{ state, actions }}>
@@ -94,11 +123,10 @@ export default function App() {
 
             </Box>
           }
-          footer={
-            <Button icon={<Help />} hoverIndicator />
-          }
         >
-          <Nav gap="small">
+          <Nav gap="small" style={{
+            alignItems: "flex-start"
+          }}>
             <Button icon={
               <Image
                 src={require("./assets/icons/real_estate.png")}
@@ -108,15 +136,6 @@ export default function App() {
               textAlign: "left",
               font: "normal normal 600 14px/7px Poppins"
             }} />
-            <Button icon={
-              <Image
-                src={require("./assets/icons/real_estate.png")}
-              />
-            } label="Meta State" hoverIndicator style={{
-              border: "none",
-              textAlign: "left",
-              font: "normal normal 600 14px/7px Poppins"
-            }}/>
             <Button icon={
               <Image
                 src={require("./assets/icons/meta_estate.png")}
@@ -199,6 +218,53 @@ export default function App() {
         </Box>
 
       </Box>
+      <Box align="center">
+        <Heading style={{
+          color:"black",
+          font: "normal normal bold 50px/54px Poppins",
+          letterSspacing: "0px",
+          textTransform: "none",
+          textAlign:"center"
+        }}>
+          Top Collections over last 24 hours
+        </Heading>
+        <Text>****Under construction, getting data from OpenSea just as DEMO</Text>
+        <Anchor href="https://thegraph.com/hosted-service/subgraph/messari/opensea-v2-ethereum" target="_blank">Click to see graph used</Anchor>
+      </Box>
+      <Box direction="row-responsive" align="center" wrap={true}>
+      {
+        collections ?
+        collections?.map((item,i) => {
+          console.log(item)
+          return(
+            <Box pad="medium">
+              <Card  height="small" width="medium" background="light-1">
+                <CardHeader pad="medium">{item.collection.name}</CardHeader>
+                <CardBody pad="medium">{item.collection.symbol}</CardBody>
+                <CardFooter pad={{horizontal: "small"}} background="light-2">
+                  <Text>Supply: {item.collection.totalSupply}</Text>
+                  <Text>Price: {item.priceETH}</Text>
+                </CardFooter>
+              </Card>
+            </Box>
+          )
+        }) :
+        <>
+        <Spinner />
+        <Text>Loading ...</Text>
+        </>
+      }
+      </Box>
+      <Box align="center">
+      {
+        collections &&
+        <Button primary color="#ffcc00" size="large" label="All Collections" style={{
+          font: "normal normal 600 14px/7px Poppins",
+          borderRadius: "8px"
+        }}/>
+      }
+      </Box>
+      <Tokenize/>
       <ClientsLogo />
       <Footer background="black" pad="medium">
         <Text style={{
