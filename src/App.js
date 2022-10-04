@@ -20,11 +20,14 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  Spinner
+  Spinner,
+  Menu,
+  Layer
 } from 'grommet';
 import { ethers } from "ethers";
 import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
-
+import { SwapWidget } from '@uniswap/widgets'
+import '@uniswap/widgets/fonts.css'
 
 
 import { AppContext, useAppState } from './hooks/useAppState'
@@ -58,6 +61,7 @@ export default function App() {
     initiateClient,
     getTopCollections
   } = useGraphClient();
+  const [show, setShow] = useState();
 
 
   useEffect(() => {
@@ -95,16 +99,26 @@ export default function App() {
           !coinbase ?
           <Button label="Connect" onClick={loadWeb3Modal}/> :
           <>
-          <Image
-            src={require("./assets/icons/user.png")}
+          <Menu
+            label=  <Image
+                      src={require("./assets/icons/user.png")}
+                     />
+            items={[
+              { label: 'First Action', onClick: () => {} },
+              { label: 'Second Action', onClick: () => {} },
+            ]}
           />
+
           <Image
             src={require("./assets/icons/wallet.png")}
           />
-          <Button icon={<Nodes />} secondary label="Swap" />
+          <Button icon={<Nodes />} secondary label="Swap" onClick={() => {
+              setShow(!show)
+          }}/>
           </>
         }
       </Header>
+
       <Box direction="row-responsive" pad="medium" >
         <Sidebar background="none" width="medium"
           header={
@@ -216,6 +230,19 @@ export default function App() {
             />
           </Box>
         </Box>
+        {
+          show &&
+          <Layer
+            onEsc={() => setShow(false)}
+            onClickOutside={() => setShow(false)}
+          >
+          {
+            provider && coinbase &&
+            <SwapWidget provider={provider} />
+
+          }
+          </Layer>
+        }
 
       </Box>
       <Box align="center">
@@ -233,7 +260,6 @@ export default function App() {
       </Box>
       <Box direction="row-responsive" align="center" wrap={true}>
       {
-        collections ?
         collections?.map((item,i) => {
           console.log(item)
           return(
@@ -248,13 +274,16 @@ export default function App() {
               </Card>
             </Box>
           )
-        }) :
-        <>
-        <Spinner />
-        <Text>Loading ...</Text>
-        </>
+        })
       }
       </Box>
+      {
+        !collections &&
+        <Box align="center" pad="large">
+          <Spinner />
+          <Text>Loading ...</Text>
+        </Box>
+      }
       <Box align="center">
       {
         collections &&

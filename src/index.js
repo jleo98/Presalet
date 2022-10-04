@@ -4,21 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Grommet } from 'grommet';
-import {
-  HashRouter as Router,
-  Route,
-  Routes,
-  Navigate
-} from 'react-router-dom';
+
 
 ReactDOM.render(
   <Grommet>
-    <Router>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </Router>
+    <App />
   </Grommet>,
   document.getElementById('root')
 );
