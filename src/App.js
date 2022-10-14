@@ -72,13 +72,22 @@ export default function App() {
     if(client){
       const results = await getTopCollections();
       const newCollections = results.data.trades.map(async item => {
-        const erc721 = new ethers.Contract(item.collection.id,ERC721Abi,provider);
-        /*
-        const uri = await erc721.tokenURI(item.tokenId);
-        console.log(uri)
-        const metadata = JSON.parse(await (await fetch(uri.replace("ipfs://","https://ipfs.io/ipfs/"))).text());
-        */
-        return(item)
+        let res = item;
+        try{
+          const erc721 = new ethers.Contract(item.collection.id,ERC721Abi,provider);
+          console.log(item.tokenId)
+          const uri = await erc721.tokenURI(item.tokenId);
+          console.log(uri)
+          const metadata = JSON.parse(await (await fetch(uri.replace("ipfs://","https://ipfs.io/ipfs/"))).text());
+          console.log(metadata)
+          res = {
+            ...item,
+            metadata: metadata
+          }
+        } catch(err){
+          console.log(err)
+        }
+        return(res)
       })
       setCollections(await Promise.all(newCollections));
     }
@@ -258,19 +267,41 @@ export default function App() {
         <Text>****Under construction, getting data from OpenSea just as DEMO</Text>
         <Anchor href="https://thegraph.com/hosted-service/subgraph/messari/opensea-v2-ethereum" target="_blank">Click to see graph used</Anchor>
       </Box>
-      <Box direction="row-responsive" align="center" wrap={true}>
+      <Box direction="row-responsive" pad="medium" align="center" wrap={true}>
       {
-        collections?.map((item,i) => {
-          console.log(item)
+        collections?.map((item) => {
           return(
-            <Box pad="medium">
-              <Card  height="small" width="medium" background="light-1">
-                <CardHeader pad="medium">{item.collection.name}</CardHeader>
-                <CardBody pad="medium">{item.collection.symbol}</CardBody>
-                <CardFooter pad={{horizontal: "small"}} background="light-2">
-                  <Text>Supply: {item.collection.totalSupply}</Text>
-                  <Text>Price: {item.priceETH}</Text>
-                </CardFooter>
+            <Box pad="small">
+              <Card  height="141px" width="400px" background="light-1">
+                <CardBody>
+                  <Box direction="row-responsive" align="center" wrap={true}>
+                    <Box height="small" width="120px" height="120px">
+                      <Image src={item.metadata?.image?.replace("ipfs://","https://ipfs.io/ipfs/")} fit="cover" />
+                    </Box>
+                    <Box align="center">
+                      <Box pad="xsmall">
+                        <Text><b>{item.collection.name}</b></Text>
+                      </Box>
+                      <Box>
+                        <Text>{item.collection.metadata?.description}</Text>
+                      </Box>
+                      <Box>
+                        <Text size="xsmall"><b>{item.tokenId}</b></Text>
+                      </Box>
+                      <Box direction="row-responsive" pad="medium" align="left" wrap={true}>
+                        <Box margin="xsmall">
+                          <Text size="xsmall">Floor price: {item.priceETH} ETH</Text>
+                        </Box>
+                        <Box margin="xsmall">
+                        {
+                          item.collection.totalSupply &&
+                          <Text size="xsmall">Supply: {item.collection.totalSupply}</Text>
+                        }
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </CardBody>
               </Card>
             </Box>
           )

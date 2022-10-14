@@ -20,19 +20,21 @@ function useGraphClient() {
   }
   const getTopCollections = async (address, netId) => {
     let tokensQuery = `
-      {
-          trades(first: 9){
+    {
+        trades(first: 9,orderBy: priceETH,orderDirection:desc){
+          id
+          tokenId
+          priceETH
+          timestamp
+          collection {
             id
-          	tokenId
-          	priceETH
-          	collection {
-          	  id
-              name
-              totalSupply
-              totalRevenueETH
-          	}
+            name
+            totalSupply
+            totalRevenueETH
+            symbol
           }
-      }
+        }
+    }
    `;
     const results = await client.query({
       query: gql(tokensQuery)

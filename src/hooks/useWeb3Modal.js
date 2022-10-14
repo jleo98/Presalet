@@ -57,7 +57,8 @@ const web3Modal = new Web3Modal({
 UAuthWeb3Modal.registerWeb3Modal(web3Modal)
 
 function useWeb3Modal(config = {}) {
-  const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
+  //const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
+  const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/"+process.env.REACT_APP_INFURA));
   const [coinbase, setCoinbase] = useState();
   const [netId , setNetId] = useState(80001);
   const [connecting , setConnecting] = useState();
@@ -77,7 +78,8 @@ function useWeb3Modal(config = {}) {
       await web3Modal.clearCachedProvider();
       setCoinbase();
       setNetId(80001);
-      setProvider(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
+      //setProvider(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
+      setProvider(new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/"+process.env.REACT_APP_INFURA))
       setUser();
     },
     [],

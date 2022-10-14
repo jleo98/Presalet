@@ -43,9 +43,10 @@ export default function ClientsLogo() {
         {
           logos.map((logo,i) => {
             return(
-              <Box width="medium" pad="medium">
+              <Box width="250px" pad="medium">
                 <Image
                   src={logo}
+                  fill="cover"
                 />
               </Box>
             )
