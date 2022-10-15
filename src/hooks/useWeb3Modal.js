@@ -58,9 +58,9 @@ UAuthWeb3Modal.registerWeb3Modal(web3Modal)
 
 function useWeb3Modal(config = {}) {
   //const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
-  const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/"+process.env.REACT_APP_INFURA));
+  const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/"+process.env.REACT_APP_INFURA));
   const [coinbase, setCoinbase] = useState();
-  const [netId , setNetId] = useState(80001);
+  const [netId , setNetId] = useState(5);
   const [connecting , setConnecting] = useState();
   const [noProvider , setNoProvider] = useState();
   //const [cyberConnect , setCyberConnect] = useState();
@@ -79,7 +79,7 @@ function useWeb3Modal(config = {}) {
       setCoinbase();
       setNetId(80001);
       //setProvider(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
-      setProvider(new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/"+process.env.REACT_APP_INFURA))
+      setProvider(new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/"+process.env.REACT_APP_INFURA))
       setUser();
     },
     [],

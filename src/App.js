@@ -26,8 +26,7 @@ import {
 } from 'grommet';
 import { ethers } from "ethers";
 import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
-import { SwapWidget } from '@uniswap/widgets'
-import '@uniswap/widgets/fonts.css'
+
 
 
 import { AppContext, useAppState } from './hooks/useAppState'
@@ -38,14 +37,24 @@ import useGraphClient from './hooks/useGraphClient';
 
 import ClientsLogo from './components/ClientsLogo';
 import Tokenize from './components/Tokenize';
+import SwapModal from './components/SwapModal';
+import GoldListModal from './components/GoldListModal';
 
-import ERC721Abi from './contracts/abis/ERC721Abi';
+import abis from "./contracts/abis";
+import addresses from "./contracts/addresses";
 
 export default function App() {
 
   const { state, actions } = useAppState();
 
   const [collections,setCollections] = useState();
+  const [srg,setSrg] = useState();
+  const [goldList,setGoldList] = useState();
+
+
+  const [showSwap,setShowSwap] = useState();
+  const [showGoldList,setShowGoldList] = useState();
+
 
   const {
     provider,
@@ -61,20 +70,30 @@ export default function App() {
     initiateClient,
     getTopCollections
   } = useGraphClient();
-  const [show, setShow] = useState();
+
 
 
   useEffect(() => {
     initiateClient(1);
   },[]);
-
+  useEffect(() => {
+    // Goerli
+    if(netId === 5){
+      const newSrg = new ethers.Contract(addresses.srg.goerli,abis.srg,provider);
+      const newGoldList = new ethers.Contract(addresses.goldList.goerli,abis.goldListMatic,provider);
+      setSrg(newSrg);
+      setGoldList(newGoldList);
+    }
+  },[netId]);
   useMemo(async () => {
     if(client){
       const results = await getTopCollections();
       const newCollections = results.data.trades.map(async item => {
         let res = item;
         try{
-          const erc721 = new ethers.Contract(item.collection.id,ERC721Abi,provider);
+          // DEMO PURPOSE
+          const demoProvider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/"+process.env.REACT_APP_INFURA)
+          const erc721 = new ethers.Contract(item.collection.id,abis.erc721,demoProvider);
           console.log(item.tokenId)
           const uri = await erc721.tokenURI(item.tokenId);
           console.log(uri)
@@ -92,6 +111,25 @@ export default function App() {
       setCollections(await Promise.all(newCollections));
     }
   },[client])
+
+
+  const buyTokens = async (total) => {
+    const signer = provider.getSigner();
+    console.log(goldList)
+    const goldListWithSigner = goldList.connect(signer);
+    const tx = await goldListWithSigner.claimTokens({
+      value: ethers.utils.parseEther(total)
+    });
+
+    await tx.wait();
+
+  }
+  const getExpectedSrg = async (total) => {
+    console.log(total)
+    const amount = await goldList.getAmountOfTokens(ethers.utils.parseEther(total).toString());
+    console.log(amount.toString())
+    return(amount.toString()/10**18);
+  }
 
   return (
     <AppContext.Provider value={{ state, actions }}>
@@ -118,11 +156,16 @@ export default function App() {
             ]}
           />
 
-          <Image
-            src={require("./assets/icons/wallet.png")}
-          />
-          <Button icon={<Nodes />} secondary label="Swap" onClick={() => {
-              setShow(!show)
+
+          <Button icon={
+            <Image
+              src={require("./assets/icons/wallet.png")}
+            />
+          } secondary label="Swap" onClick={() => {
+              setShowSwap(!showSwap)
+          }}/>
+          <Button secondary label="Buy" onClick={() => {
+              setShowGoldList(!showGoldList)
           }}/>
           </>
         }
@@ -240,19 +283,20 @@ export default function App() {
           </Box>
         </Box>
         {
-          show &&
-          <Layer
-            onEsc={() => setShow(false)}
-            onClickOutside={() => setShow(false)}
-          >
-          {
-            provider && coinbase &&
-            <SwapWidget provider={provider} />
-
-          }
-          </Layer>
+          showSwap &&
+          <SwapModal provider={provider} coinbase={coinbase} setShow={setShowSwap}/>
         }
-
+        {
+          showGoldList &&
+          <GoldListModal
+            provider={provider}
+            coinbase={coinbase}
+            netId={netId}
+            buyTokens={buyTokens}
+            setShow={setShowGoldList}
+            getExpectedSrg={getExpectedSrg}
+          />
+        }
       </Box>
       <Box align="center">
         <Heading style={{
