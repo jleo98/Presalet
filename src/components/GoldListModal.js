@@ -21,7 +21,7 @@ export default function GoldListModal(props) {
   const [msg,setMsg] = useState();
 
   useEffect(() => {
-    if(total > 0 && total !== lastTotal){
+    if(total > 0 && total !== lastTotal && (props.netId === 5 || props.netId === 80001)){
       try{
         props.getExpectedSrg(total).then(amount => {
           console.log(amount)
@@ -32,6 +32,9 @@ export default function GoldListModal(props) {
         console.log(err)
       }
     }
+    if(Number(total) && props.netId === 97){
+      setSrgExpect(Number(total)/0.12);
+    }
   },[total,props]);
 
   return (
@@ -41,13 +44,22 @@ export default function GoldListModal(props) {
     >
       <Box align="center" pad="medium">
       {
-        props.provider && props.coinbase && props.netId === 5 &&
+        props.provider && props.coinbase &&
         <>
         <Image
           src={require("../assets/logo.png")}
           size="small"
         />
-        <Text>Amount of {props.netId === 5 ? "Goerli ETH" : "Matic"}</Text>
+        <Text>
+          Amount of {' '}
+          {
+            props.netId === 5 ?
+            "Goerli ETH" :
+            props.netId === 97 ?
+            "BUSD" :
+            "Matic"
+          }
+        </Text>
         <TextInput onChange={(e) => {setTotal(e.target.value)}} />
         {
           srgExpect && total &&
@@ -60,7 +72,7 @@ export default function GoldListModal(props) {
               await props.buyTokens(total);
             } catch(err){
               console.log(err)
-              setMsg(err.message.split("reverted: ")[1].split('",')[0])
+              setMsg(err.reason)
             }
             setTimeout(() => {
               setMsg()
