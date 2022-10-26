@@ -13,15 +13,9 @@ import { AppContext, useAppState } from './hooks/useAppState'
 import useWeb3Modal from './hooks/useWeb3Modal'
 import useGraphClient from './hooks/useGraphClient';
 
-
-import ClientsLogo from './components/ClientsLogo';
-import Tokenize from './components/Tokenize';
-import SwapModal from './components/SwapModal';
-import GoldListModal from './components/GoldListModal';
 import MainMenu from './components/MainMenu';
-import SideMenu from './components/SideMenu';
-import TopCollections from './components/TopCollections';
 import Banner from './components/Banner';
+import GoldListModal from './components/GoldListModal';
 import DappFooter from './components/DappFooter';
 
 import abis from "./contracts/abis";
@@ -31,7 +25,6 @@ export default function App() {
 
   const { state, actions } = useAppState();
 
-  const [collections,setCollections] = useState();
   const [srg,setSrg] = useState();
   const [goldList,setGoldList] = useState();
   const [busd,setBusd] = useState();
@@ -52,8 +45,7 @@ export default function App() {
 
   const {
     client,
-    initiateClient,
-    getTopCollections
+    initiateClient
   } = useGraphClient();
 
 
@@ -88,28 +80,7 @@ export default function App() {
   },[netId]);
   useMemo(async () => {
     if(client){
-      const results = await getTopCollections();
-      const newCollections = results.data.trades.map(async item => {
-        let res = item;
-        try{
-          // DEMO PURPOSE
-          const demoProvider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/"+process.env.REACT_APP_INFURA)
-          const erc721 = new ethers.Contract(item.collection.id,abis.erc721,demoProvider);
-          console.log(item.tokenId)
-          const uri = await erc721.tokenURI(item.tokenId);
-          console.log(uri)
-          const metadata = JSON.parse(await (await fetch(uri.replace("ipfs://","https://ipfs.io/ipfs/"))).text());
-          console.log(metadata)
-          res = {
-            ...item,
-            metadata: metadata
-          }
-        } catch(err){
-          console.log(err)
-        }
-        return(res)
-      })
-      setCollections(await Promise.all(newCollections));
+      // Query graphs if needed
     }
   },[client])
 
@@ -152,21 +123,18 @@ export default function App() {
         setShowSwap={setShowSwap}
         setShowGoldList={setShowGoldList}
       />
-      <Box direction="row-responsive" pad="medium" >
-        <SideMenu
-          coinbase={coinbase}
-          loadWeb3Modal={loadWeb3Modal}
-        />
+      <Box pad={{top: "xlarge",bottom:"large"}} height="large" style={{
+        background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
+        backgroundSize: 'cover'
+      }}>
         <Banner
           coinbase={coinbase}
           loadWeb3Modal={loadWeb3Modal}
+          setShowGoldList={setShowGoldList}
+          showGoldList={showGoldList}
         />
         {
-          showSwap &&
-          <SwapModal provider={provider} coinbase={coinbase} setShow={setShowSwap}/>
-        }
-        {
-          showGoldList &&
+          coinbase &&
           <GoldListModal
             provider={provider}
             coinbase={coinbase}
@@ -177,11 +145,6 @@ export default function App() {
           />
         }
       </Box>
-      <TopCollections
-        collections={collections}
-      />
-      <Tokenize/>
-      <ClientsLogo />
       <DappFooter />
     </AppContext.Provider>
   )

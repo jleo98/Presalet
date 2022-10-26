@@ -38,10 +38,7 @@ export default function GoldListModal(props) {
   },[total,props]);
 
   return (
-    <Layer
-      onEsc={() => props.setShow(false)}
-      onClickOutside={() => props.setShow(false)}
-    >
+
       <Box align="center" pad="medium">
       {
         props.provider && props.coinbase &&
@@ -60,7 +57,9 @@ export default function GoldListModal(props) {
             "Matic"
           }
         </Text>
-        <TextInput onChange={(e) => {setTotal(e.target.value)}} />
+        <Box width="small">
+          <TextInput onChange={(e) => {setTotal(e.target.value)}} />
+        </Box>
         {
           srgExpect && total &&
           <Text size="small">{srgExpect} SRG</Text>
@@ -88,6 +87,5 @@ export default function GoldListModal(props) {
       }
       </Box>
 
-    </Layer>
   )
 }
