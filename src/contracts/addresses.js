@@ -2,9 +2,9 @@
 // Goerli, Kovan, Rinkeby and Ropsten. Replace it with your smart contracts.
 const addresses = {
   srg: {
-    goerli: "0x2089115719a623a9281b880f99e9f0ab36c551be",
-    bsctestnet: "0xfddf890f727e91862594ef8c97a809e740a2965c",
-    mumbai: "0x4b595673a06d7a58a0f7c8055797a88d3d27b8c0"
+    goerli: "0x8D9a2BFd40B529Ca5F0a60b6606aec376554add0",
+    bsctestnet: "0x58C388bb71Ff2a926963cf888Cd793De700d6E9e",
+    mumbai: "0x5dC0d254ecc62FFB901a0F4C6bC0eF3ABED7C652 "
   },
   stable: {
     busd: {
@@ -21,6 +21,11 @@ const addresses = {
     goerli: "0xf68a7fea591bfa6d0e912d9acb0278a7d2cd928d",
     bsctestnet: "0x5c19ec2dfd13cbdc5efa34f77f4bc83669604fa6",
     mumbai: "0xb16d182897c8AF9f7d21076e7eb116742f5DCF56"
+  },
+  coldStaking: {
+    goerli: "0x65c307AB0d8a745C8Ba2D81a3436dE16bb4c4050",
+    bsctestnet: "0x3D2A57136B2458a175a7eE3C4781dBa5750659D0",
+    mumbai: "0x417EE7965C48803Fb496EcAce9AB87ef8d14F47a"
   }
 };
 

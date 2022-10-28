@@ -1,4 +1,4 @@
-import { useState, useEffect,useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import {
   Box,
@@ -23,6 +23,7 @@ import DappFooter from './components/DappFooter';
 
 import abis from "./contracts/abis";
 import addresses from "./contracts/addresses";
+import Staking from './components/Staking';
 
 export default function App() {
 
@@ -35,8 +36,9 @@ export default function App() {
   const [value,setValue] = useState("Native");
 
 
-  const [showSwap,setShowSwap] = useState();
-  const [showGoldList,setShowGoldList] = useState();
+  const [showSwap, setShowSwap] = useState();
+  const [showGoldList, setShowGoldList] = useState();
+  const [coldStaking, setColdStaking] = useState();
 
 
   const {
@@ -61,29 +63,31 @@ export default function App() {
   },[netId]);
   useEffect(() => {
     // Goerli
-    if(netId === 5){
-      const newSrg = new ethers.Contract(addresses.srg.goerli,abis.srg,provider);
-      const newGoldList = new ethers.Contract(addresses.goldList.goerli,abis.goldListBSC,provider);
-      setSrg(newSrg);
-      setGoldList(newGoldList);
+
+    let newSrg, newGoldList, newColdStaking, newBusd
+    if (netId === 5) {
+      newSrg = new ethers.Contract(addresses.srg.goerli, abis.srg, provider);
+      newGoldList = new ethers.Contract(addresses.goldList.goerli, abis.goldListBSC, provider);
+      newColdStaking = new ethers.Contract(addresses.coldStaking.goerli, abis.coldStaking, provider);
     }
     // Mumbai
-    if(netId === 80001){
-      const newSrg = new ethers.Contract(addresses.srg.mumbai,abis.srg,provider);
-      const newGoldList = new ethers.Contract(addresses.goldList.mumbai,abis.goldListMatic,provider);
-      setSrg(newSrg);
-      setGoldList(newGoldList);
-    }
-    if(netId === 97){
-      const newSrg = new ethers.Contract(addresses.srg.bsctestnet,abis.srg,provider);
-      const newGoldList = new ethers.Contract(addresses.goldList.bsctestnet,abis.goldListBSC,provider);
-      //const newBusd = new ethers.Contract(addresses.busd.bsctestnet,abis.srg,provider);
+    if (netId === 80001) {
+      newSrg = new ethers.Contract(addresses.srg.mumbai, abis.srg, provider);
+      newGoldList = new ethers.Contract(addresses.goldList.mumbai, abis.goldListMatic, provider);
+      newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
 
-      setSrg(newSrg);
-      setGoldList(newGoldList);
-      //setBusd(newBusd);
     }
-  },[netId]);
+    if (netId === 97) {
+      newSrg = new ethers.Contract(addresses.srg.bsctestnet, abis.srg, provider);
+      newGoldList = new ethers.Contract(addresses.goldList.bsctestnet, abis.goldListBSC, provider);
+      //newBusd = new ethers.Contract(addresses.busd.bsctestnet, abis.srg, provider);
+      newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
+    }
+    setColdStaking(newColdStaking);
+    setSrg(newSrg);
+    setGoldList(newGoldList);
+    setBusd(newBusd);
+  }, [netId]);
   useMemo(async () => {
     if(client){
       const stablecoinsResult = await getStablecoins();
@@ -100,7 +104,7 @@ export default function App() {
       );
       setStablecoins(newStablecoins);
     }
-  },[client])
+  }, [client])
 
 
   const buyTokens = async (total) => {
@@ -108,27 +112,47 @@ export default function App() {
     const goldListWithSigner = goldList.connect(signer);
     const amount = ethers.utils.parseEther(total).toString()
     let tx;
-    if(netId === 5 || netId === 80001){
+    if (netId === 5 || netId === 80001) {
       tx = await goldListWithSigner.claimTokens({
         value: amount
       });
-    } else if(netId === 97){
-      const allowance = await busd.allowance(coinbase,goldList.address);
-      if(amount > allowance){
+    } else if (netId === 97) {
+      const allowance = await busd.allowance(coinbase, goldList.address);
+      if (amount > allowance) {
         const busdWithSigner = busd.connect(signer);
-        const txApproval = await busdWithSigner.approve(goldList.address,amount);
+        const txApproval = await busdWithSigner.approve(goldList.address, amount);
         await txApproval.wait();
       }
       const goldListWithSigner = goldList.connect(signer);
-      tx = await goldListWithSigner.claimTokensWithERC20(busd.address,amount);
+      tx = await goldListWithSigner.claimTokensWithERC20(busd.address, amount);
     }
 
     await tx.wait();
 
   }
+
+
+  const stakeTokens = async (totalSRG, todalDays) => {
+    const signer = provider.getSigner();
+    const coldStakingWithSigner = coldStaking.connect(signer);
+    const amount = ethers.utils.parseEther(totalSRG).toString()
+    let tx;
+
+    const allowance = await srg.allowance(coinbase, coldStaking.address);
+
+    if (amount > allowance) {
+      const srgWithSigner = srg.connect(signer);
+      const txApproval = await srgWithSigner.approve(coldStaking.address, amount);
+      await txApproval.wait();
+    }
+    tx = await coldStakingWithSigner.stake(totalSRG, todalDays);
+
+    await tx.wait();
+  }
+
   const getExpectedSrg = async (total) => {
     const amount = await goldList.getAmountOfTokens(ethers.utils.parseEther(total).toString());
-    return(amount.toString()/10**18);
+    return (amount.toString() / 10 ** 18);
   }
 
   return (
@@ -141,7 +165,7 @@ export default function App() {
         setShowSwap={setShowSwap}
         setShowGoldList={setShowGoldList}
       />
-      <Box pad={{top: "xlarge",bottom:"large"}} height="large" style={{
+      <Box pad={{ top: "xlarge", bottom: "large" }} height="large" style={{
         background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
         backgroundSize: 'cover'
       }}>
