@@ -136,9 +136,9 @@ export default function App() {
     const coldStakingWithSigner = coldStaking.connect(signer);
     const amount = ethers.utils.parseEther(totalSRG).toString()
     let tx;
-
+    console.log(srg)
     const allowance = await srg.allowance(coinbase, coldStaking.address);
-
+    console.log(allowance)
     if (amount > allowance) {
       const srgWithSigner = srg.connect(signer);
       const txApproval = await srgWithSigner.approve(coldStaking.address, amount);
