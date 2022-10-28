@@ -46,17 +46,29 @@ export default function GoldListModal(props) {
           Amount of {' '}
           {
             props.value === "Native" ?
-
-            props.netId === 5 ?
-            "Goerli ETH" :
-            props.netId === 97 ?
-            "BNB" :
-            "Matic" :
+              props.netId === 5 ?
+              "Goerli ETH" :
+              props.netId === 97 ?
+              "BNB" :
+              "Matic" :
             "USD"
           }
         </Text>
         <Box width="small">
-          <TextInput id="input" placeholder="Amount" onChange={(e) => {setTotal(e.target.value)}} />
+          <input
+            placeholder="Amount"
+            onChange={(e) => {
+
+              if(e.target.value < 0 || (e.target.value > 0 && e.target.value <= 0.0001)){
+                e.target.value = 0.0001
+              }
+              setTotal(e.target.value)
+            }}
+            type="number"
+            step="0.0001"
+            min={0.0001}
+            value={total}
+         />
         </Box>
         {
           srgExpect && total &&

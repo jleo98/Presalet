@@ -18,12 +18,11 @@ import MainMenu from './components/MainMenu';
 import Banner from './components/Banner';
 import GoldListModal from './components/GoldListModal';
 import Stablecoins from './components/Stablecoins';
-
+import Staking from './components/Staking';
 import DappFooter from './components/DappFooter';
 
 import abis from "./contracts/abis";
 import addresses from "./contracts/addresses";
-import Staking from './components/Staking';
 
 export default function App() {
 
@@ -37,7 +36,7 @@ export default function App() {
 
 
   const [showSwap, setShowSwap] = useState();
-  const [showGoldList, setShowGoldList] = useState();
+  const [showStake, setShowStake] = useState();
   const [coldStaking, setColdStaking] = useState();
 
 
@@ -67,19 +66,19 @@ export default function App() {
     let newSrg, newGoldList, newColdStaking, newBusd
     if (netId === 5) {
       newSrg = new ethers.Contract(addresses.srg.goerli, abis.srg, provider);
-      newGoldList = new ethers.Contract(addresses.goldList.goerli, abis.goldListBSC, provider);
+      newGoldList = new ethers.Contract(addresses.goldList.goerli, abis.goldList, provider);
       newColdStaking = new ethers.Contract(addresses.coldStaking.goerli, abis.coldStaking, provider);
     }
     // Mumbai
     if (netId === 80001) {
       newSrg = new ethers.Contract(addresses.srg.mumbai, abis.srg, provider);
-      newGoldList = new ethers.Contract(addresses.goldList.mumbai, abis.goldListMatic, provider);
+      newGoldList = new ethers.Contract(addresses.goldList.mumbai, abis.goldList, provider);
       newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
 
     }
     if (netId === 97) {
       newSrg = new ethers.Contract(addresses.srg.bsctestnet, abis.srg, provider);
-      newGoldList = new ethers.Contract(addresses.goldList.bsctestnet, abis.goldListBSC, provider);
+      newGoldList = new ethers.Contract(addresses.goldList.bsctestnet, abis.goldList, provider);
       //newBusd = new ethers.Contract(addresses.busd.bsctestnet, abis.srg, provider);
       newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
     }
@@ -112,11 +111,11 @@ export default function App() {
     const goldListWithSigner = goldList.connect(signer);
     const amount = ethers.utils.parseEther(total).toString()
     let tx;
-    if (netId === 5 || netId === 80001) {
-      tx = await goldListWithSigner.claimTokens({
+    if (value === "Native") {
+      tx = await goldListWithSigner.claimTokensWithNative({
         value: amount
       });
-    } else if (netId === 97) {
+    } else {
       const allowance = await busd.allowance(coinbase, goldList.address);
       if (amount > allowance) {
         const busdWithSigner = busd.connect(signer);
@@ -124,7 +123,7 @@ export default function App() {
         await txApproval.wait();
       }
       const goldListWithSigner = goldList.connect(signer);
-      tx = await goldListWithSigner.claimTokensWithERC20(busd.address, amount);
+      tx = await goldListWithSigner.claimTokensWithStable(busd.address, amount);
     }
 
     await tx.wait();
@@ -161,30 +160,36 @@ export default function App() {
         coinbase={coinbase}
         loadWeb3Modal={loadWeb3Modal}
         showSwap={showSwap}
-        showGoldList={showGoldList}
         setShowSwap={setShowSwap}
-        setShowGoldList={setShowGoldList}
+        showStake={showStake}
+        setShowStake={setShowStake}
       />
       <Box pad={{ top: "xlarge", bottom: "large" }} height="large" style={{
         background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
         backgroundSize: 'cover'
       }}>
         <Banner
+          netId={netId}
+          srg={srg}
+          goldList={goldList}
           coinbase={coinbase}
           loadWeb3Modal={loadWeb3Modal}
-          setShowGoldList={setShowGoldList}
-          showGoldList={showGoldList}
         />
-        <Box align="center" pad="medium">
-          <RadioButtonGroup
-            name="payment"
-            options={['Native', 'Stablecoin']}
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-          />
-        </Box>
         {
-          stablecoins && value === "Stablecoin" &&
+          coinbase &&
+          <Box align="center" pad="medium">
+            <RadioButtonGroup
+              name="payment"
+              options={['Native', 'Stablecoin']}
+              value={value}
+              onChange={(event) => setValue(event.target.value)}
+            />
+          </Box>
+        }
+        {
+          coinbase &&
+          stablecoins &&
+          value === "Stablecoin" &&
           <Stablecoins
             provider={provider}
             stablecoins={stablecoins}
@@ -205,11 +210,18 @@ export default function App() {
             coinbase={coinbase}
             netId={netId}
             buyTokens={buyTokens}
-            setShow={setShowGoldList}
             getExpectedSrg={getExpectedSrg}
           />
         }
       </Box>
+      {
+        coinbase &&
+        showStake &&
+        <Staking
+          stakeTokens={stakeTokens}
+          setShowStake={setShowStake}
+        />
+      }
       <DappFooter />
     </AppContext.Provider>
   )
