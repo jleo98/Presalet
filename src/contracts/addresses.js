@@ -13,6 +13,11 @@ const addresses = {
     goerli: "0xf68a7fea591bfa6d0e912d9acb0278a7d2cd928d",
     bsctestnet: "0x5c19ec2dfd13cbdc5efa34f77f4bc83669604fa6",
     mumbai: "0xfaefc8b967803c5e384ef55ce89ef6a4bc391fe7"
+  },
+  coldStaking: {
+    goerli: "0x85d1D2f2CB66259113508a3F8356844923B186D6",
+    bsctestnet: "0x8AE40B519dF44AA7BabE48971976e07eD1a8183a",
+    mumbai: "0x136cbfE646B9Dc483D81388A355Eb12320374Dd5"
   }
 };
 
