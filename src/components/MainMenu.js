@@ -19,8 +19,9 @@ export default function MainMenu(props) {
       {
         !props.coinbase ?
         <Button label="Connect" onClick={props.loadWeb3Modal}/> :
-        <>
-        </>
+        <Button label="Stake" onClick={() => {
+          props.setShowStake(!props.showStake)
+        }}/>
       }
     </Header>
   )

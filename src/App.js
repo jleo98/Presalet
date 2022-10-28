@@ -18,12 +18,11 @@ import MainMenu from './components/MainMenu';
 import Banner from './components/Banner';
 import GoldListModal from './components/GoldListModal';
 import Stablecoins from './components/Stablecoins';
-
+import Staking from './components/Staking';
 import DappFooter from './components/DappFooter';
 
 import abis from "./contracts/abis";
 import addresses from "./contracts/addresses";
-import Staking from './components/Staking';
 
 export default function App() {
 
@@ -37,7 +36,7 @@ export default function App() {
 
 
   const [showSwap, setShowSwap] = useState();
-  const [showGoldList, setShowGoldList] = useState();
+  const [showStake, setShowStake] = useState();
   const [coldStaking, setColdStaking] = useState();
 
 
@@ -161,9 +160,9 @@ export default function App() {
         coinbase={coinbase}
         loadWeb3Modal={loadWeb3Modal}
         showSwap={showSwap}
-        showGoldList={showGoldList}
         setShowSwap={setShowSwap}
-        setShowGoldList={setShowGoldList}
+        showStake={showStake}
+        setShowStake={setShowStake}
       />
       <Box pad={{ top: "xlarge", bottom: "large" }} height="large" style={{
         background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
@@ -175,19 +174,22 @@ export default function App() {
           goldList={goldList}
           coinbase={coinbase}
           loadWeb3Modal={loadWeb3Modal}
-          setShowGoldList={setShowGoldList}
-          showGoldList={showGoldList}
         />
-        <Box align="center" pad="medium">
-          <RadioButtonGroup
-            name="payment"
-            options={['Native', 'Stablecoin']}
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-          />
-        </Box>
         {
-          stablecoins && value === "Stablecoin" &&
+          coinbase &&
+          <Box align="center" pad="medium">
+            <RadioButtonGroup
+              name="payment"
+              options={['Native', 'Stablecoin']}
+              value={value}
+              onChange={(event) => setValue(event.target.value)}
+            />
+          </Box>
+        }
+        {
+          coinbase &&
+          stablecoins &&
+          value === "Stablecoin" &&
           <Stablecoins
             provider={provider}
             stablecoins={stablecoins}
@@ -208,11 +210,18 @@ export default function App() {
             coinbase={coinbase}
             netId={netId}
             buyTokens={buyTokens}
-            setShow={setShowGoldList}
             getExpectedSrg={getExpectedSrg}
           />
         }
       </Box>
+      {
+        coinbase &&
+        showStake &&
+        <Staking
+          stakeTokens={stakeTokens}
+          setShowStake={setShowStake}
+        />
+      }
       <DappFooter />
     </AppContext.Provider>
   )

@@ -46,12 +46,11 @@ export default function GoldListModal(props) {
           Amount of {' '}
           {
             props.value === "Native" ?
-
-            props.netId === 5 ?
-            "Goerli ETH" :
-            props.netId === 97 ?
-            "BNB" :
-            "Matic" :
+              props.netId === 5 ?
+              "Goerli ETH" :
+              props.netId === 97 ?
+              "BNB" :
+              "Matic" :
             "USD"
           }
         </Text>
