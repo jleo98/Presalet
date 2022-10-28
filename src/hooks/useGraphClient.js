@@ -4,7 +4,7 @@ import { useState } from "react";
 // You can get a key for free at https://infura.io/register
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
-const APIURL_OPENSEA = "https://api.thegraph.com/subgraphs/name/messari/opensea-v2-ethereum"
+const APIURL_OPENSEA = "https://api.thegraph.com/subgraphs/name/henrique1837/coldstakingsrgmumbai"
 
 function useGraphClient() {
   const [client, setClient] = useState();
@@ -18,22 +18,13 @@ function useGraphClient() {
 
     setClient(newClient);
   }
-  const getTopCollections = async (address, netId) => {
+  const getStablecoins = async () => {
     let tokensQuery = `
-    {
-        trades(first: 9,orderBy: priceETH,orderDirection:desc){
-          id
-          tokenId
-          priceETH
-          timestamp
-          collection {
-            id
-            name
-            totalSupply
-            totalRevenueETH
-            symbol
-          }
-        }
+    query{
+      stablecoins(where: {accepted: true}){
+        id
+        accepted
+      }
     }
    `;
     const results = await client.query({
@@ -42,7 +33,7 @@ function useGraphClient() {
     return (results);
   }
 
-  return ({ client, initiateClient, getTopCollections })
+  return ({ client, initiateClient, getStablecoins })
 }
 
 export default useGraphClient;

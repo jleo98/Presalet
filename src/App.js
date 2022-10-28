@@ -2,6 +2,7 @@ import { useState, useEffect,useMemo } from 'react';
 
 import {
   Box,
+  RadioButtonGroup
 } from 'grommet';
 import { ethers } from "ethers";
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
@@ -16,6 +17,8 @@ import useGraphClient from './hooks/useGraphClient';
 import MainMenu from './components/MainMenu';
 import Banner from './components/Banner';
 import GoldListModal from './components/GoldListModal';
+import Stablecoins from './components/Stablecoins';
+
 import DappFooter from './components/DappFooter';
 
 import abis from "./contracts/abis";
@@ -28,6 +31,8 @@ export default function App() {
   const [srg,setSrg] = useState();
   const [goldList,setGoldList] = useState();
   const [busd,setBusd] = useState();
+  const [stablecoins,setStablecoins] = useState();
+  const [value,setValue] = useState("Native");
 
 
   const [showSwap,setShowSwap] = useState();
@@ -45,14 +50,15 @@ export default function App() {
 
   const {
     client,
-    initiateClient
+    initiateClient,
+    getStablecoins
   } = useGraphClient();
 
 
 
   useEffect(() => {
-    initiateClient(1);
-  },[]);
+    initiateClient(netId);
+  },[netId]);
   useEffect(() => {
     // Goerli
     if(netId === 5){
@@ -71,16 +77,28 @@ export default function App() {
     if(netId === 97){
       const newSrg = new ethers.Contract(addresses.srg.bsctestnet,abis.srg,provider);
       const newGoldList = new ethers.Contract(addresses.goldList.bsctestnet,abis.goldListBSC,provider);
-      const newBusd = new ethers.Contract(addresses.busd.bsctestnet,abis.srg,provider);
+      //const newBusd = new ethers.Contract(addresses.busd.bsctestnet,abis.srg,provider);
 
       setSrg(newSrg);
       setGoldList(newGoldList);
-      setBusd(newBusd);
+      //setBusd(newBusd);
     }
   },[netId]);
   useMemo(async () => {
     if(client){
-      // Query graphs if needed
+      const stablecoinsResult = await getStablecoins();
+      const newStablecoins = await Promise.all(
+        stablecoinsResult.data.stablecoins.map(async item => {
+          const contract = new ethers.Contract(item.id,abis.srg,provider);
+          const name = await contract.name();
+          console.log(name)
+          return({
+            id: item.id,
+            name: name
+          });
+        })
+      );
+      setStablecoins(newStablecoins);
     }
   },[client])
 
@@ -133,9 +151,32 @@ export default function App() {
           setShowGoldList={setShowGoldList}
           showGoldList={showGoldList}
         />
+        <Box align="center" pad="medium">
+          <RadioButtonGroup
+            name="payment"
+            options={['Native', 'Stablecoin']}
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+          />
+        </Box>
+        {
+          stablecoins && value === "Stablecoin" &&
+          <Stablecoins
+            provider={provider}
+            stablecoins={stablecoins}
+            setBusd={setBusd}
+          />
+        }
         {
           coinbase &&
+          (
+            value === "Native" ||
+            (
+              value === "Stablecoin" && busd
+            )
+          ) &&
           <GoldListModal
+            value={value}
             provider={provider}
             coinbase={coinbase}
             netId={netId}
