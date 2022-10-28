@@ -56,7 +56,20 @@ export default function GoldListModal(props) {
           }
         </Text>
         <Box width="small">
-          <TextInput id="input" placeholder="Amount" onChange={(e) => {setTotal(e.target.value)}} />
+          <input
+            placeholder="Amount"
+            onChange={(e) => {
+
+              if(e.target.value < 0 || (e.target.value > 0 && e.target.value <= 0.0001)){
+                e.target.value = 0.0001
+              }
+              setTotal(e.target.value)
+            }}
+            type="number"
+            step="0.0001"
+            min={0.0001}
+            value={total}
+         />
         </Box>
         {
           srgExpect && total &&
