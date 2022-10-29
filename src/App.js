@@ -28,11 +28,11 @@ export default function App() {
 
   const { state, actions } = useAppState();
 
-  const [srg,setSrg] = useState();
-  const [goldList,setGoldList] = useState();
-  const [busd,setBusd] = useState();
-  const [stablecoins,setStablecoins] = useState();
-  const [value,setValue] = useState("Native");
+  const [srg, setSrg] = useState();
+  const [goldList, setGoldList] = useState();
+  const [busd, setBusd] = useState();
+  const [stablecoins, setStablecoins] = useState();
+  const [value, setValue] = useState("Native");
 
 
   const [showSwap, setShowSwap] = useState();
@@ -59,7 +59,7 @@ export default function App() {
 
   useEffect(() => {
     initiateClient(netId);
-  },[netId]);
+  }, [netId]);
   useEffect(() => {
     // Goerli
 
@@ -88,14 +88,14 @@ export default function App() {
     setBusd(newBusd);
   }, [netId]);
   useMemo(async () => {
-    if(client){
+    if (client) {
       const stablecoinsResult = await getStablecoins();
       const newStablecoins = await Promise.all(
         stablecoinsResult.data.stablecoins.map(async item => {
-          const contract = new ethers.Contract(item.id,abis.srg,provider);
+          const contract = new ethers.Contract(item.id, abis.srg, provider);
           const name = await contract.name();
           console.log(name)
-          return({
+          return ({
             id: item.id,
             name: name
           });
@@ -136,14 +136,7 @@ export default function App() {
     const coldStakingWithSigner = coldStaking.connect(signer);
     const amount = ethers.utils.parseEther(totalSRG).toString()
     let tx;
-    console.log(srg)
-    const allowance = await srg.allowance(coinbase, coldStaking.address);
-    console.log(allowance)
-    if (amount > allowance) {
-      const srgWithSigner = srg.connect(signer);
-      const txApproval = await srgWithSigner.approve(coldStaking.address, amount);
-      await txApproval.wait();
-    }
+
     tx = await coldStakingWithSigner.stake(totalSRG, todalDays);
 
     await tx.wait();
