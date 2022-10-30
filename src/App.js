@@ -137,7 +137,7 @@ export default function App() {
     const amount = ethers.utils.parseEther(totalSRG).toString()
     let tx;
 
-    tx = await coldStakingWithSigner.stake(totalSRG, todalDays);
+    tx = await coldStakingWithSigner.stake(amount, todalDays);
 
     await tx.wait();
   }
