@@ -15,7 +15,7 @@ export default function DappFooter() {
       }}>
         © All Rights Reserved - IllumiShare SRG.
       </Text>
-      <Anchor label="About" />
+      <Anchor href="https://illumisrg.com/" target="_blank" label="About" />
     </Footer>
   )
 }

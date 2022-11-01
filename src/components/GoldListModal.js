@@ -2,13 +2,9 @@ import { useState,useEffect } from 'react';
 
 import {
   Box,
-  Layer,
-  Image,
   Text,
-  TextInput,
   Button
 } from 'grommet';
-import { ethers } from "ethers";
 
 
 export default function GoldListModal(props) {
@@ -54,7 +50,7 @@ export default function GoldListModal(props) {
             "USD"
           }
         </Text>
-        <Box width="small">
+        <Box pad="small" width="small">
           <input
             placeholder="Amount"
             onChange={(e) => {
@@ -69,14 +65,14 @@ export default function GoldListModal(props) {
             min={0.0001}
             value={total}
          />
+         {
+           srgExpect && total &&
+           <Text size="small">{srgExpect} SRG</Text>
+         }
         </Box>
         {
-          srgExpect && total &&
-          <Text size="small">{srgExpect} SRG</Text>
-        }
-        {
           total > 0 &&
-          <Button primary onClick={async () => {
+          <Button primary color="#ffcc00" className="btn-primary" onClick={async () => {
             try{
               await props.buyTokens(total);
             } catch(err){

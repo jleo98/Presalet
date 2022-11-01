@@ -2,7 +2,10 @@ import { useState, useEffect, useMemo } from 'react';
 
 import {
   Box,
-  RadioButtonGroup
+  RadioButtonGroup,
+  Layer,
+  Text,
+  Anchor
 } from 'grommet';
 import { ethers } from "ethers";
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
@@ -46,7 +49,6 @@ export default function App() {
     netId,
     loadWeb3Modal,
     logoutOfWeb3Modal,
-    user,
   } = useWeb3Modal();
 
   const {
@@ -157,6 +159,16 @@ export default function App() {
         showStake={showStake}
         setShowStake={setShowStake}
       />
+      {
+        netId !== 80001 && netId !== 137 && netId !== 5 &&
+        <Box align="center">
+          <Layer background="status-error">
+            <Box width="medium" pad="large">
+              <Text><Anchor color="white" weight="bold" href="https://chainlist.network/" target="_blank">Please connect to polygon network</Anchor></Text>
+            </Box>
+          </Layer>
+        </Box>
+      }
       <Box pad={{ top: "xlarge", bottom: "large" }} height="large" style={{
         background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
         backgroundSize: 'cover'

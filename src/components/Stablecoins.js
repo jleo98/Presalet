@@ -1,4 +1,4 @@
-import { useState,useMemo } from 'react';
+import { useState } from 'react';
 
 import {
   Box,
@@ -11,7 +11,6 @@ import abis from "../contracts/abis";
 export default function Stablecoins(props) {
 
   const [value,setValue] = useState(props.stablecoins[0].name);
-  const [balance,setBalance] = useState();
 
 
   return (
