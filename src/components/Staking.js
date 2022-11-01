@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 import {
     Box,
-    Layer,
     Image,
     Text,
     TextInput,
@@ -22,7 +21,7 @@ export default function Staking(props) {
 
 
     return (
-        <Layer
+        <Box
           align="center"
           pad="medium"
           onEsc={() => props.setShowStake(false)}
@@ -52,6 +51,6 @@ export default function Staking(props) {
                     }, 3000)
                 }} label="Stake" />
             </Box>
-        </Layer>
+        </Box>
     )
 }

@@ -7,8 +7,11 @@ import {
   Anchor
 } from 'grommet';
 
+import { useAppContext } from '../hooks/useAppState';
 
 export default function Banner(props) {
+
+  const { state } = useAppContext();
 
   return (
     <>
@@ -21,33 +24,33 @@ export default function Banner(props) {
           Buy SRG
         </Heading>
         {
-          props.srg &&
-            props.netId === 80001 ?
-            <Text size="xsmall">SRG Address: <Anchor href={`https://mumbai.polygonscan.com/address/${props.srg.address}`} target="_blank">{props.srg.address}</Anchor></Text> :
-            props.netId === 97 ?
-              <Text size="xsmall">SRG Address: <Anchor href={`https://testnet.bscscan.com/address/${props.srg.address}`} target="_blank">{props.srg.address}</Anchor></Text> :
-              props.netId === 5 &&
-              <Text size="xsmall">SRG Address: <Anchor href={`https://goerli.etherscan.io/address/${props.srg.address}`} target="_blank">{props.srg.address}</Anchor></Text>
+          state.srg &&
+            state.netId === 80001 ?
+            <Text size="xsmall">SRG Address: <Anchor href={`https://mumbai.polygonscan.com/address/${state.srg.address}`} target="_blank">{state.srg.address}</Anchor></Text> :
+            state.netId === 97 ?
+              <Text size="xsmall">SRG Address: <Anchor href={`https://testnet.bscscan.com/address/${state.srg.address}`} target="_blank">{state.srg.address}</Anchor></Text> :
+              state.netId === 5 &&
+              <Text size="xsmall">SRG Address: <Anchor href={`https://goerli.etherscan.io/address/${state.srg.address}`} target="_blank">{state.srg.address}</Anchor></Text>
 
         }
         {
-          props.goldList &&
-            props.netId === 80001 ?
-            <Text size="xsmall">Gold List Address: <Anchor href={`https://mumbai.polygonscan.com/address/${props.goldList.address}`} target="_blank">{props.goldList.address}</Anchor></Text> :
-            props.netId === 97 ?
-              <Text size="xsmall">Gold List Address: <Anchor href={`https://testnet.bscscan.com/address/${props.goldList.address}`} target="_blank">{props.goldList.address}</Anchor></Text> :
-              props.netId === 5 &&
-              <Text size="xsmall">Gold List Address: <Anchor href={`https://goerli.etherscan.io/address/${props.goldList.address}`} target="_blank">{props.goldList.address}</Anchor></Text>
+          state.goldList &&
+            state.netId === 80001 ?
+            <Text size="xsmall">Gold List Address: <Anchor href={`https://mumbai.polygonscan.com/address/${state.goldList.address}`} target="_blank">{state.goldList.address}</Anchor></Text> :
+            state.netId === 97 ?
+              <Text size="xsmall">Gold List Address: <Anchor href={`https://testnet.bscscan.com/address/${state.goldList.address}`} target="_blank">{state.goldList.address}</Anchor></Text> :
+              state.netId === 5 &&
+              <Text size="xsmall">Gold List Address: <Anchor href={`https://goerli.etherscan.io/address/${state.goldList.address}`} target="_blank">{state.goldList.address}</Anchor></Text>
 
         }
       </Box>
       <Box align="center">
         {
-          !props.coinbase ?
-            <Button primary color="#ffcc00" size="small" label="Connect" onClick={props.loadWeb3Modal} className="btn-primary" /> :
+          !state.coinbase ?
+            <Button primary color="#ffcc00" size="small" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" /> :
             <>
               <Text size="small">Connected</Text>
-              <Text size="xsmall">{props.coinbase}</Text>
+              <Text size="xsmall">{state.coinbase}</Text>
             </>
         }
 

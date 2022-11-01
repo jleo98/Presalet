@@ -1,6 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
 
 import {
+  HashRouter as Router,
+  Route,
+  Routes,
+  Navigate
+} from 'react-router-dom';
+
+import {
   Box,
   RadioButtonGroup,
   Layer,
@@ -11,16 +18,13 @@ import { ethers } from "ethers";
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
 
 
-
 import { AppContext, useAppState } from './hooks/useAppState'
 
 import useWeb3Modal from './hooks/useWeb3Modal'
 import useGraphClient from './hooks/useGraphClient';
 
+import Buy from './pages/PreSale';
 import MainMenu from './components/MainMenu';
-import Banner from './components/Banner';
-import GoldListModal from './components/GoldListModal';
-import Stablecoins from './components/Stablecoins';
 import Staking from './components/Staking';
 import DappFooter from './components/DappFooter';
 
@@ -57,6 +61,28 @@ export default function App() {
     getStablecoins
   } = useGraphClient();
 
+  useEffect(() => {
+    actions.setProvider(provider)
+  },[provider])
+  useEffect(() => {
+    actions.setCoinbase(coinbase)
+  },[coinbase])
+  useEffect(() => {
+    actions.setNetId(netId)
+  },[netId])
+  useEffect(() => {
+    actions.setSrg(srg)
+  },[srg])
+  useEffect(() => {
+    actions.setGoldList(goldList)
+  },[goldList])
+  useEffect(() => {
+    actions.setLoadWeb3Modal(loadWeb3Modal)
+  },[loadWeb3Modal])
+
+  useEffect(() => {
+    actions.setStablecoins(stablecoins)
+  },[stablecoins])
 
 
   useEffect(() => {
@@ -151,14 +177,8 @@ export default function App() {
 
   return (
     <AppContext.Provider value={{ state, actions }}>
-      <MainMenu
-        coinbase={coinbase}
-        loadWeb3Modal={loadWeb3Modal}
-        showSwap={showSwap}
-        setShowSwap={setShowSwap}
-        showStake={showStake}
-        setShowStake={setShowStake}
-      />
+    <Router>
+      <MainMenu/>
       {
         netId !== 80001 && netId !== 137 && netId !== 5 &&
         <Box align="center">
@@ -173,61 +193,20 @@ export default function App() {
         background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
         backgroundSize: 'cover'
       }}>
-        <Banner
-          netId={netId}
-          srg={srg}
-          goldList={goldList}
-          coinbase={coinbase}
-          loadWeb3Modal={loadWeb3Modal}
-        />
-        {
-          coinbase &&
-          <Box align="center" pad="medium">
-            <RadioButtonGroup
-              name="payment"
-              options={['Native', 'Stablecoin']}
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-            />
-          </Box>
-        }
-        {
-          coinbase &&
-          stablecoins &&
-          value === "Stablecoin" &&
-          <Stablecoins
-            provider={provider}
-            stablecoins={stablecoins}
-            setBusd={setBusd}
-          />
-        }
-        {
-          coinbase &&
-          (
-            value === "Native" ||
-            (
-              value === "Stablecoin" && busd
-            )
-          ) &&
-          <GoldListModal
-            value={value}
-            provider={provider}
-            coinbase={coinbase}
-            netId={netId}
-            buyTokens={buyTokens}
-            getExpectedSrg={getExpectedSrg}
-          />
-        }
+        <Routes>
+          <Route path="/" element={<Buy/>}/>
+          <Route path="/stake" element={<Staking/>}/>
+          <Route render={() => {
+
+            return(
+              <Navigate to="/" />
+            );
+
+          }} />
+        </Routes>
       </Box>
-      {
-        coinbase &&
-        showStake &&
-        <Staking
-          stakeTokens={stakeTokens}
-          setShowStake={setShowStake}
-        />
-      }
       <DappFooter />
+      </Router>
     </AppContext.Provider>
   )
 }
