@@ -20,7 +20,8 @@ const useAppState = () => {
     srg: null,
     client: null,
     loadWeb3Modal: null,
-    stablecoins: null
+    stablecoins: null,
+    whitelisted: null,
   }
 
   // Manage the state using React.useState()
@@ -60,6 +61,9 @@ const getActions = (setState) => ({
   },
   setStablecoins: (stablecoins) => {
     setState((state) => ({ ...state, stablecoins: stablecoins }))
+  },
+  setWhitelisted: (whitelisted) => {
+    setState((state) => ({ ...state, whitelisted: whitelisted }))
   },
 })
 

@@ -35,6 +35,7 @@ export default function GoldListModal(props) {
   },[total,props]);
 
 
+
   return (
 
       <Box align="center" pad="medium">
@@ -87,6 +88,7 @@ export default function GoldListModal(props) {
             },3000)
           }} label="Buy" />
         }
+
         {
           msg &&
           <Text size="small">{msg}</Text>

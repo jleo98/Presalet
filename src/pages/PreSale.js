@@ -1,21 +1,14 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
 
-import {
-  HashRouter as Router,
-  Route,
-  Routes,
-  Navigate
-} from 'react-router-dom';
 
 import {
   Box,
   RadioButtonGroup,
-  Layer,
-  Text,
-  Anchor
+  Button
 } from 'grommet';
 import { ethers } from "ethers";
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
+import { createVeriffFrame, MESSAGES } from '@veriff/incontext-sdk';
 
 
 
@@ -26,15 +19,11 @@ import Banner from '../components/Banner';
 import GoldListModal from '../components/GoldListModal';
 import Stablecoins from '../components/Stablecoins';
 
-import abis from "../contracts/abis";
-import addresses from "../contracts/addresses";
 
 export default function PreSale() {
 
   const { state } = useAppContext();
 
-  const [srg, setSrg] = useState();
-  const [goldList, setGoldList] = useState();
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Native");
 
@@ -54,7 +43,7 @@ export default function PreSale() {
         const txApproval = await busdWithSigner.approve(state.goldList.address, amount);
         await txApproval.wait();
       }
-      const goldListWithSigner = goldList.connect(signer);
+      const goldListWithSigner = state.goldList.connect(signer);
       tx = await goldListWithSigner.claimTokensWithStable(busd.address, amount);
     }
 
@@ -68,42 +57,71 @@ export default function PreSale() {
     return (amount.toString() / 10 ** 18);
   }
 
+
+
   return (
     <>
     <Banner />
     {
       state.coinbase &&
-      <Box align="center" pad="medium">
-        <RadioButtonGroup
-          name="payment"
-          options={['Native', 'Stablecoin']}
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-        />
-      </Box>
-    }
-    {
-      state.coinbase &&
-      state.stablecoins &&
-      value === "Stablecoin" &&
-      <Stablecoins
-        provider={state.provider}
-        setBusd={setBusd}
-      />
-    }
-    {
-      state.coinbase &&
-      (
-        value === "Native" ||
-        (
-          value === "Stablecoin" && busd
-        )
-      ) &&
-      <GoldListModal
-        value={value}
-        buyTokens={buyTokens}
-        getExpectedSrg={getExpectedSrg}
-      />
+      <>
+      {
+        !state.whitelisted ?
+        <Box align="center" pad="medium">
+          <Button primary color="#ffcc00" className="btn-primary" onClick={() => {
+            // DEFINE NECESSARY PARAMETERS
+            const url = process.env.REACT_APP_URL
+            createVeriffFrame({
+              url,
+              onEvent: function(msg) {
+                switch(msg) {
+                  case MESSAGES.STARTED:
+                    // session status changed to 'started'.
+                    break;
+                  case MESSAGES.CANCELED:
+                    //user closed the modal.
+                    break;
+                  case MESSAGES.FINISHED:
+                    // user finished verification flow.
+                    break;
+                }
+              }
+            })
+          }} label="Verify" />
+        </Box> :
+        <>
+        <Box align="center" pad="medium">
+          <RadioButtonGroup
+            name="payment"
+            options={['Native', 'Stablecoin']}
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+          />
+        </Box>
+        {
+          state.stablecoins &&
+          value === "Stablecoin" &&
+          <Stablecoins
+            provider={state.provider}
+            setBusd={setBusd}
+          />
+        }
+        {
+          (
+            value === "Native" ||
+            (
+              value === "Stablecoin" && busd
+            )
+          ) &&
+          <GoldListModal
+            value={value}
+            buyTokens={buyTokens}
+            getExpectedSrg={getExpectedSrg}
+          />
+        }
+        </>
+      }
+      </>
     }
     </>
   )

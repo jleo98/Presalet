@@ -3,7 +3,8 @@ import {
   Header,
   Button,
   Image,
-  Box
+  Box,
+  Text
 } from 'grommet';
 import {
   Link
@@ -29,10 +30,16 @@ export default function MainMenu(props) {
       {
         !state.coinbase ?
         <Button primary label="Connect" color="#ffcc00" className="btn-primary" onClick={state.loadWeb3Modal}/> :
+        state.whitelisted ?
         <>
-        <Link to="/">Buy</Link>
-        <Link to="/stake">Stake</Link>
-        </>
+        {
+          /*
+          <Link to="/">Buy</Link>
+          <Link to="/stake">Stake</Link>
+          */
+        }
+        </> :
+        <Text>Unverified</Text>
       }
       </Box>
     </Header>

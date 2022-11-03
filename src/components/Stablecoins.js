@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 import {
   Box,
@@ -19,6 +19,14 @@ export default function Stablecoins(props) {
   const [value,setValue] = useState(state.stablecoins[0]?.name);
 
 
+  useEffect(() => {
+    const items = state.stablecoins.filter(item => {
+      return item.name === value
+    });
+    const newBusd = new ethers.Contract(items[0].id,abis.srg,props.provider);
+    props.setBusd(newBusd);
+  },[value])
+
   return (
 
       <Box align="center" pad="medium">
@@ -29,11 +37,6 @@ export default function Stablecoins(props) {
           value={value}
           onChange={({ option }) => {
             setValue(option)
-            const items = state.stablecoins.filter(item => {
-              return item.name === option
-            });
-            const newBusd = new ethers.Contract(items[0].id,abis.srg,props.provider);
-            props.setBusd(newBusd);
           }}
         />
       }

@@ -32,7 +32,6 @@ function useWeb3Modal(config = {}) {
   const [coinbase, setCoinbase] = useState();
   const [netId , setNetId] = useState(80001);
   const [connecting , setConnecting] = useState();
-  const [noProvider , setNoProvider] = useState();
   const [autoLoaded, setAutoLoaded] = useState(false);
   // Web3Modal also supports many other wallets.
   // You can see other options at https://github.com/Web3Modal/web3modal
@@ -61,7 +60,6 @@ function useWeb3Modal(config = {}) {
       setProvider(newProvider);
       setCoinbase(newCoinbase);
       setNetId(chainId);
-      setNoProvider(true);
       setConnecting(false);
       conn.on('accountsChanged', accounts => {
         const newProvider = new ethers.providers.Web3Provider(conn,"any");
@@ -97,7 +95,6 @@ function useWeb3Modal(config = {}) {
       try{
         setAutoLoaded(true);
         loadWeb3Modal();
-        setNoProvider(true);
       } catch(err){
         console.log(err)
         logoutOfWeb3Modal();

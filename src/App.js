@@ -15,6 +15,8 @@ import {
   Anchor
 } from 'grommet';
 import { ethers } from "ethers";
+import { createVeriffFrame, MESSAGES } from '@veriff/incontext-sdk';
+
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
 
 
@@ -66,7 +68,13 @@ export default function App() {
   },[provider])
   useEffect(() => {
     actions.setCoinbase(coinbase)
-  },[coinbase])
+  },[coinbase]);
+  useEffect(async () => {
+    if(coinbase && goldList){
+      const newWhitelisted = await goldList.goldList(coinbase);
+      actions.setWhitelisted(newWhitelisted);
+    }
+  },[coinbase,goldList]);
   useEffect(() => {
     actions.setNetId(netId)
   },[netId])
@@ -107,13 +115,11 @@ export default function App() {
     if (netId === 97) {
       newSrg = new ethers.Contract(addresses.srg.bsctestnet, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.bsctestnet, abis.goldList, provider);
-      //newBusd = new ethers.Contract(addresses.busd.bsctestnet, abis.srg, provider);
       newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
     }
     setColdStaking(newColdStaking);
     setSrg(newSrg);
     setGoldList(newGoldList);
-    setBusd(newBusd);
   }, [netId]);
   useMemo(async () => {
     if (client) {
@@ -132,31 +138,6 @@ export default function App() {
       setStablecoins(newStablecoins);
     }
   }, [client])
-
-
-  const buyTokens = async (total) => {
-    const signer = provider.getSigner();
-    const goldListWithSigner = goldList.connect(signer);
-    const amount = ethers.utils.parseEther(total).toString()
-    let tx;
-    if (value === "Native") {
-      tx = await goldListWithSigner.claimTokensWithNative({
-        value: amount
-      });
-    } else {
-      const allowance = await busd.allowance(coinbase, goldList.address);
-      if (amount > allowance) {
-        const busdWithSigner = busd.connect(signer);
-        const txApproval = await busdWithSigner.approve(goldList.address, amount);
-        await txApproval.wait();
-      }
-      const goldListWithSigner = goldList.connect(signer);
-      tx = await goldListWithSigner.claimTokensWithStable(busd.address, amount);
-    }
-
-    await tx.wait();
-
-  }
 
 
   const stakeTokens = async (totalSRG, todalDays) => {
