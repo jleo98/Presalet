@@ -76,6 +76,7 @@ export default function GoldListModal(props) {
         </Box>
         {
           total > 0 &&
+          <Box>
           <Button primary color="#ffcc00" className="btn-primary" onClick={async () => {
             try{
               await props.buyTokens(total);
@@ -87,6 +88,7 @@ export default function GoldListModal(props) {
               setMsg()
             },3000)
           }} label="Buy" />
+          </Box>
         }
 
         {

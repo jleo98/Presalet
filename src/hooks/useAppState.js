@@ -22,6 +22,9 @@ const useAppState = () => {
     loadWeb3Modal: null,
     stablecoins: null,
     whitelisted: null,
+    goldListBalance: null,
+    coinbaseBalance: null
+
   }
 
   // Manage the state using React.useState()
@@ -64,6 +67,12 @@ const getActions = (setState) => ({
   },
   setWhitelisted: (whitelisted) => {
     setState((state) => ({ ...state, whitelisted: whitelisted }))
+  },
+  setGoldListBalance: (goldListBalance) => {
+    setState((state) => ({ ...state, goldListBalance: goldListBalance }))
+  },
+  setCoinbaseBalance: (coinbaseBalance) => {
+    setState((state) => ({ ...state, coinbaseBalance: coinbaseBalance }))
   },
 })
 

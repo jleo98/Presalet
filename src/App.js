@@ -69,12 +69,52 @@ export default function App() {
   useEffect(() => {
     actions.setCoinbase(coinbase)
   },[coinbase]);
-  useEffect(async () => {
+  useEffect(() => {
     if(coinbase && goldList){
-      const newWhitelisted = await goldList.goldList(coinbase);
-      actions.setWhitelisted(newWhitelisted);
+      goldList.goldList(coinbase).then(newWhitelisted => {
+        actions.setWhitelisted(newWhitelisted);
+        goldList.on("GoldListAddition", async (address,status) => {
+          if(coinbase.toLowerCase() === address.toLowerCase()){
+            const newWhitelisted = await goldList.goldList(coinbase);
+            actions.setWhitelisted(newWhitelisted);
+          }
+        });
+      })
     }
   },[coinbase,goldList]);
+  useEffect(() => {
+    if(coinbase && srg){
+      srg.balanceOf(coinbase).then(newBalance => {
+        actions.setCoinbaseBalance(newBalance);
+        srg.on("Transfer", async (from,to,value) => {
+          if(
+            from.toLowerCase() === coinbase.toLowerCase() ||
+            to.toLowerCase() === coinbase.toLowerCase()
+          ){
+            const newBalance = await srg.balanceOf(coinbase);
+            actions.setCoinbaseBalance(newBalance);
+          }
+        });
+      });
+    }
+  },[coinbase,srg]);
+
+  useEffect(() => {
+    if(goldList && srg){
+      srg.balanceOf(goldList.address).then(newGoldListBalance => {
+        actions.setGoldListBalance(newGoldListBalance.toString());
+        srg.on("Transfer", async (from,to,value) => {
+          if(
+            from.toLowerCase() === goldList.address.toLowerCase() ||
+            to.toLowerCase() === goldList.address.toLowerCase()
+          ){
+            const newGoldListBalance = await srg.balanceOf(goldList.address);
+            actions.setGoldListBalance(newGoldListBalance.toString());
+          }
+        });
+      });
+    }
+  },[goldList,srg]);
   useEffect(() => {
     actions.setNetId(netId)
   },[netId])

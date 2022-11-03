@@ -5,6 +5,7 @@ import {
   Anchor
 } from 'grommet';
 
+import SocialMedia from './SocialMedia';
 
 export default function DappFooter() {
 
@@ -16,6 +17,7 @@ export default function DappFooter() {
         © All Rights Reserved - IllumiShare SRG.
       </Text>
       <Anchor href="https://illumisrg.com/" target="_blank" label="About" />
+      <SocialMedia />
     </Footer>
   )
 }

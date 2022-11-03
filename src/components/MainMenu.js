@@ -4,7 +4,10 @@ import {
   Button,
   Image,
   Box,
-  Text
+  Text,
+  ResponsiveContext,
+  Menu,
+  Anchor,
 } from 'grommet';
 import {
   Link
@@ -19,19 +22,45 @@ export default function MainMenu(props) {
     <Header background="none" pad="small" style={{
       boxShadow: "0px 3px 6px #0000001A",
     }}>
-      <Box width="medium">
+      <Box>
         <Link to="/">
           <Image
             src={require("../assets/logo.png")}
           />
         </Link>
       </Box>
-      <Box width="medium" direction="horizontal">
+      <Box direction="row" gap="xxsmall" justify="center">
       {
         !state.coinbase ?
         <Button primary label="Connect" color="#ffcc00" className="btn-primary" onClick={state.loadWeb3Modal}/> :
         state.whitelisted ?
         <>
+        <ResponsiveContext.Consumer>
+        {responsive =>
+          responsive === "small" ? (
+            <Menu
+              dropAlign={{ right: "right", top: "top" }}
+              label="Menu"
+              items={[
+                { label: "Buy", href: "#/"},
+                { label: "Stake", href: "#/stake" }
+              ]}
+            />
+          ) : (
+            <Box
+              margin={{ left: "medium" }}
+              round="xsmall"
+              background={{ color: "white", opacity: "weak" }}
+              direction="row"
+              align="center"
+              pad={{ horizontal: "small" }}
+            >
+              <Anchor as={Link} to="/" label="Buy" margin="small" />
+              <Anchor as={Link} to="/stake" label="Stake" margin="small" />
+            </Box>
+          )
+        }
+        </ResponsiveContext.Consumer>
         {
           /*
           <Link to="/">Buy</Link>

@@ -4,7 +4,8 @@ import {
   Button,
   Heading,
   Text,
-  Anchor
+  Anchor,
+  Meter
 } from 'grommet';
 
 import { useAppContext } from '../hooks/useAppState';
@@ -43,6 +44,22 @@ export default function Banner(props) {
               <Text size="xsmall">Gold List Address: <Anchor href={`https://goerli.etherscan.io/address/${state.goldList.address}`} target="_blank">{state.goldList.address}</Anchor></Text>
 
         }
+
+      </Box>
+      <Box align="center" pad="medium">
+        <Text>GoldList Balance {Number(state.goldListBalance)/10**18} SRG</Text>
+        <Meter
+          background={{
+            color: "light-2",
+            opacity: "strong"
+          }}
+          values={[{
+            value: state.goldListBalance/(100000*10**18)*100,
+            label: 'sixty',
+            onClick: () => {}
+          }]}
+          aria-label="meter"
+        />
       </Box>
       <Box align="center">
         {
@@ -51,6 +68,8 @@ export default function Banner(props) {
             <>
               <Text size="small">Connected</Text>
               <Text size="xsmall">{state.coinbase}</Text>
+              <Text size="xsmall">Your SRG Balance: {Number(state.coinbaseBalance)/10**18} SRG</Text>
+
             </>
         }
 

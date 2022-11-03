@@ -2,7 +2,8 @@ import { useState,useEffect } from 'react';
 
 import {
   Box,
-  Select
+  Select,
+  Text
 } from 'grommet';
 import { ethers } from "ethers";
 
@@ -17,6 +18,7 @@ export default function Stablecoins(props) {
   const { state } = useAppContext();
 
   const [value,setValue] = useState(state.stablecoins[0]?.name);
+  const [busdBalance, setBalance] = useState();
 
 
   useEffect(() => {
@@ -27,11 +29,30 @@ export default function Stablecoins(props) {
     props.setBusd(newBusd);
   },[value])
 
+
+  useEffect(() => {
+    if(props.busd  && state.coinbase){
+      props.busd.balanceOf(state.coinbase).then(newBalance => {
+        setBalance(newBalance.toString());
+        props.busd.on("Transfer", async (from,to,value) => {
+          if(
+            from.toLowerCase() === state.coinbase.toLowerCase() ||
+            to.toLowerCase() === state.coinbase.toLowerCase()
+          ){
+            const newBalance = await props.busd.balanceOf(state.coinbase);
+            setBalance(newBalance.toString());
+          }
+        });
+      });
+    }
+  },[props]);
+
   return (
 
       <Box align="center" pad="medium">
       {
         state.stablecoins &&
+        <>
         <Select
           options={state.stablecoins.map(item => item.name)}
           value={value}
@@ -39,6 +60,11 @@ export default function Stablecoins(props) {
             setValue(option)
           }}
         />
+        {
+          busdBalance &&
+          <Text>Balance: {busdBalance}</Text>
+        }
+        </>
       }
       </Box>
 

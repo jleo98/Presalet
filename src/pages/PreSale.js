@@ -104,6 +104,7 @@ export default function PreSale() {
           <Stablecoins
             provider={state.provider}
             setBusd={setBusd}
+            busd={busd}
           />
         }
         {
@@ -115,6 +116,7 @@ export default function PreSale() {
           ) &&
           <GoldListModal
             value={value}
+            busd={busd}
             buyTokens={buyTokens}
             getExpectedSrg={getExpectedSrg}
           />
