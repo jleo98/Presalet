@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Layer,
+  Paragraph,
   Heading,
   Text,
   Anchor,
@@ -73,7 +74,8 @@ export default function BuySection(props) {
       <>
       {
         !state.whitelisted ?
-        <Box align="center" pad="medium">
+        <Box align="center">
+          <Text>ooooooooooooooopsssssss.... It looks like you are not verified! Dont worry verify now!</Text>
           <Button primary color="#ffcc00" className="btn-primary" onClick={() => {
             // DEFINE NECESSARY PARAMETERS
             const url = process.env.REACT_APP_URL
@@ -94,6 +96,12 @@ export default function BuySection(props) {
               }
             })
           }} label="Verify" />
+          <Box pad={{top:"small"}} align="center">
+            <Text size="xsmall">Powered by</Text>
+            <Box width="small">
+              <Image src={require("../assets/veriff.png")} fit="contain" />
+            </Box>
+          </Box>
         </Box> :
         show ?
         <Layer

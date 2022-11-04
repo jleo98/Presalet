@@ -29,45 +29,28 @@ export default function MainMenu(props) {
           />
         </Link>
       </Box>
-      <Box direction="row" gap="xxsmall" justify="center">
+      <Box
+        margin={{ left: "medium" }}
+        round="xsmall"
+        background={{ color: "white", opacity: "weak" }}
+        direction="column"
+        align="center"
+        pad={{ horizontal: "small" }}
+      >
       {
         !state.coinbase ?
         <Button primary label="Connect" color="#ffcc00" className="btn-primary" onClick={state.loadWeb3Modal}/> :
         state.whitelisted ?
         <>
-        <ResponsiveContext.Consumer>
-        {responsive =>
-          responsive === "small" ? (
-            <Menu
-              dropAlign={{ right: "right", top: "top" }}
-              label="Menu"
-              items={[
-                { label: "Buy", href: "#/"},
-                { label: "Stake", href: "#/stake" }
-              ]}
-            />
-          ) : (
-            <Box
-              margin={{ left: "medium" }}
-              round="xsmall"
-              background={{ color: "white", opacity: "weak" }}
-              direction="row"
-              align="center"
-              pad={{ horizontal: "small" }}
-            >
-              <Anchor as={Link} to="/buy" label="Buy" margin="small" />
-            </Box>
-          )
-        }
-        </ResponsiveContext.Consumer>
-        {
-          /*
-          <Link to="/">Buy</Link>
-          <Link to="/stake">Stake</Link>
-          */
-        }
+
+          <Text size="small">Connected</Text>
+          <Text size="xsmall">{state.coinbase}</Text>
+          <Text size="xsmall">Your SRG Balance: {Number(state.coinbaseBalance)/10**18} SRG</Text>
         </> :
+        <>
+        <Text size="xsmall">{state.coinbase}</Text>
         <Text>Unverified</Text>
+        </>
       }
       </Box>
     </Header>

@@ -9,7 +9,7 @@ import {
   Image
 } from 'grommet';
 import styled from "styled-components";
-import { Link } from "grommet-icons";
+import { Code } from "grommet-icons";
 
 import { useAppContext } from '../hooks/useAppState';
 
@@ -34,25 +34,26 @@ export default function Banner(props) {
         <StyledText color="#FC0">
           Buy SRG
         </StyledText>
+        <Code color="brand" size="medium" />
         <Box direction="row-responsive" gap="medium">
         {
           state.srg &&
             state.netId === 80001 ?
-            <Text size="small"><Anchor href={`https://mumbai.polygonscan.com/address/${state.srg.address}`} target="_blank">SRG<Link color="brand" size="small" /></Anchor></Text> :
+            <Text size="small"><Anchor href={`https://mumbai.polygonscan.com/address/${state.srg.address}`} target="_blank">SRG</Anchor></Text> :
             state.netId === 97 ?
-              <Text size="small"><Anchor href={`https://testnet.bscscan.com/address/${state.srg.address}`} target="_blank">SRG <Link color="brand" size="small" /></Anchor></Text> :
+              <Text size="small"><Anchor href={`https://testnet.bscscan.com/address/${state.srg.address}`} target="_blank">SRG </Anchor></Text> :
               state.netId === 5 &&
-              <Text size="small"><Anchor href={`https://goerli.etherscan.io/address/${state.srg.address}`} target="_blank">SRG <Link color="brand" size="small" /></Anchor></Text>
+              <Text size="small"><Anchor href={`https://goerli.etherscan.io/address/${state.srg.address}`} target="_blank">SRG </Anchor></Text>
 
         }
         {
           state.goldList &&
             state.netId === 80001 ?
-            <Text size="small"><Anchor href={`https://mumbai.polygonscan.com/address/${state.goldList.address}`} target="_blank">Gold List <Link color="brand" size="small" /></Anchor></Text> :
+            <Text size="small"><Anchor href={`https://mumbai.polygonscan.com/address/${state.goldList.address}`} target="_blank">Gold List </Anchor></Text> :
             state.netId === 97 ?
-              <Text size="small"><Anchor href={`https://testnet.bscscan.com/address/${state.goldList.address}`} target="_blank">Gold List <Link color="brand" size="small" /></Anchor></Text> :
+              <Text size="small"><Anchor href={`https://testnet.bscscan.com/address/${state.goldList.address}`} target="_blank">Gold List </Anchor></Text> :
               state.netId === 5 &&
-              <Text size="small"><Anchor href={`https://goerli.etherscan.io/address/${state.goldList.address}`} target="_blank">Gold List <Link color="brand" size="small" /></Anchor></Text>
+              <Text size="small"><Anchor href={`https://goerli.etherscan.io/address/${state.goldList.address}`} target="_blank">Gold List </Anchor></Text>
 
         }
         </Box>
@@ -74,15 +75,9 @@ export default function Banner(props) {
       </Box>
       <Box align="center">
         {
-          !state.coinbase ?
-            <Button primary color="#ffcc00" size="small" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" /> :
-            <Box>
-              <Text size="small">Connected</Text>
-              <Text size="xsmall">{state.coinbase}</Text>
-              <Text size="xsmall">Your SRG Balance: {Number(state.coinbaseBalance)/10**18} SRG</Text>
-            </Box>
+          !state.coinbase &&
+            <Button primary color="#ffcc00" size="small" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" /> 
         }
-
       </Box>
     </Box>
   )
