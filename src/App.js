@@ -26,7 +26,6 @@ import useWeb3Modal from './hooks/useWeb3Modal'
 import useGraphClient from './hooks/useGraphClient';
 
 import Buy from './pages/PreSale';
-import Home from './pages/Home';
 
 import MainMenu from './components/MainMenu';
 import Staking from './components/Staking';
@@ -217,8 +216,7 @@ export default function App() {
         backgroundSize: 'cover'
       }}>
         <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/buy" element={<Buy/>}/>
+          <Route path="/" element={<Buy/>}/>
           <Route render={() => {
 
             return(
