@@ -2,10 +2,13 @@
 import {
   Footer,
   Text,
-  Anchor
+  Box,
+  Anchor,
+  Image
 } from 'grommet';
 
 import SocialMedia from './SocialMedia';
+import TrustedBy from './TrustedBy';
 
 export default function DappFooter() {
 
@@ -17,6 +20,7 @@ export default function DappFooter() {
         © All Rights Reserved - IllumiShare SRG.
       </Text>
       <Anchor href="https://illumisrg.com/" target="_blank" label="About" />
+      <TrustedBy />
       <SocialMedia />
     </Footer>
   )

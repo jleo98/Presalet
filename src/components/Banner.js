@@ -7,23 +7,28 @@ import {
   Anchor,
   Meter
 } from 'grommet';
+import styled from "styled-components";
 
 import { useAppContext } from '../hooks/useAppState';
+
+const StyledText = styled(Text)`
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.6;
+  font: normal normal bold Poppins;
+
+`;
 
 export default function Banner(props) {
 
   const { state } = useAppContext();
 
   return (
-    <>
-      <Box pad="medium" width="xxlarge" height="small" align="center" >
-        <Heading color="black" size="small" style={{
-          font: "normal normal bold 50px/54px Poppins",
-          letterSspacing: "0px",
-          textTransform: "none"
-        }}>
+    <Box align="center">
+      <Box pad="small" width="xxlarge" align="center" >
+        <StyledText color="#FC0">
           Buy SRG
-        </Heading>
+        </StyledText>
         {
           state.srg &&
             state.netId === 80001 ?
@@ -44,13 +49,12 @@ export default function Banner(props) {
               <Text size="xsmall">Gold List Address: <Anchor href={`https://goerli.etherscan.io/address/${state.goldList.address}`} target="_blank">{state.goldList.address}</Anchor></Text>
 
         }
-
       </Box>
-      <Box align="center" pad="medium">
+      <Box align="center" pad="medium" pad={{top:"large"}}>
         <Text>GoldList Balance {Number(state.goldListBalance)/10**18} SRG</Text>
         <Meter
           background={{
-            color: "light-2",
+            color: "light-1",
             opacity: "strong"
           }}
           values={[{
@@ -65,15 +69,14 @@ export default function Banner(props) {
         {
           !state.coinbase ?
             <Button primary color="#ffcc00" size="small" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" /> :
-            <>
+            <Box>
               <Text size="small">Connected</Text>
               <Text size="xsmall">{state.coinbase}</Text>
               <Text size="xsmall">Your SRG Balance: {Number(state.coinbaseBalance)/10**18} SRG</Text>
-
-            </>
+            </Box>
         }
 
       </Box>
-    </>
+    </Box>
   )
 }

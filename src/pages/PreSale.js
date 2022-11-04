@@ -14,8 +14,9 @@ import { createVeriffFrame, MESSAGES } from '@veriff/incontext-sdk';
 
 import { useAppContext } from '../hooks/useAppState';
 
-
+import About from '../components/About';
 import Banner from '../components/Banner';
+
 import GoldListModal from '../components/GoldListModal';
 import Stablecoins from '../components/Stablecoins';
 
@@ -89,7 +90,7 @@ export default function PreSale() {
             })
           }} label="Verify" />
         </Box> :
-        <>
+        <Box>
         <Box align="center" pad="medium">
           <RadioButtonGroup
             name="payment"
@@ -121,7 +122,7 @@ export default function PreSale() {
             getExpectedSrg={getExpectedSrg}
           />
         }
-        </>
+        </Box>
       }
       </>
     }

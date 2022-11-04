@@ -49,7 +49,7 @@ export default function Stablecoins(props) {
 
   return (
 
-      <Box align="center" pad="medium">
+      <Box align="center" pad="medium" margin={{top:"xsmall"}}>
       {
         state.stablecoins &&
         <>

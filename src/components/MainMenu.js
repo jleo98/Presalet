@@ -55,8 +55,8 @@ export default function MainMenu(props) {
               align="center"
               pad={{ horizontal: "small" }}
             >
-              <Anchor as={Link} to="/" label="Buy" margin="small" />
-              <Anchor as={Link} to="/stake" label="Stake" margin="small" />
+              <Anchor as={Link} to="/" label="About" margin="small" />
+              <Anchor as={Link} to="/buy" label="Buy" margin="small" />
             </Box>
           )
         }
