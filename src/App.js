@@ -15,7 +15,6 @@ import {
   Anchor
 } from 'grommet';
 import { ethers } from "ethers";
-import { createVeriffFrame, MESSAGES } from '@veriff/incontext-sdk';
 
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
 

@@ -109,10 +109,6 @@ export default function Banner(props) {
           height="small"
           width="large"
         />
-        {
-          !state.coinbase &&
-            <Button primary color="#ffcc00" size="small" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
-        }
       </StyledBox>
     </Box>
   )

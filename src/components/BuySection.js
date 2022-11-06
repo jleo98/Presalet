@@ -25,7 +25,7 @@ import GoldListModal from './GoldListModal';
 import Stablecoins from './Stablecoins';
 
 
-import { createVeriffFrame, MESSAGES } from '@veriff/incontext-sdk';
+import { Veriff } from '@veriff/js-sdk';
 
 const StyledText = styled(Text)`
   font-weight: 600;
@@ -76,6 +76,10 @@ export default function BuySection(props) {
   return (
     <Box margin={{horizontal: "30%"}}>
     {
+      !state.coinbase &&
+        <Button primary color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
+    }
+    {
       state.coinbase &&
       <>
       {
@@ -83,33 +87,22 @@ export default function BuySection(props) {
         <Box >
           <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
             // DEFINE NECESSARY PARAMETERS
-            addWallet(state.coinbase)
+            addWallet(state.coinbase) // Testing
 
-            const url = sessionStorage.getItem('@veriff-session-url') /*|| await fetch(url, {
-                          method: 'POST',
-                          headers: {
-                            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-                          },
-                          credentials: 'include',
-                          body: 'foo=bar&lorem=ipsum'
-                        });*/
-            createVeriffFrame({
-              url,
-              onEvent: function(msg) {
-                switch(msg) {
-                  case MESSAGES.STARTED:
-                    // session status changed to 'started'.
-                    break;
-                  case MESSAGES.CANCELED:
-                    //user closed the modal.
-                    break;
-                  case MESSAGES.FINISHED:
-                    // user finished verification flow.
-                    addWallet(state.coinbase)
-                    break;
+
+            const veriff = Veriff({
+              apiKey: 'API_KEY',
+              parentId: 'veriff-root',
+              onSession: function(err, response) {
+                // received the response, verification can be started / triggered now
+                console.log(response)
+                if(response === "FINISHED"){
+                  addWallet(state.coinbase)
                 }
               }
-            })
+            });
+            
+
           }} label="Verify" />
           <Box pad={{top:"small"}} align="center">
             <Text size="xsmall" color="white">Powered by</Text>
@@ -158,6 +151,7 @@ export default function BuySection(props) {
       }
       </>
     }
+    <div id='veriff-root'></div>
     </Box>
   )
 }
