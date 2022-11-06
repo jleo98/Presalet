@@ -26,6 +26,7 @@ export default function MainMenu(props) {
         <Link to="/">
           <Image
             src={require("../assets/logo.png")}
+            style={{width:"200px"}}
           />
         </Link>
       </Box>
@@ -42,14 +43,13 @@ export default function MainMenu(props) {
         <Button primary label="Connect" color="#ffcc00" className="btn-primary" onClick={state.loadWeb3Modal}/> :
         state.whitelisted ?
         <>
-
-          <Text size="small">Connected</Text>
-          <Text size="xsmall">{state.coinbase}</Text>
-          <Text size="xsmall">Your SRG Balance: {Number(state.coinbaseBalance)/10**18} SRG</Text>
+          <Text color="white" size="small">Connected</Text>
+          <Text color="white" size="xsmall">{state.coinbase}</Text>
+          <Text color="white" size="xsmall">Your SRG Balance: {Number(state.coinbaseBalance)/10**18} SRG</Text>
         </> :
         <>
-        <Text size="xsmall">{state.coinbase}</Text>
-        <Text>Unverified</Text>
+        <Text color="white" size="xsmall">{state.coinbase}</Text>
+        <Text color="white">Unverified</Text>
         </>
       }
       </Box>

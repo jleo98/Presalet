@@ -13,7 +13,7 @@ import TrustedBy from './TrustedBy';
 export default function DappFooter() {
 
   return (
-    <Footer background="black" height="small"  pad="medium">
+    <Footer height="small"  pad="medium">
       <Text style={{
         font: "normal normal normal Poppins"
       }}>

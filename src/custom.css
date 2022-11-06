@@ -2,3 +2,6 @@
     font: normal normal 600 14px/7px Poppins;
     border-radius: 8px;
 }
+body {
+  background: transparent url('./assets/mainbackground.png') 0% 0% no-repeat padding-box;
+}

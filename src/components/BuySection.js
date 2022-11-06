@@ -11,6 +11,10 @@ import {
   RadioButtonGroup,
   Image
 } from 'grommet';
+
+import Countdown from "react-countdown";
+
+
 import styled from "styled-components";
 import { ethers } from "ethers";
 
@@ -68,15 +72,14 @@ export default function BuySection(props) {
   }
 
   return (
-    <Box>
+    <Box margin={{horizontal: "30%"}}>
     {
       state.coinbase &&
       <>
       {
         !state.whitelisted ?
-        <Box align="center">
-          <Text>ooooooooooooooopsssssss.... It looks like you are not verified! Dont worry verify now!</Text>
-          <Button primary color="#ffcc00" className="btn-primary" onClick={() => {
+        <Box >
+          <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={() => {
             // DEFINE NECESSARY PARAMETERS
             const url = process.env.REACT_APP_URL
             createVeriffFrame({
@@ -97,10 +100,8 @@ export default function BuySection(props) {
             })
           }} label="Verify" />
           <Box pad={{top:"small"}} align="center">
-            <Text size="xsmall">Powered by</Text>
-            <Box width="small">
-              <Image src={require("../assets/veriff.png")} fit="contain" />
-            </Box>
+            <Text size="xsmall" color="white">Powered by</Text>
+            <Image src={require("../assets/veriff.png")} style={{width:"100px"}}/>
           </Box>
         </Box> :
         show ?
@@ -141,9 +142,7 @@ export default function BuySection(props) {
             />
           }
         </Layer> :
-        <Box align="center">
-          <Button primary color="#ffcc00" className="btn-primary" onClick={() => setShow(true)} label="Buy" />
-        </Box>
+        <Button primary size="large" color="#ffcc00" className="btn-primary" onClick={() => setShow(true)} label="Buy" />
       }
       </>
     }

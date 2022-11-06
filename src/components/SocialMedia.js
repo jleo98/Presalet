@@ -5,7 +5,7 @@ import { FacebookOption, Instagram, Twitter,Youtube,Home } from "grommet-icons";
 const SocialMedia = () => (
   <Box direction="row" gap="xxsmall" justify="center">
     <Anchor
-      icon={<Home color="brand" size="medium" />}
+      icon={<Home color="white" size="medium" />}
       href="https://illumisrg.com/"
       target="_blank"
       a11yTitle="Go to Homepage"
@@ -14,25 +14,25 @@ const SocialMedia = () => (
       target="_blank"
       a11yTitle="Share feedback on Github"
       href="https://www.instagram.com/illumishare_srg/"
-      icon={<Instagram color="brand" size="medium" />}
+      icon={<Instagram color="white" size="medium" />}
     />
     <Anchor
       target="_blank"
       a11yTitle="Chat with us on Slack"
       href="https://www.facebook.com/illumiShareSRG"
-      icon={<FacebookOption color="brand" size="medium" />}
+      icon={<FacebookOption color="white" size="medium" />}
     />
     <Anchor
       target="_blank"
       a11yTitle="Youtube"
       href="https://www.youtube.com/channel/UCvypVekV7dP0EGjbRHSHbUw"
-      icon={<Youtube color="brand" size="medium" />}
+      icon={<Youtube color="white" size="medium" />}
     />
     <Anchor
       target="_blank"
       a11yTitle="Follow us on Twitter"
       href="https://twitter.com/illumisharesrg"
-      icon={<Twitter color="brand" size="medium" />}
+      icon={<Twitter color="white" size="medium" />}
     />
   </Box>
 );
