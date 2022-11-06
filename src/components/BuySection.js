@@ -19,6 +19,7 @@ import styled from "styled-components";
 import { ethers } from "ethers";
 
 import { useAppContext } from '../hooks/useAppState';
+import  useOrbis  from '../hooks/useOrbis';
 
 import GoldListModal from './GoldListModal';
 import Stablecoins from './Stablecoins';
@@ -37,6 +38,7 @@ const StyledText = styled(Text)`
 export default function BuySection(props) {
 
   const { state } = useAppContext();
+  const { addWallet } = useOrbis();
 
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Native");
@@ -79,9 +81,18 @@ export default function BuySection(props) {
       {
         !state.whitelisted ?
         <Box >
-          <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={() => {
+          <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
             // DEFINE NECESSARY PARAMETERS
-            const url = process.env.REACT_APP_URL
+            addWallet(state.coinbase)
+
+            const url = sessionStorage.getItem('@veriff-session-url') /*|| await fetch(url, {
+                          method: 'POST',
+                          headers: {
+                            "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                          },
+                          credentials: 'include',
+                          body: 'foo=bar&lorem=ipsum'
+                        });*/
             createVeriffFrame({
               url,
               onEvent: function(msg) {
@@ -94,6 +105,7 @@ export default function BuySection(props) {
                     break;
                   case MESSAGES.FINISHED:
                     // user finished verification flow.
+                    addWallet(state.coinbase)
                     break;
                 }
               }
