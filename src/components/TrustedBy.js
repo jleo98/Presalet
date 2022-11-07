@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Image, Box, Paragraph, Text } from "grommet";
+import { Image, Box, Paragraph } from "grommet";
 
 const TrustedBy = () => (
   <Box

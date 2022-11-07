@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useMemo } from 'react';
 
 import {
   Box,
@@ -23,9 +23,8 @@ import  useOrbis  from '../hooks/useOrbis';
 
 import GoldListModal from './GoldListModal';
 import Stablecoins from './Stablecoins';
+import VeriffLayer from './VeriffLayer';
 
-
-import { Veriff } from '@veriff/js-sdk';
 
 const StyledText = styled(Text)`
   font-weight: 600;
@@ -43,6 +42,8 @@ export default function BuySection(props) {
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Native");
   const [show,setShow] = useState();
+  const [showVeriff,setShowVeriff] = useState();
+
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
     const goldListWithSigner = state.goldList.connect(signer);
@@ -73,6 +74,7 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
+
   return (
     <Box margin={{horizontal: "30%"}}>
     {
@@ -85,24 +87,8 @@ export default function BuySection(props) {
       {
         !state.whitelisted ?
         <Box >
-          <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
-            // DEFINE NECESSARY PARAMETERS
-            addWallet(state.coinbase) // Testing
-
-
-            const veriff = Veriff({
-              apiKey: 'API_KEY',
-              parentId: 'veriff-root',
-              onSession: function(err, response) {
-                // received the response, verification can be started / triggered now
-                console.log(response)
-                if(response === "FINISHED"){
-                  addWallet(state.coinbase)
-                }
-              }
-            });
-            
-
+          <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={() => {
+            setShowVeriff(true);
           }} label="Verify" />
           <Box pad={{top:"small"}} align="center">
             <Text size="xsmall" color="white">Powered by</Text>
@@ -151,7 +137,16 @@ export default function BuySection(props) {
       }
       </>
     }
-    <div id='veriff-root'></div>
+    {
+      showVeriff &&
+      <Layer
+        onEsc={() => setShowVeriff(false)}
+        onClickOutside={() => setShowVeriff(false)}
+      >
+        <VeriffLayer />
+      </Layer>
+    }
+
     </Box>
   )
 }

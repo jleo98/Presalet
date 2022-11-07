@@ -30,6 +30,7 @@ function useOrbis() {
     let res = await orbis.updateProfile({
       data: data
     });
+    console.log(res)
   }
 
   return ({ addWallet })
