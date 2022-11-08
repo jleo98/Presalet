@@ -210,7 +210,7 @@ export default function App() {
           </Layer>
         </Box>
       }
-      <Box pad={{ top: "xlarge", bottom: "large" }} height="large" style={{
+      <Box pad={{ top: "xxsmall", bottom: "large" }} height="large" style={{
         background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
         backgroundSize: 'cover'
       }}>
@@ -225,7 +225,7 @@ export default function App() {
           }} />
         </Routes>
       </Box>
-      <DappFooter />
+      <DappFooter height="small"/>
       </Router>
     </AppContext.Provider>
   )

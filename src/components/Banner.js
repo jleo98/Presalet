@@ -1,3 +1,4 @@
+import React from 'react';
 
 import {
   Box,
@@ -6,7 +7,8 @@ import {
   Text,
   Anchor,
   Meter,
-  Image
+  Image,
+  ResponsiveContext
 } from 'grommet';
 import styled from "styled-components";
 import { Code } from "grommet-icons";
@@ -35,7 +37,7 @@ const StyledGoldListText = styled(Text)`
 const StyledBalanceText = styled(Text)`
   color: var(--unnamed-color-ffcc00);
   text-align: left;
-  font: normal normal 600 27px/41px Poppins;
+  font: normal normal 600 27px/31px Poppins;
   letter-spacing: 0px;
   color: #FFCC00;
   text-transform: capitalize;
@@ -73,14 +75,15 @@ const StyledAnchor = styled(Anchor)`
   opacity: 1;
 `;
 
-export default function Banner(props) {
+export default function Banner() {
 
   const { state } = useAppContext();
+  const size = React.useContext(ResponsiveContext);
 
   return (
-    <Box align="center" pad={{horizontal:"large",vertical:"medium"}} gap="xlarge">
+    <Box align="center" pad={{horizontal:"large",vertical:"xsmall"}} height="large">
 
-      <Box alignContent="left" pad={{top:"large"}} width="large">
+      <Box alignContent="left" pad={{top:"large"}} width="large" height="small">
         <StyledGetStartedText color="#FFCC00">
           Get Started
         </StyledGetStartedText>
@@ -88,27 +91,28 @@ export default function Banner(props) {
           Buy SRG
         </StyledText>
       </Box>
-      <StyledBox align="left" background="#16151A" pad="xlarge" gap="large" width="large" height="xlarge">
-        <Box gap="small" height="xsmall">
-          <StyledGoldListText>GoldList Balance</StyledGoldListText>
-          <StyledBalanceText style={{textAlign:"center"}}>{Number(state.goldListBalance)/10**18} SRG</StyledBalanceText>
-        </Box>
-        <Meter
-          align="center"
-          background={{
-            color: "light-1",
-            opacity: "strong"
-          }}
-          values={[{
-            value: state.goldListBalance/(100000*10**18)*100,
-            color:"black",
-            label: 'sixty',
-            onClick: () => {}
-          }]}
-          aria-label="meter"
-          height="small"
-          width="large"
-        />
+      <StyledBox align="left" background="#16151A" pad="large"  width="large" height="small">
+          <Box gap="small" height="xsmall" >
+            <StyledGoldListText size={size}>GoldList Balance</StyledGoldListText>
+            <StyledBalanceText size={size}>{(Number(state.goldListBalance)/10**18).toFixed(2)} SRG  |  {(state.goldListBalance/(83000000*10**18)*100).toFixed(4)} %</StyledBalanceText>
+            <Meter
+              type="bar"
+              align="center"
+              background={{
+                color: "light-1",
+                opacity: "strong"
+              }}
+              values={[{
+                value: state.goldListBalance/(83000000*10**18)*100,
+                color: "#FFCC00",
+                label: 'Balance',
+                onClick: () => {}
+              }]}
+              aria-label="meter"
+              height="20px"
+              width="large"
+            />
+          </Box>
       </StyledBox>
     </Box>
   )

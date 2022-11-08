@@ -14,26 +14,42 @@ function useOrbis() {
     orbis.connectWithSeed(seed).then(res => {
       console.log(res)
       setOrbisClient(res);
+      /*
+      orbis.updateProfile({
+
+      }); //CLEAN
+      */
     });
 
   },[])
 
   const addWallet = async(address) => {
     const profile = await orbis.getProfile(orbisClient.did);
-    let data = profile.data;
+    let data = profile.data.details.profile.data;
+    console.log(data)
     if(!data){
       data = {}
     }
     if(!data[address]){
       data[address] = true;
     }
+
     let res = await orbis.updateProfile({
       data: data
     });
     console.log(res)
   }
 
-  return ({ addWallet })
+  const isUnderVerification = async(address) => {
+    const profile = await orbis.getProfile(orbisClient.did);
+    let data = profile.data.details.profile.data;
+    if(!data){
+      return(false)
+    }
+    return(data[address])
+  }
+
+  return ({ addWallet,isUnderVerification })
 }
 
 export default useOrbis;

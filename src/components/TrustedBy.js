@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Image, Box, Paragraph } from "grommet";
+import { Image, Box, Paragraph,Anchor } from "grommet";
 
 const TrustedBy = () => (
   <Box
@@ -8,19 +8,19 @@ const TrustedBy = () => (
     justify="center"
     align="center"
   >
-    <Box basis="medium" align="center" margin="medium">
-      <Paragraph size="small" textAlign="center" color="white">
+    <Box align="center" margin="medium" size="small">
+      <Paragraph size="small" textAlign="center" color="white" style={{font: "normal normal normal 18px/27px Poppins"}}>
         Secured By
       </Paragraph>
-      <Box width="xsmall">
+      <Box width="xsmall" as={Anchor} href="https://cyesec.com/" target="_blank">
         <Image src="https://illumisrg.io/wp-content/uploads/2022/07/CYE-logo.svg" fit="cover" />
       </Box>
     </Box>
-    <Box basis="medium" align="center" margin="medium">
-      <Paragraph size="small" textAlign="center" color="white">
+    <Box align="center" margin="medium">
+      <Paragraph size="small" textAlign="center" color="white" style={{font: "normal normal normal 18px/27px Poppins"}}>
         Audit By
       </Paragraph>
-      <Box width="xsmall">
+      <Box width="xsmall" as={Anchor} href="https://www.cyberscope.io/" target="_blank">
         <Image src="https://illumisrg.io/wp-content/uploads/2022/07/Cyber-Scope-Logo@2x.d110a0.webp" fit="cover" />
       </Box>
     </Box>

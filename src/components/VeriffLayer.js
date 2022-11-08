@@ -36,6 +36,8 @@ export default function VeriffLayer(props) {
                   break;
                 case MESSAGES.CANCELED:
                   //
+                  console.log("canceled")
+                  //addWallet(state.coinbase); // TEST
                   break;
                 case MESSAGES.FINISHED:
                   // Add in orbis data

@@ -11,7 +11,7 @@ const Features = () => (
   >
     <Box basis="medium" align="center" margin="medium">
       <Box height="small" align="center" justify="center">
-        <Image src="https://illumisrg.io/wp-content/uploads/2022/07/Physical-Gold-icon@2x.d110a0.webp" fit="cover" />
+        <Image src="https://illumisrg.io/wp-content/uploads/2022/07/Physical-Gold-icon@2x.d110a0.webp" fit="contain" />
       </Box>
       <Paragraph size="small" textAlign="center">
         Physical gold reserve
@@ -19,7 +19,7 @@ const Features = () => (
     </Box>
     <Box basis="medium" align="center" margin="medium">
       <Box height="small" align="center" justify="center">
-        <Image src="https://illumisrg.io/wp-content/uploads/2022/07/Recovery-Fund-icon@2x-1.d110a0.webp" fit="cover" />
+        <Image src="https://illumisrg.io/wp-content/uploads/2022/07/Recovery-Fund-icon@2x-1.d110a0.webp" fit="contain" />
       </Box>
       <Paragraph size="small" textAlign="center">
         Aggressive marketing.
