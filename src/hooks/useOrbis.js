@@ -23,15 +23,15 @@ function useOrbis() {
 
   },[])
 
-  const addWallet = async(address) => {
+  const addWallet = async(address,sessionId) => {
     const profile = await orbis.getProfile(orbisClient.did);
     let data = profile.data.details.profile.data;
     console.log(data)
     if(!data){
       data = {}
     }
-    if(!data[address]){
-      data[address] = true;
+    if(!data[address.toLowerCase()]){
+      data[address.toLowerCase()] = sessionId;
     }
 
     let res = await orbis.updateProfile({
@@ -46,7 +46,7 @@ function useOrbis() {
     if(!data){
       return(false)
     }
-    return(data[address])
+    return(data[address.toLowerCase()])
   }
 
   return ({ addWallet,isUnderVerification })

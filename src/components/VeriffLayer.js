@@ -26,7 +26,9 @@ export default function VeriffLayer(props) {
         apiKey: process.env.REACT_APP_VERIFF_API,
         parentId: 'veriff-root',
         onSession: function(err, response) {
+          console.log(response.verification)
           const url = response.verification.url;
+          const id = response.verification.id;
           createVeriffFrame({
             url,
             onEvent: function(msg) {
@@ -37,11 +39,11 @@ export default function VeriffLayer(props) {
                 case MESSAGES.CANCELED:
                   //
                   console.log("canceled")
-                  //addWallet(state.coinbase); // TEST
+                  //addWallet(state.coinbase,id); // TEST
                   break;
                 case MESSAGES.FINISHED:
                   // Add in orbis data
-                  addWallet(state.coinbase);
+                  addWallet(state.coinbase,id);
                   break;
               }
             }
