@@ -20,7 +20,7 @@ const addresses = {
   goldList: {
     goerli: "0xf68a7fea591bfa6d0e912d9acb0278a7d2cd928d",
     bsctestnet: "0x5c19ec2dfd13cbdc5efa34f77f4bc83669604fa6",
-    mumbai: "0x16763b9B66343520D7F52cbdBca885ceC9d4042F"
+    mumbai: "0x1390746a374ED3c7e38eb5D099ef9D6Ed4cA457C"
   },
   coldStaking: {
     goerli: "0x65c307AB0d8a745C8Ba2D81a3436dE16bb4c4050",
