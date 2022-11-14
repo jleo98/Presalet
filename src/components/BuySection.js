@@ -15,6 +15,7 @@ import {
 
 import Countdown from "react-countdown";
 
+import crypto from 'crypto-browserify'
 
 import styled from "styled-components";
 import { ethers } from "ethers";
@@ -34,6 +35,8 @@ const StyledText = styled(Text)`
 
 `;
 
+const apiPrivateKey = process.env.REACT_APP_VERIFF_PRIV_KEY;
+
 export default function BuySection(props) {
 
   const { state } = useAppContext();
@@ -44,6 +47,7 @@ export default function BuySection(props) {
   const [show,setShow] = useState();
   const [showVeriff,setShowVeriff] = useState();
   const [underVerification,setUnderVerification] = useState()
+  const [veriffReason,setVeriffReason] = useState()
 
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
@@ -75,20 +79,57 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
+  const checkVeriffStatus = async() => {
+
+    const payloadAsString = underVerification;
+    console.log(payloadAsString)
+    const signature = crypto
+      .createHmac('sha256', apiPrivateKey)
+      .update(Buffer.from(payloadAsString, 'utf8'))
+      .digest('hex')
+      .toLowerCase();
+    console.log(signature)
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-HMAC-SIGNATURE': signature,
+            "X-AUTH-CLIENT":  process.env.REACT_APP_VERIFF_API
+        }
+    };
+
+    const result = await fetch(`https://stationapi.veriff.com/v1/sessions/${underVerification}/decision`, requestOptions)
+    const obj = JSON.parse(await result.text());
+    console.log(obj)
+    if(obj.verification?.status !== "approved"){
+      setUnderVerification();
+      setVeriffReason(obj.verification?.reason ? obj.verification.reason : "Documents not sent")
+    }
+    return;
+  }
+
   useEffect(() => {
-    if(state.coinbase){
+    if(state.coinbase) {
       isUnderVerification(state.coinbase).then(newUnderVerification => {
         setUnderVerification(newUnderVerification)
       })
-      setInterval(() => {
-        if(!underVerification){
-          isUnderVerification(state.coinbase).then(newUnderVerification => {
-            setUnderVerification(newUnderVerification)
-          })
-        }
-      },1000)
     }
-  },[state.coinbase])
+  },[state.coinbase]);
+
+  useEffect(() => {
+    if(!underVerification && !veriffReason){
+      console.log(veriffReason)
+      isUnderVerification(state.coinbase).then(newUnderVerification => {
+        setUnderVerification(newUnderVerification)
+      })
+    }
+  },[underVerification,veriffReason,state.coinbase])
+
+  useEffect(() => {
+    if(underVerification && !state.whitelisted){
+      checkVeriffStatus();
+    }
+  },[underVerification,state.whitelisted])
 
   return (
     <Box margin={{horizontal: "30%"}} height="small">
@@ -104,7 +145,12 @@ export default function BuySection(props) {
         (
           !underVerification ?
           <Box>
+            {
+              veriffReason &&
+              veriffReason
+            }
             <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={() => {
+              setVeriffReason();
               setShowVeriff(true);
             }} label="Verify" />
             <Box pad={{top:"small"}} align="center">
