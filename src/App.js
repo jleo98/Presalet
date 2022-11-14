@@ -25,6 +25,7 @@ import useWeb3Modal from './hooks/useWeb3Modal'
 import useGraphClient from './hooks/useGraphClient';
 
 import Buy from './pages/PreSale';
+import BuyNoKYC from './pages/PreSaleNoKYC';
 
 import MainMenu from './components/MainMenu';
 import Staking from './components/Staking';
@@ -216,6 +217,8 @@ export default function App() {
       }}>
         <Routes>
           <Route path="/" element={<Buy/>}/>
+          <Route path="/eventURI-Hash-Here" element={<BuyNoKYC/>}/>
+
           <Route render={() => {
 
             return(
