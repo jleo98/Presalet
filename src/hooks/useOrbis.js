@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 /** Import Orbis SDK */
 import { Orbis } from "@orbisclub/orbis-sdk";
 import { fromString } from 'uint8arrays'
@@ -10,7 +10,7 @@ function useOrbis() {
   const [orbisClient, setOrbisClient] = useState();
 
   useEffect(() => {
-    const seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED,'base16'))
+    const seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED, 'base16'))
     orbis.connectWithSeed(seed).then(res => {
       console.log(res)
       setOrbisClient(res);
@@ -21,18 +21,18 @@ function useOrbis() {
       */
     });
 
-  },[])
+  }, [])
 
-  const addWallet = async(address,sessionId) => {
+  const addWallet = async (address, sessionId) => {
     const profile = await orbis.getProfile(orbisClient.did);
     let data = profile.data.details.profile.data;
     console.log(data)
-    if(!data){
+    if (!data) {
       data = {}
     }
-    if(!data[address.toLowerCase()]){
-      data[address.toLowerCase()] = sessionId;
-    }
+    // if(!data[address.toLowerCase()]){
+    data[address.toLowerCase()] = sessionId;
+    // }
 
     let res = await orbis.updateProfile({
       data: data
@@ -40,16 +40,16 @@ function useOrbis() {
     console.log(res)
   }
 
-  const isUnderVerification = async(address) => {
+  const isUnderVerification = async (address) => {
     const profile = await orbis.getProfile(orbisClient.did);
     let data = profile.data.details.profile.data;
-    if(!data){
-      return(false)
+    if (!data) {
+      return (false)
     }
-    return(data[address.toLowerCase()])
+    return (data[address.toLowerCase()])
   }
 
-  return ({ addWallet,isUnderVerification })
+  return ({ addWallet, isUnderVerification })
 }
 
 export default useOrbis;

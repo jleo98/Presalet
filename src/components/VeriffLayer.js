@@ -1,11 +1,11 @@
-import { useState,useMemo } from 'react';
+import { useState, useMemo } from 'react';
 
 import {
   Box,
 } from 'grommet';
 
 import { useAppContext } from '../hooks/useAppState';
-import  useOrbis  from '../hooks/useOrbis';
+import useOrbis from '../hooks/useOrbis';
 
 
 import { Veriff } from '@veriff/js-sdk';
@@ -20,21 +20,23 @@ export default function VeriffLayer(props) {
 
 
   useMemo(() => {
-    if(document.getElementById("veriff-root")){
+    if (document.getElementById("veriff-root")) {
       const veriff = Veriff({
         host: 'https://stationapi.veriff.com',
         apiKey: process.env.REACT_APP_VERIFF_API,
         parentId: 'veriff-root',
-        onSession: function(err, response) {
+        onSession: function (err, response) {
           console.log(response.verification)
           const url = response.verification.url;
           const id = response.verification.id;
           createVeriffFrame({
             url,
-            onEvent: function(msg) {
-              switch(msg) {
+            onEvent: function (msg) {
+              switch (msg) {
                 case MESSAGES.STARTED:
                   //
+                  addWallet(state.coinbase, id); // TEST
+
                   break;
                 case MESSAGES.CANCELED:
                   //
@@ -43,7 +45,7 @@ export default function VeriffLayer(props) {
                   break;
                 case MESSAGES.FINISHED:
                   // Add in orbis data
-                  addWallet(state.coinbase,id);
+                  addWallet(state.coinbase, id);
                   break;
               }
             }
@@ -55,7 +57,7 @@ export default function VeriffLayer(props) {
       });
       veriff.mount();
     }
-  },[document.getElementById("veriff-root")])
+  }, [document.getElementById("veriff-root")])
 
   return (
     <Box pad="large">
