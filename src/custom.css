@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap%27');
 .btn-primary {
     font: normal normal 600 14px/7px Poppins;
     border-radius: 8px;
 }
 body {
-  background: transparent url('./assets/mainbackground.png') 0% 0% no-repeat padding-box;
+  background: transparent url('./assets/mainbackground.png');
+  background-size: contain;
 }
