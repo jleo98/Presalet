@@ -10,7 +10,8 @@ import {
   Anchor,
   RadioButtonGroup,
   Image,
-  Spinner
+  Spinner,
+  Notification
 } from 'grommet';
 
 import Countdown from "react-countdown";
@@ -49,6 +50,8 @@ export default function BuySection(props) {
   const [showVeriff,setShowVeriff] = useState();
   const [underVerification,setUnderVerification] = useState()
   const [veriffReason,setVeriffReason] = useState()
+  const [showNotification,setShowNotification] = useState()
+  const [notificationShowed,setShowedNotification] = useState()
 
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
@@ -83,13 +86,13 @@ export default function BuySection(props) {
   const checkVeriffStatus = async() => {
 
     const payloadAsString = underVerification;
-    console.log(payloadAsString)
+
     const signature = crypto
       .createHmac('sha256', apiPrivateKey)
       .update(Buffer.from(payloadAsString, 'utf8'))
       .digest('hex')
       .toLowerCase();
-    console.log(signature)
+
     const requestOptions = {
         method: 'GET',
         headers: {
@@ -101,21 +104,13 @@ export default function BuySection(props) {
 
     const result = await fetch(`https://stationapi.veriff.com/v1/sessions/${underVerification}/decision`, requestOptions)
     const obj = JSON.parse(await result.text());
-    console.log(obj)
-    if(obj.verification?.status !== "approved"){
+    if(obj.verification?.status !== "approved" && obj.verification){
+      setVeriffReason(obj.verification?.reason ? obj.verification.reason : "Documents not sent");
+      setShowNotification(true)
       setUnderVerification();
-      setVeriffReason(obj.verification?.reason ? obj.verification.reason : "Documents not sent")
     }
     return
   }
-
-  useEffect(() => {
-    if(state.coinbase) {
-      isUnderVerification(state.coinbase).then(newUnderVerification => {
-        setUnderVerification(newUnderVerification)
-      })
-    }
-  },[state.coinbase]);
 
 
   useEffect(() => {
@@ -123,24 +118,18 @@ export default function BuySection(props) {
     connectSeed(seed);
   },[])
 
-  useEffect(() => {
-    if(!underVerification && !veriffReason && orbisClient){
-      isUnderVerification(state.coinbase).then(newUnderVerification => {
-        setUnderVerification(newUnderVerification)
-      })
-    }
-  },[
-    underVerification,
-    veriffReason,
-    state.coinbase,
-    orbisClient
-  ])
 
   useEffect(() => {
     if(underVerification && !state.whitelisted && orbisClient){
-      checkVeriffStatus();
+      //checkVeriffStatus();
+      setInterval(() => {
+        if(underVerification && !state.whitelisted && !notificationShowed){
+          checkVeriffStatus();
+        }
+      },5000)
     }
   },[
+    notificationShowed,
     underVerification,
     state.whitelisted,
     orbisClient
@@ -161,11 +150,22 @@ export default function BuySection(props) {
           !underVerification ?
           <Box>
             {
-              veriffReason &&
-              veriffReason
+              veriffReason && showNotification &&
+              <Notification
+                toast
+                status="warning"
+                title="Error in Veriff Verification"
+                message={veriffReason}
+                onClose={() => {
+                  setShowNotification(false)
+                  setShowedNotification(true)
+                }}
+              />
+
             }
             <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={() => {
               setVeriffReason();
+              setShowNotification(false);
               setShowVeriff(true);
             }} label="Verify" />
             <Box pad={{top:"small"}} align="center">
@@ -234,19 +234,19 @@ export default function BuySection(props) {
       showVeriff &&
       <Layer
         onEsc={() => {
-          isUnderVerification(state.coinbase).then(newUnderVerification => {
-            setUnderVerification(newUnderVerification)
-          })
           setShowVeriff(false)
         }}
         onClickOutside={() => {
-          isUnderVerification(state.coinbase).then(newUnderVerification => {
-            setUnderVerification(newUnderVerification)
-          })
           setShowVeriff(false)
         }}
       >
-        <VeriffLayer inUnderVerification={isUnderVerification} setUnderVerification={setUnderVerification} addWallet={addWallet}/>
+        <VeriffLayer
+          setShowedNotification={setShowedNotification}
+          isUnderVerification={isUnderVerification}
+          setUnderVerification={setUnderVerification}
+          addWallet={addWallet}
+          setShowVeriff={setShowVeriff}
+        />
       </Layer>
     }
 

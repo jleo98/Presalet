@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -17,7 +17,7 @@ export default function VeriffLayer(props) {
 
 
 
-  useMemo(() => {
+  useEffect(() => {
     if (document.getElementById("veriff-root")) {
       const veriff = Veriff({
         host: 'https://stationapi.veriff.com',
@@ -34,16 +34,27 @@ export default function VeriffLayer(props) {
                 case MESSAGES.STARTED:
                   //
                   props.addWallet(state.coinbase, id); // TEST
-
                   break;
                 case MESSAGES.CANCELED:
                   //
                   console.log("canceled")
-                  //props.addWallet(state.coinbase,id); // TEST
+                  /*props.addWallet(state.coinbase,id); // TEST
+                  props.isUnderVerification(state.coinbase).then(newUnderVerification => {
+                    props.setUnderVerification(newUnderVerification)
+                  })
+                  props.setShowedNotification(false)
+                  */
+                  props.setShowVeriff(false);
+
                   break;
                 case MESSAGES.FINISHED:
                   // Add in orbis data
+                  props.isUnderVerification(state.coinbase).then(newUnderVerification => {
+                    props.setUnderVerification(newUnderVerification)
+                  })
                   props.addWallet(state.coinbase, id);
+                  props.setShowVeriff(false);
+                  props.setShowedNotification(false)
                   break;
               }
             }

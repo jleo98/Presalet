@@ -28,7 +28,7 @@ const StyledGetStartedText = styled(Text)`
 const StyledGoldListText = styled(Text)`
   color: var(--unnamed-color-707070);
   text-align: left;
-  font: normal normal 600 16/24px Poppins;
+  font: normal normal 600 16px/24px Poppins;
   letter-spacing: 0px;
   color: #707070;
   text-transform: capitalize;
@@ -37,7 +37,7 @@ const StyledGoldListText = styled(Text)`
 const StyledBalanceText = styled(Text)`
   color: var(--unnamed-color-ffcc00);
   text-align: left;
-  font: normal normal 600 27px/31px Poppins;
+  font: normal normal 600 24px/31px Poppins;
   letter-spacing: 0px;
   color: #FFCC00;
   text-transform: capitalize;
