@@ -38,12 +38,12 @@ export default function VeriffLayer(props) {
                 case MESSAGES.CANCELED:
                   //
                   console.log("canceled")
-                  /*props.addWallet(state.coinbase,id); // TEST
+                  //props.addWallet(state.coinbase,id); // TEST
                   props.isUnderVerification(state.coinbase).then(newUnderVerification => {
                     props.setUnderVerification(newUnderVerification)
                   })
                   props.setShowedNotification(false)
-                  */
+                  
                   props.setShowVeriff(false);
 
                   break;

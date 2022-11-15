@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useMemo } from 'react';
 
 import {
   Box,
@@ -104,10 +104,11 @@ export default function BuySection(props) {
 
     const result = await fetch(`https://stationapi.veriff.com/v1/sessions/${underVerification}/decision`, requestOptions)
     const obj = JSON.parse(await result.text());
-    if(obj.verification?.status !== "approved" && obj.verification){
+    if(obj.verification?.status !== "approved"){
       setVeriffReason(obj.verification?.reason ? obj.verification.reason : "Documents not sent");
       setShowNotification(true)
       setUnderVerification();
+      setShowedNotification(true)
     }
     return
   }
@@ -120,14 +121,12 @@ export default function BuySection(props) {
 
 
   useEffect(() => {
-    if(underVerification && !state.whitelisted && orbisClient){
-      //checkVeriffStatus();
-      setInterval(() => {
-        if(underVerification && !state.whitelisted && !notificationShowed){
-          checkVeriffStatus();
-        }
-      },5000)
-    }
+    const interval = setInterval(() => {
+      if(underVerification && !state.whitelisted && !notificationShowed){
+        checkVeriffStatus();
+      }
+    },5000);
+    return () => clearInterval(interval);
   },[
     notificationShowed,
     underVerification,
