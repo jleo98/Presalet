@@ -5,7 +5,6 @@ import {
 } from 'grommet';
 
 import { useAppContext } from '../hooks/useAppState';
-import useOrbis from '../hooks/useOrbis';
 
 
 import { Veriff } from '@veriff/js-sdk';
@@ -15,7 +14,6 @@ import { createVeriffFrame, MESSAGES } from '@veriff/incontext-sdk';
 export default function VeriffLayer(props) {
 
   const { state } = useAppContext();
-  const { addWallet } = useOrbis();
 
 
 
@@ -35,17 +33,17 @@ export default function VeriffLayer(props) {
               switch (msg) {
                 case MESSAGES.STARTED:
                   //
-                  addWallet(state.coinbase, id); // TEST
+                  props.addWallet(state.coinbase, id); // TEST
 
                   break;
                 case MESSAGES.CANCELED:
                   //
                   console.log("canceled")
-                  //addWallet(state.coinbase,id); // TEST
+                  //props.addWallet(state.coinbase,id); // TEST
                   break;
                 case MESSAGES.FINISHED:
                   // Add in orbis data
-                  addWallet(state.coinbase, id);
+                  props.addWallet(state.coinbase, id);
                   break;
               }
             }

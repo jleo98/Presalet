@@ -246,7 +246,7 @@ export default function BuySection(props) {
           setShowVeriff(false)
         }}
       >
-        <VeriffLayer inUnderVerification={isUnderVerification} setUnderVerification={setUnderVerification}/>
+        <VeriffLayer inUnderVerification={isUnderVerification} setUnderVerification={setUnderVerification} addWallet={addWallet}/>
       </Layer>
     }
 
