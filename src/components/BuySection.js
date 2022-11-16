@@ -11,7 +11,8 @@ import {
   RadioButtonGroup,
   Image,
   Spinner,
-  Notification
+  Notification,
+  ThemeContext
 } from 'grommet';
 
 import Countdown from "react-countdown";
@@ -36,6 +37,18 @@ const StyledText = styled(Text)`
   font: normal normal bold Poppins;
 
 `;
+
+const StyledLayerBuy = styled(Layer)`
+  border: 1px solid var(--lines);
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 10px 15px #00000054;
+  border: 1px solid #E5E8EB;
+  border-radius: 15px;
+  opacity: 1;
+  width: 355px;
+  height: 447px;
+`;
+
 
 const apiPrivateKey = process.env.REACT_APP_VERIFF_PRIV_KEY;
 
@@ -182,7 +195,7 @@ export default function BuySection(props) {
           </Box>
         ):
         show ?
-        <Layer
+        <StyledLayerBuy
           onEsc={() => {
             setShow(false);
           }}
@@ -190,14 +203,37 @@ export default function BuySection(props) {
             setShow(false);
           }}
         >
-          <Box align="center" pad="medium">
-            <Text>Payment method</Text>
+          <Box align="left" pad="medium">
+            <Text style={{
+             textAlign: "left",
+             font: "normal normal 600 20px/40px Poppins",
+             letterSpacing: "0px",
+             color: "black",
+             opacity: 1,
+             paddingBottom: "20px"
+           }}>Payment method</Text>
+           <ThemeContext.Extend
+              value={
+                {
+                  global: {
+                    colors: {
+                      control: '#ffcc00'
+                    },
+                    font: {
+                      weight: 600,
+                      family: "Poppins"
+                    }
+                  }
+                }
+              }
+            >
             <RadioButtonGroup
               name="payment"
               options={['Native', 'Stablecoin']}
               value={value}
               onChange={(event) => setValue(event.target.value)}
             />
+            </ThemeContext.Extend>
           </Box>
           {
             state.stablecoins &&
@@ -222,7 +258,7 @@ export default function BuySection(props) {
               getExpectedSrg={getExpectedSrg}
             />
           }
-        </Layer> :
+        </StyledLayerBuy> :
         Number(state.goldListBalance) > 0 ?
         <Button primary size="large" color="#ffcc00" className="btn-primary" onClick={() => setShow(true)} label="Buy" /> :
         <Text size="medium" color="white">Sale ended</Text>

@@ -6,4 +6,5 @@
 body {
   background: transparent url('./assets/mainbackground.png');
   background-size: contain;
+  font-family: Poppins;
 }

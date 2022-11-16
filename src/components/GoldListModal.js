@@ -8,6 +8,8 @@ import {
 
 import { useAppContext } from '../hooks/useAppState';
 
+
+
 export default function GoldListModal(props) {
 
   const { state } = useAppContext();
@@ -38,11 +40,11 @@ export default function GoldListModal(props) {
 
   return (
 
-      <Box align="center" pad="medium">
+      <Box align="center" pad="medium" width="large">
       {
         state.provider && state.coinbase &&
         <>
-        <Text>
+        <Text style={{color: "black",font:"normal normal 600 20px/40px Poppins"}}>
           Amount of {' '}
           {
             props.value === "Native" ?
@@ -54,7 +56,7 @@ export default function GoldListModal(props) {
             "USD"
           }
         </Text>
-        <Box pad="small" width="small">
+        <Box pad="small" width="large">
           <input
             placeholder="Amount"
             onChange={(e) => {
@@ -68,16 +70,30 @@ export default function GoldListModal(props) {
             step="0.0001"
             min={0.0001}
             value={total}
+            style={{
+              background: "#FFFFFF 0% 0% no-repeat padding-box",
+              border: "3px solid #E6E6E6",
+              borderRadius: "8px",
+              opacity: 1,
+              height: "46px",
+              font: "normal normal normal 16px/40px Poppins",
+            }}
          />
          {
            srgExpect && total &&
-           <Text size="small">{srgExpect} SRG</Text>
+           <Text size="small" style={{
+            textAlign: "center",
+            font: "normal normal normal 16px/40px Poppins",
+            letterSpacing: "0px",
+            color: "#8F979E",
+            opacity: 1
+           }}>{srgExpect} SRG</Text>
          }
         </Box>
         {
           total > 0 &&
-          <Box>
-          <Button primary color="#ffcc00" className="btn-primary" onClick={async () => {
+          <Box width="large">
+          <Button style={{height: "43px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
             try{
               await props.buyTokens(total);
             } catch(err){

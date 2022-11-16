@@ -12,9 +12,9 @@ const StyledText = styled(Text)`
 const About = () => (
 
 
-  <Box align="center" height="medium">
-    <Box align="center" width="large">
-        <StyledText color="#F1F1F1" pad={{ top: "small" }} textAlign="center" size="32px" weight="600">
+  <Box align="center" height="small " pad={{ top: "large",bottom:"xlarge" }}>
+    <Box align="center" width="large" >
+        <StyledText color="#F1F1F1" textAlign="center" size="32px" weight="600">
           We believe money should give the people both stability and opportunities.
         </StyledText>
     </Box>
