@@ -4,7 +4,7 @@ const addresses = {
   srg: {
     goerli: "0x8D9a2BFd40B529Ca5F0a60b6606aec376554add0",
     bsctestnet: "0x58C388bb71Ff2a926963cf888Cd793De700d6E9e",
-    mumbai: "0x06faD26802fA0445509F23E783154A123233Dd8a"
+    mumbai: "0x5f4395996479eF6ff57da6f28779Cc8EA2350258"
   },
   stable: {
     busd: {
