@@ -93,6 +93,10 @@ export default function BuySection(props) {
   },[])
 
   useEffect(() => {
+    setUnderVerification()
+  },[state.coinbase])
+
+  useEffect(() => {
     if(!underVerification && orbisClient){
       isUnderVerification(state.coinbase).then(newUnderVerification => {
         setUnderVerification(newUnderVerification)
@@ -121,10 +125,9 @@ export default function BuySection(props) {
           !underVerification ?
           <Box>
             <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
+              setUnderVerification(true)
               await addWallet(state.coinbase,true);
-              isUnderVerification(state.coinbase).then(newUnderVerification => {
-                setUnderVerification(newUnderVerification)
-              })
+
             }} label="WhiteList Me" />
           </Box> :
           <Box pad={{top:"small"}} align="center">
