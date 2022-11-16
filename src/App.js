@@ -203,8 +203,8 @@ export default function App() {
       <MainMenu/>
       {
         netId !== 80001 && netId !== 137 && netId !== 5 &&
-        <Box align="center">
-          <Layer background="status-error">
+        <Box align="center" >
+          <Layer background="status-error" responsive={false}>
             <Box width="medium" pad="large">
               <Text><Anchor color="white" weight="bold" href="https://chainlist.network/" target="_blank">Please connect to polygon network</Anchor></Text>
             </Box>

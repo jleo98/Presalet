@@ -267,7 +267,7 @@ export default function BuySection(props) {
     }
     {
       showVeriff &&
-      <Layer
+      <StyledLayerBuy
         onEsc={() => {
           setShowVeriff(false)
         }}
@@ -282,7 +282,7 @@ export default function BuySection(props) {
           addWallet={addWallet}
           setShowVeriff={setShowVeriff}
         />
-      </Layer>
+      </StyledLayerBuy>
     }
 
     </Box>
