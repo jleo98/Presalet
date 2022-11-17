@@ -29,7 +29,7 @@ export default function VeriffLayer(props) {
           const id = response.verification.id;
           createVeriffFrame({
             url,
-            onEvent: function (msg) {
+            onEvent: async function (msg) {
               switch (msg) {
                 case MESSAGES.STARTED:
                   //
@@ -39,14 +39,13 @@ export default function VeriffLayer(props) {
                   //
                   console.log("canceled")
                   props.setShowVeriff(false);
-
                   break;
                 case MESSAGES.FINISHED:
                   // Add in orbis data
+                  await props.addWallet(state.coinbase, id);
                   props.isUnderVerification(state.coinbase).then(newUnderVerification => {
                     props.setUnderVerification(newUnderVerification)
                   })
-                  props.addWallet(state.coinbase, id);
                   props.setShowVeriff(false);
                   props.setShowedNotification(false)
                   break;
