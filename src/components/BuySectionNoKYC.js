@@ -114,7 +114,7 @@ export default function BuySection(props) {
     <Box margin={{horizontal: "30%"}} height="small">
     {
       !state.coinbase &&
-        <Button primary color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
+        <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
     }
     {
       state.coinbase &&
@@ -124,11 +124,11 @@ export default function BuySection(props) {
         (
           !underVerification ?
           <Box>
-            <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
+            <Button primary color="#ffcc00" size="large" className="btn-primary" style={{borderRadius: "8px"}} onClick={async () => {
               setUnderVerification(true)
               await addWallet(state.coinbase,true);
 
-            }} label="WhiteList Me" />
+            }} label="WhiteList Me" style={{borderRadius: "8px"}} />
           </Box> :
           <Box pad={{top:"small"}} align="center">
             <Spinner size="medium" color="white"/>
@@ -202,7 +202,7 @@ export default function BuySection(props) {
           }
         </StyledLayerBuy> :
         Number(state.goldListBalance) > 0 ?
-        <Button primary size="large" color="#ffcc00" className="btn-primary" onClick={() => setShow(true)} label="Buy" /> :
+        <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy" /> :
         <Text size="medium" color="white">Sale ended</Text>
       }
       </>

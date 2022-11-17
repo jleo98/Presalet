@@ -35,12 +35,16 @@ export default function MainMenu(props) {
       <Nav align="center" width={size}>
       {
         !state.coinbase ?
-        <Button primary size="medium" label="Connect" color="#ffcc00" className="btn-primary" onClick={state.loadWeb3Modal}/> :
+        <Button style={{borderRadius: "8px"}} primary size="medium" label="Connect" color="#ffcc00" className="btn-primary" onClick={state.loadWeb3Modal}/> :
         state.whitelisted ?
         <>
-          <Text color="white" size="small">Connected</Text>
-          <Text color="white" size="xsmall">{state.coinbase}</Text>
-          <Text color="white" size="xsmall">Your SRG Balance: {Number(state.coinbaseBalance)/10**18} SRG</Text>
+          <Text color="white" size="xsmall">Connected</Text>
+          {
+            window.innerWidth >= 500 &&
+            <Text color="white" size="7px">{state.coinbase}</Text>
+          }
+          <Text color="white" size="8px">Your SRG Balance</Text>
+          <Text color="white" size="8px">{Number(state.coinbaseBalance)/10**18} SRG</Text>
         </> :
         <>
         <Text color="white" size="xsmall">{state.coinbase}</Text>

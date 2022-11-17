@@ -93,7 +93,7 @@ export default function GoldListModal(props) {
         {
           total > 0 &&
           <Box width="large">
-          <Button style={{height: "43px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
+          <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
             try{
               await props.buyTokens(total);
             } catch(err){

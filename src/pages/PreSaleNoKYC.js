@@ -10,7 +10,7 @@ export default function PreSale() {
     <>
     <About  />
     <Banner />
-    <BuySectionNoKYC />
+    <BuySectionNoKYC/>
     </>
   )
 }

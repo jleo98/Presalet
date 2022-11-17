@@ -33,7 +33,7 @@ export default function Staking(props) {
 
                 Amount of days of staking
                 <TextInput onChange={(e) => { setTotalDays(e.target.value) }} />
-                <Button margin="small" primary onClick={async () => {
+                <Button style={{borderRadius: "8px"}} margin="small" primary onClick={async () => {
 
                     if (totalDays >= 30 && totalStake > 0) {
                         try {

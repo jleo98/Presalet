@@ -148,10 +148,11 @@ export default function BuySection(props) {
   ])
 
   return (
-    <Box margin={{horizontal: "30%"}} height="small">
+    <Box margin={{horizontal: "22%"}} height="small">
+
     {
       !state.coinbase &&
-        <Button primary color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
+        <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
     }
     {
       state.coinbase &&
@@ -175,7 +176,7 @@ export default function BuySection(props) {
               />
 
             }
-            <Button primary color="#ffcc00" size="large" className="btn-primary" onClick={() => {
+            <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" className="btn-primary" onClick={() => {
               setVeriffReason();
               setShowNotification(false);
               setShowVeriff(true);
@@ -260,11 +261,12 @@ export default function BuySection(props) {
           }
         </StyledLayerBuy> :
         Number(state.goldListBalance) > 0 ?
-        <Button primary size="large" color="#ffcc00" className="btn-primary" onClick={() => setShow(true)} label="Buy" /> :
+        <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy" /> :
         <Text size="medium" color="white">Sale ended</Text>
       }
       </>
     }
+
     {
       showVeriff &&
       <StyledLayerBuy
@@ -282,7 +284,7 @@ export default function BuySection(props) {
           addWallet={addWallet}
           setShowVeriff={setShowVeriff}
         />
-      </StyledLayerBuy>
+        </StyledLayerBuy>
     }
 
     </Box>

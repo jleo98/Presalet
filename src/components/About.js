@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Box, Heading, Text, Image } from "grommet";
 
 const StyledText = styled(Text)`
-    font: normal normal Poppins;
+    font: normal normal 600 38px/62px Poppins;;
     letter-spacing: 0px;
     text-transform: capitalize;
     opacity: 1;
@@ -12,9 +12,9 @@ const StyledText = styled(Text)`
 const About = () => (
 
 
-  <Box align="center" height="small " pad={{ top: "large",bottom:"xlarge" }}>
+  <Box align="center" pad={{ top: "large",bottom:"small",horizontal:"small" }} style={{minHeight: `${window.innerWidth <= 500 ? "300px" : "20px"}`}}>
     <Box align="center" width="large" >
-        <StyledText color="#F1F1F1" textAlign="center" size="32px" weight="600">
+        <StyledText color="#F1F1F1" textAlign="center">
           We believe money should give the people both stability and opportunities.
         </StyledText>
     </Box>

@@ -28,7 +28,7 @@ const StyledGetStartedText = styled(Text)`
 const StyledGoldListText = styled(Text)`
   color: var(--unnamed-color-707070);
   text-align: left;
-  font: normal normal 600 16px/24px Poppins;
+  font: normal normal 600 16px/24px Poppins;;
   letter-spacing: 0px;
   color: #707070;
   text-transform: capitalize;
@@ -37,7 +37,7 @@ const StyledGoldListText = styled(Text)`
 const StyledBalanceText = styled(Text)`
   color: var(--unnamed-color-ffcc00);
   text-align: left;
-  font: normal normal 600 24px/31px Poppins;
+  font: normal normal normal ${window.innerWidth <= 500 ? "20px" :"28px"}/47px Poppins;;
   letter-spacing: 0px;
   color: #FFCC00;
   text-transform: capitalize;
@@ -81,20 +81,22 @@ export default function Banner() {
   const size = React.useContext(ResponsiveContext);
 
   return (
-    <Box align="center" pad={{horizontal:"large",vertical:"xsmall"}} height="large">
+    <Box align="center" pad={{horizontal:"large",top:"xsmall"}} >
 
       <Box alignContent="left" pad={{top:"large"}} width="large" height="small">
-        <StyledGetStartedText color="#FFCC00">
+        <StyledGetStartedText direction="horizontal" color="#FFCC00">
           Get Started
         </StyledGetStartedText>
         <StyledText color="#F1F1F1">
           Buy SRG
         </StyledText>
       </Box>
-      <StyledBox align="left" background="#16151A" pad="large"  width="large" height="small">
-          <Box gap="small" height="xsmall" >
-            <StyledGoldListText size={size}>GoldList Balance</StyledGoldListText>
-            <StyledBalanceText size={size}>{(Number(state.goldListBalance)/10**18).toFixed(2)} SRG  |  {(state.goldListBalance/(83000000*10**18)*100).toFixed(4)} %</StyledBalanceText>
+      <StyledBox background="#16151A" pad="medium"  width="large" height="small">
+          <Box align="center" pad={{top:"medium"}} height="xsmall" width="large">
+            <StyledGoldListText size={size}>Gold List Balance</StyledGoldListText>
+            <StyledBalanceText size={size}><span style={{color:"white"}}>{(Number(state.goldListBalance)/10**18).toFixed(2)} SRG</span>  |  {(state.goldListBalance/(83000000*10**18)*100).toFixed(4)} %</StyledBalanceText>
+          </Box>
+          <Box align="left" width="large">
             <Meter
               type="bar"
               align="center"
