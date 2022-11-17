@@ -130,11 +130,9 @@ export default function BuySection(props) {
       setUnderVerification();
       setShowedNotification(true)
     } else if(!obj.verification || obj.verification.status === "abandoned"){
-      removeWallet(state.coinbase);
       setUnderVerification();
-
     }
-    return
+    return(obj)
   }
 
 
@@ -145,24 +143,22 @@ export default function BuySection(props) {
 
   useEffect(() => {
     if(state.coinbase && !state.whitelisted){
-      if(!veriffReason){
-        isUnderVerification(state.coinbase).then(newUnderVerification => {
-          setUnderVerification(newUnderVerification);
-
-        })
-      }
+      isUnderVerification(state.coinbase).then(newUnderVerification => {
+        setUnderVerification(newUnderVerification);
+        checkVeriffStatus();
+      })
     }
   },[
     state.coinbase,
-    state.whitelisted,
-    veriffReason
+    state.whitelisted
   ]);
   useEffect(() => {
+
     const interval = setInterval(() => {
       if(underVerification && !state.whitelisted && !notificationShowed){
         checkVeriffStatus();
       }
-    },500);
+    },60000);
     return () => clearInterval(interval);
   },[
     notificationShowed,
@@ -307,7 +303,6 @@ export default function BuySection(props) {
           setUnderVerification={setUnderVerification}
           addWallet={addWallet}
           setShowVeriff={setShowVeriff}
-          removeWallet={removeWallet}
         />
         </StyledLayerBuy>
     }

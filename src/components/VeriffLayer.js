@@ -38,7 +38,6 @@ export default function VeriffLayer(props) {
                 case MESSAGES.CANCELED:
                   //
                   console.log("canceled")
-                  props.removeWallet(state.coinbase, null);
                   props.setShowVeriff(false);
 
                   break;
