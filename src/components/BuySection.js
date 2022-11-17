@@ -55,7 +55,13 @@ const apiPrivateKey = process.env.REACT_APP_VERIFF_PRIV_KEY;
 export default function BuySection(props) {
 
   const { state } = useAppContext();
-  const { orbisClient,connectSeed,addWallet,isUnderVerification } = useOrbis();
+  const {
+    orbisClient,
+    connectSeed,
+    addWallet,
+    removeWallet,
+    isUnderVerification
+   } = useOrbis();
 
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Native");
@@ -117,11 +123,16 @@ export default function BuySection(props) {
 
     const result = await fetch(`https://stationapi.veriff.com/v1/sessions/${underVerification}/decision`, requestOptions)
     const obj = JSON.parse(await result.text());
-    if(obj.verification?.status !== "approved"){
-      setVeriffReason(obj.verification?.reason ? obj.verification.reason : "Documents not sent");
+    console.log(obj)
+    if(obj.verification?.status !== "approved" && obj.verification){
+      setVeriffReason(obj.verification.reason);
       setShowNotification(true)
       setUnderVerification();
       setShowedNotification(true)
+    } else if(!obj.verification || obj.verification.status === "abandoned"){
+      removeWallet(state.coinbase);
+      setUnderVerification();
+
     }
     return
   }
@@ -132,20 +143,33 @@ export default function BuySection(props) {
     connectSeed(seed);
   },[])
 
+  useEffect(() => {
+    if(state.coinbase && !state.whitelisted){
+      if(!veriffReason){
+        isUnderVerification(state.coinbase).then(newUnderVerification => {
+          setUnderVerification(newUnderVerification);
 
+        })
+      }
+    }
+  },[
+    state.coinbase,
+    state.whitelisted,
+    veriffReason
+  ]);
   useEffect(() => {
     const interval = setInterval(() => {
       if(underVerification && !state.whitelisted && !notificationShowed){
         checkVeriffStatus();
       }
-    },5000);
+    },500);
     return () => clearInterval(interval);
   },[
     notificationShowed,
     underVerification,
     state.whitelisted,
-    orbisClient
   ])
+
 
   return (
     <Box margin={{horizontal: "22%"}} height="small">
@@ -283,6 +307,7 @@ export default function BuySection(props) {
           setUnderVerification={setUnderVerification}
           addWallet={addWallet}
           setShowVeriff={setShowVeriff}
+          removeWallet={removeWallet}
         />
         </StyledLayerBuy>
     }

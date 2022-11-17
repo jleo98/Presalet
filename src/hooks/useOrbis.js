@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 /** Import Orbis SDK */
 import { Orbis } from "@orbisclub/orbis-sdk";
 
@@ -42,6 +42,23 @@ function useOrbis() {
     console.log(res)
   }
 
+  const removeWallet = async(address) => {
+    const profile = await orbis.getProfile(orbisClient.did);
+    let data = profile.data?.details.profile.data;
+    if (!data) {
+      return;
+    }
+    if(data[address.toLowerCase()]){
+     delete data[address.toLowerCase()]
+    }
+
+    let res = await orbis.updateProfile({
+      data: data
+    });
+    console.log(data)
+    console.log(res)
+  }
+
   const isUnderVerification = async (address) => {
     const profile = await orbis.getProfile(orbisClient.did);
     let data = profile.data?.details.profile.data;
@@ -51,7 +68,13 @@ function useOrbis() {
     return(data[address.toLowerCase()])
   }
 
-  return ({ orbisClient,connectSeed,addWallet, isUnderVerification })
+  return ({
+    orbisClient,
+    connectSeed,
+    addWallet,
+    isUnderVerification,
+    removeWallet
+   })
 }
 
 export default useOrbis;

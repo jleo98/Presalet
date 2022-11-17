@@ -79,33 +79,36 @@ export default function GoldListModal(props) {
               font: "normal normal normal 16px/40px Poppins",
             }}
          />
-         {
-           srgExpect && total &&
-           <Text size="small" style={{
-            textAlign: "center",
-            font: "normal normal normal 16px/40px Poppins",
-            letterSpacing: "0px",
-            color: "#8F979E",
-            opacity: 1
-           }}>{srgExpect} SRG</Text>
-         }
         </Box>
+        <Box  height="xsmall">
         {
-          total > 0 &&
-          <Box width="large">
-          <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
-            try{
-              await props.buyTokens(total);
-            } catch(err){
-              console.log(err)
-              setMsg(err.reason)
-            }
-            setTimeout(() => {
-              setMsg()
-            },3000)
-          }} label="Buy" />
-          </Box>
+          srgExpect && total &&
+          <Text size="small" style={{
+           textAlign: "center",
+           font: "normal normal normal 16px/40px Poppins",
+           letterSpacing: "0px",
+           color: "#8F979E",
+           opacity: 1
+          }}>{srgExpect} SRG</Text>
         }
+        </Box>
+        <Box width="large">
+        {
+          total > 0 ?
+            <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
+              try{
+                await props.buyTokens(total);
+              } catch(err){
+                console.log(err)
+                setMsg(err.reason)
+              }
+              setTimeout(() => {
+                setMsg()
+              },3000)
+            }} label="Buy" /> :
+            <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" disabled label="Buy" />
+        }
+        </Box>
 
         {
           msg &&

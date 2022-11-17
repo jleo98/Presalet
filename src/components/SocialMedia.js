@@ -28,12 +28,6 @@ const SocialMedia = () => (
       href="https://www.youtube.com/channel/UCvypVekV7dP0EGjbRHSHbUw"
       icon={<Youtube color="white" size="medium" />}
     />
-    <Anchor
-      target="_blank"
-      a11yTitle="Follow us on Twitter"
-      href="https://twitter.com/illumisharesrg"
-      icon={<Twitter color="white" size="medium" />}
-    />
   </Box>
 );
 
