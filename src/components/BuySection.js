@@ -46,7 +46,7 @@ const StyledLayerBuy = styled(Layer)`
   border-radius: 15px;
   opacity: 1;
   width: 355px;
-  height: 447px;
+  height: 317px;
 `;
 
 
@@ -71,6 +71,7 @@ export default function BuySection(props) {
   const [veriffReason,setVeriffReason] = useState()
   const [showNotification,setShowNotification] = useState()
   const [notificationShowed,setShowedNotification] = useState()
+  const [canShowMessage,setCanShowMessage] = useState()
 
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
@@ -143,9 +144,10 @@ export default function BuySection(props) {
 
   useEffect(() => {
     if(state.coinbase && !state.whitelisted){
-      isUnderVerification(state.coinbase).then(newUnderVerification => {
+      isUnderVerification(state.coinbase).then(async newUnderVerification => {
         setUnderVerification(newUnderVerification);
-        checkVeriffStatus();
+        await checkVeriffStatus();
+        setCanShowMessage(true);
       })
     }
   },[
@@ -168,7 +170,7 @@ export default function BuySection(props) {
 
 
   return (
-    <Box margin={{horizontal: "22%"}} height="small">
+    <Box margin={{horizontal: "22%"}}>
 
     {
       !state.coinbase &&
@@ -181,7 +183,7 @@ export default function BuySection(props) {
         !state.whitelisted ?
         (
           !underVerification ?
-          <Box>
+          <Box pad={{bottom: "xlarge"}}>
             {
               veriffReason && showNotification &&
               <Notification
@@ -201,18 +203,18 @@ export default function BuySection(props) {
               setShowNotification(false);
               setShowVeriff(true);
             }} label="Verify" />
-            <Box pad={{top:"small"}} align="center">
-              <Text size="xsmall" color="white">Powered by</Text>
-              <Anchor href="https://www.veriff.com/" target="_blank">
-                <Image src={require("../assets/veriff.png")} style={{width:"100px"}}/>
-              </Anchor>
-            </Box>
-          </Box> :
-          <Box pad={{top:"small"}} align="center">
-            <Spinner size="medium" color="white"/>
-            <Text size="medium" color="white">Under verification</Text>
-            <Text size="xsmall" color="white">It can take up to 10 minutes</Text>
 
+          </Box> :
+          <Box align="center" pad={{bottom:"xlarge"}}>
+          {
+            canShowMessage ?
+            <>
+            <Spinner size="medium" color="white"/>
+            <Text size="small" color="white">Under verification</Text>
+            <Text size="xsmall" color="white">It can take up to 10 minutes</Text>
+            </> :
+            <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" className="btn-primary" disabled label="Verify" />
+          }
           </Box>
         ):
         show ?
@@ -281,7 +283,7 @@ export default function BuySection(props) {
           }
         </StyledLayerBuy> :
         Number(state.goldListBalance) > 0 ?
-        <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy" /> :
+        <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy SRG" /> :
         <Text size="medium" color="white">Sale ended</Text>
       }
       </>
@@ -304,7 +306,7 @@ export default function BuySection(props) {
           addWallet={addWallet}
           setShowVeriff={setShowVeriff}
         />
-        </StyledLayerBuy>
+      </StyledLayerBuy>
     }
 
     </Box>

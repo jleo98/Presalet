@@ -198,37 +198,36 @@ export default function App() {
   }
 
   return (
-    <AppContext.Provider value={{ state, actions }}>
-    <Router>
-      <MainMenu/>
-      {
-        netId !== 80001 && netId !== 137 && netId !== 5 &&
-        <Box align="center" >
-          <Layer background="status-error" responsive={false}>
-            <Box width="medium" pad="large">
-              <Text><Anchor color="white" weight="bold" href="https://chainlist.network/" target="_blank">Please connect to polygon network</Anchor></Text>
-            </Box>
-          </Layer>
+    <AppContext.Provider value={{ state, actions }} >
+    <Router >
+      <Box>
+        <MainMenu/>
+        {
+          netId !== 80001 && netId !== 137 && netId !== 5 &&
+          <Box align="center" >
+            <Layer background="status-error" responsive={false}>
+              <Box width="medium" pad="large">
+                <Text><Anchor color="white" weight="bold" href="https://chainlist.network/" target="_blank">Please connect to polygon network</Anchor></Text>
+              </Box>
+            </Layer>
+          </Box>
+        }
+        <Box pad={{ top: "xxsmall", bottom: "large" }} height="large" >
+          <Routes>
+            <Route path="/:uri" element={<Buy/>}/>
+            <Route path="/" element={<Buy/>}/>
+
+            <Route render={() => {
+
+              return(
+                <Navigate to="/" />
+              );
+
+            }} />
+          </Routes>
         </Box>
-      }
-      <Box pad={{ top: "xxsmall", bottom: "large" }} height="large" style={{
-        background: `transparent url(${require('./assets/background.png')}) 0% 0% no-repeat padding-box`,
-        backgroundSize: 'cover'
-      }}>
-        <Routes>
-          <Route path="/" element={<Buy/>}/>
-          <Route path="/eventURI-Hash-Here" element={<BuyNoKYC/>}/>
-
-          <Route render={() => {
-
-            return(
-              <Navigate to="/" />
-            );
-
-          }} />
-        </Routes>
+        <DappFooter height="small"/>
       </Box>
-      <DappFooter height="small"/>
       </Router>
     </AppContext.Provider>
   )

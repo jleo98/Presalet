@@ -12,8 +12,11 @@ import {
 } from 'grommet';
 import styled from "styled-components";
 import { Code } from "grommet-icons";
+import { useParams } from "react-router-dom";
 
 import { useAppContext } from '../hooks/useAppState';
+import BuySection from './BuySection';
+import BuySectionNoKYC from './BuySectionNoKYC';
 
 const StyledGetStartedText = styled(Text)`
   color: var(--unnamed-color-ffcc00);
@@ -79,7 +82,7 @@ export default function Banner() {
 
   const { state } = useAppContext();
   const size = React.useContext(ResponsiveContext);
-
+  const { uri } = useParams();
   return (
     <Box align="center" pad={{horizontal:"large",top:"xsmall"}} >
 
@@ -91,30 +94,40 @@ export default function Banner() {
           Buy SRG
         </StyledText>
       </Box>
-      <StyledBox background="#16151A" pad="medium"  width="large" height="small">
-          <Box align="center" pad={{top:"medium"}} height="xsmall" width="large">
-            <StyledGoldListText size={size}>Gold List Balance</StyledGoldListText>
+      <StyledBox gap="large" background="#16151A" pad="medium"  width="large" height="298px">
+          <Box align="center" pad={{top:"medium"}}>
+            <StyledGoldListText alignContent="center" size={size}>Gold List Balance</StyledGoldListText>
+          </Box>
+          <Box align="center"  width="large">
             <StyledBalanceText size={size}><span style={{color:"white"}}>{(Number(state.goldListBalance)/10**18).toFixed(2)} SRG</span>  |  {(state.goldListBalance/(83000000*10**18)*100).toFixed(4)} %</StyledBalanceText>
+            <Box align="left" height="small" width="large">
+              <Meter
+                type="bar"
+                align="center"
+                background={{
+                  color: "light-1",
+                  opacity: "strong"
+                }}
+                values={[{
+                  value: state.goldListBalance/(83000000*10**18)*100,
+                  color: "#FFCC00",
+                  label: 'Balance',
+                  onClick: () => {}
+                }]}
+                aria-label="meter"
+                height="40px"
+                width="large"
+              />
+            </Box>
           </Box>
-          <Box align="left" width="large">
-            <Meter
-              type="bar"
-              align="center"
-              background={{
-                color: "light-1",
-                opacity: "strong"
-              }}
-              values={[{
-                value: state.goldListBalance/(83000000*10**18)*100,
-                color: "#FFCC00",
-                label: 'Balance',
-                onClick: () => {}
-              }]}
-              aria-label="meter"
-              height="20px"
-              width="large"
-            />
+          <Box>
+          {
+            uri === "eventWhiteList" ?
+            <BuySectionNoKYC />:
+            <BuySection />
+          }
           </Box>
+
       </StyledBox>
     </Box>
   )

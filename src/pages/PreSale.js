@@ -10,7 +10,6 @@ export default function PreSale() {
     <>
     <About  />
     <Banner />
-    <BuySection />
     </>
   )
 }
