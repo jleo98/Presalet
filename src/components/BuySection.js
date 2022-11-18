@@ -46,7 +46,6 @@ const StyledLayerBuy = styled(Layer)`
   border-radius: 15px;
   opacity: 1;
   width: 355px;
-  height: 317px;
 `;
 
 
@@ -64,7 +63,7 @@ export default function BuySection(props) {
    } = useOrbis();
 
   const [busd, setBusd] = useState();
-  const [value, setValue] = useState("Native");
+  const [value, setValue] = useState("Stablecoin");
   const [show,setShow] = useState();
   const [showVeriff,setShowVeriff] = useState();
   const [underVerification,setUnderVerification] = useState()
@@ -174,7 +173,9 @@ export default function BuySection(props) {
 
     {
       !state.coinbase &&
+      <Box pad={{bottom: "xlarge"}}>
         <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
+      </Box>
     }
     {
       state.coinbase &&
@@ -235,38 +236,13 @@ export default function BuySection(props) {
              opacity: 1,
              paddingBottom: "20px"
            }}>Payment method</Text>
-           <ThemeContext.Extend
-              value={
-                {
-                  global: {
-                    colors: {
-                      control: '#ffcc00'
-                    },
-                    font: {
-                      weight: 600,
-                      family: "Poppins"
-                    }
-                  }
-                }
-              }
-            >
-            <RadioButtonGroup
-              name="payment"
-              options={['Native', 'Stablecoin']}
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-            />
-            </ThemeContext.Extend>
+           <Stablecoins
+             provider={state.provider}
+             setBusd={setBusd}
+             busd={busd}
+           />
           </Box>
-          {
-            state.stablecoins &&
-            value === "Stablecoin" &&
-            <Stablecoins
-              provider={state.provider}
-              setBusd={setBusd}
-              busd={busd}
-            />
-          }
+
           {
             (
               value === "Native" ||
@@ -283,7 +259,9 @@ export default function BuySection(props) {
           }
         </StyledLayerBuy> :
         Number(state.goldListBalance) > 0 ?
-        <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy SRG" /> :
+        <Box  pad={{bottom:"xlarge"}}>
+          <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy SRG" />
+        </Box>  :
         <Text size="medium" color="white">Sale ended</Text>
       }
       </>
@@ -298,6 +276,7 @@ export default function BuySection(props) {
         onClickOutside={() => {
           setShowVeriff(false)
         }}
+        height="317px"
       >
         <VeriffLayer
           setShowedNotification={setShowedNotification}

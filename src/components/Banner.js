@@ -86,7 +86,7 @@ export default function Banner() {
   return (
     <Box align="center" pad={{horizontal:"large",top:"xsmall"}} >
 
-      <Box alignContent="left" pad={{top:"large"}} width="large" height="small">
+      <Box alignContent="left" pad={{top:"xsmall"}} width="large" height="xsmall">
         <StyledGetStartedText direction="horizontal" color="#FFCC00">
           Get Started
         </StyledGetStartedText>

@@ -10,8 +10,7 @@ import {
   Anchor,
   RadioButtonGroup,
   Image,
-  Spinner,
-  ThemeContext
+  Spinner
 } from 'grommet';
 
 import Countdown from "react-countdown";
@@ -53,7 +52,7 @@ export default function BuySection(props) {
   const { orbisClient,connectSeed,addWallet,isUnderVerification } = useOrbis();
 
   const [busd, setBusd] = useState();
-  const [value, setValue] = useState("Native");
+  const [value, setValue] = useState("Stablecoin");
   const [show,setShow] = useState();
   const [underVerification,setUnderVerification] = useState()
 
@@ -97,15 +96,14 @@ export default function BuySection(props) {
   },[state.coinbase])
 
   useEffect(() => {
-    if(!underVerification && orbisClient){
+    if(!underVerification){
       isUnderVerification(state.coinbase).then(newUnderVerification => {
         setUnderVerification(newUnderVerification)
       })
     }
   },[
     underVerification,
-    state.coinbase,
-    orbisClient
+    state.coinbase
   ])
 
 
@@ -114,7 +112,9 @@ export default function BuySection(props) {
     <Box margin={{horizontal: "30%"}} >
     {
       !state.coinbase &&
+      <Box pad={{bottom: "xlarge"}}>
         <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
+      </Box>
     }
     {
       state.coinbase &&
@@ -123,14 +123,14 @@ export default function BuySection(props) {
         !state.whitelisted ?
         (
           !underVerification ?
-          <Box>
+          <Box pad={{bottom:"xlarge"}}>
             <Button primary color="#ffcc00" size="large" className="btn-primary" style={{borderRadius: "8px"}} onClick={async () => {
               setUnderVerification(true)
               await addWallet(state.coinbase,true);
 
             }} label="WhiteList Me" style={{borderRadius: "8px"}} />
           </Box> :
-          <Box pad={{top:"small"}} align="center">
+          <Box pad={{top:"xlarge"}} align="center">
             <Spinner size="medium" color="white"/>
             <Text size="medium" color="white">Being whitelisted</Text>
             <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
@@ -146,46 +146,21 @@ export default function BuySection(props) {
           }}
         >
         <Box align="left" pad="medium">
-          <Text style={{
-           textAlign: "left",
-           font: "normal normal 600 20px/40px Poppins",
-           letterSpacing: "0px",
-           color: "black",
-           opacity: 1,
-           paddingBottom: "20px"
-         }}>Payment method</Text>
-           <ThemeContext.Extend
-              value={
-                {
-                  global: {
-                    colors: {
-                      control: '#ffcc00'
-                    },
-                    font: {
-                      weight: 600,
-                      family: "Poppins"
-                    }
-                  }
-                }
-              }
-            >
-            <RadioButtonGroup
-              name="payment"
-              options={['Native', 'Stablecoin']}
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-            />
-            </ThemeContext.Extend>
-          </Box>
-          {
-            state.stablecoins &&
-            value === "Stablecoin" &&
-            <Stablecoins
-              provider={state.provider}
-              setBusd={setBusd}
-              busd={busd}
-            />
-          }
+            <Text style={{
+             textAlign: "left",
+             font: "normal normal 600 20px/40px Poppins",
+             letterSpacing: "0px",
+             color: "black",
+             opacity: 1,
+             paddingBottom: "20px"
+           }}>Payment method</Text>
+           <Stablecoins
+             provider={state.provider}
+             setBusd={setBusd}
+             busd={busd}
+           />
+        </Box>
+
           {
             (
               value === "Native" ||
@@ -202,7 +177,9 @@ export default function BuySection(props) {
           }
         </StyledLayerBuy> :
         Number(state.goldListBalance) > 0 ?
-        <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy SRG" /> :
+        <Box  pad={{bottom:"xlarge"}}>
+          <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy SRG" />
+        </Box> :
         <Text size="medium" color="white">Sale ended</Text>
       }
       </>

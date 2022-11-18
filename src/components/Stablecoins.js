@@ -49,20 +49,22 @@ export default function Stablecoins(props) {
 
   return (
 
-      <Box align="center" pad="medium" margin={{top:"xsmall"}}>
+      <Box align="center" pad="medium" className="select" margin={{top:"xsmall"}}>
       {
         state.stablecoins &&
         <>
         <Select
+
           options={state.stablecoins.map(item => item.name)}
           value={value}
           onChange={({ option }) => {
             setValue(option)
           }}
+          color="black"
         />
         {
           busdBalance &&
-          <Text>Balance: {busdBalance}</Text>
+          <Text color="black" size="xsmall">Balance: {busdBalance}</Text>
         }
         </>
       }

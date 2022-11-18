@@ -18,7 +18,7 @@ const StyledTextSub = styled(Text)`
 const About = () => (
 
 
-  <Box align="center" pad={{ top: "large",bottom:"small",horizontal:"medium" }} style={{minHeight: `${window.innerWidth <= 500 ? "300px" : "20px"}`}}>
+  <Box align="center" pad={{bottom:"small",horizontal:"medium" }} style={{minHeight: `${window.innerWidth <= 500 ? "300px" : "20px"}`}}>
     <Box align="center" gap="medium" width="large" >
         <StyledText color="#F1F1F1" textAlign="center">
           Welcome To The <StyledText color="#FFCC00">New Golden Era</StyledText>

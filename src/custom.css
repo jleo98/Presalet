@@ -34,3 +34,10 @@ body {
   background-size: contain;
   font-family: Poppins;
 }
+
+
+.coins-bg{
+  background: transparent url('./assets/coins.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
