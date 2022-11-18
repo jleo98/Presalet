@@ -63,7 +63,7 @@ export default function App() {
     let balance = 0;
     for (const stablecoin of stableCoinsList) {
       let erc20 = new ethers.Contract(stablecoin, abis.srg, provider);
-      balance += ethers.utils.formatEther(await erc20.balanceOf(state.coinbase));
+      balance += Number(ethers.utils.formatEther(await erc20.balanceOf(state.coinbase)));
     }
     return (balance);
 
