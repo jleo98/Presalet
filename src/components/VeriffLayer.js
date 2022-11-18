@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import {
   Box,
@@ -24,7 +24,6 @@ export default function VeriffLayer(props) {
         apiKey: process.env.REACT_APP_VERIFF_API,
         parentId: 'veriff-root',
         onSession: function (err, response) {
-          console.log(response.verification)
           const url = response.verification.url;
           const id = response.verification.id;
           createVeriffFrame({
@@ -37,7 +36,6 @@ export default function VeriffLayer(props) {
                   break;
                 case MESSAGES.CANCELED:
                   //
-                  console.log("canceled")
                   props.setShowVeriff(false);
                   break;
                 case MESSAGES.FINISHED:

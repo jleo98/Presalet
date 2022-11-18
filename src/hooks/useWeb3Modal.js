@@ -40,8 +40,8 @@ function useWeb3Modal(config = {}) {
       await web3Modal.clearCachedProvider();
       setCoinbase();
       setNetId(80001);
-      //setProvider(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
-      setProvider(new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/"+process.env.REACT_APP_INFURA))
+      setProvider(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
+      //setProvider(new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/"+process.env.REACT_APP_INFURA))
     },
     [],
   );
@@ -79,7 +79,6 @@ function useWeb3Modal(config = {}) {
 
       return;
     } catch(err){
-      console.log(err);
       setConnecting(false)
       logoutOfWeb3Modal();
     }
@@ -96,7 +95,6 @@ function useWeb3Modal(config = {}) {
         setAutoLoaded(true);
         loadWeb3Modal();
       } catch(err){
-        console.log(err)
         logoutOfWeb3Modal();
       }
     }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo,useCallback } from 'react';
 
 import {
   HashRouter as Router,
@@ -9,7 +9,6 @@ import {
 
 import {
   Box,
-  RadioButtonGroup,
   Layer,
   Text,
   Anchor,
@@ -26,10 +25,8 @@ import useWeb3Modal from './hooks/useWeb3Modal'
 import useGraphClient from './hooks/useGraphClient';
 
 import Buy from './pages/PreSale';
-import BuyNoKYC from './pages/PreSaleNoKYC';
 
 import MainMenu from './components/MainMenu';
-import Staking from './components/Staking';
 import DappFooter from './components/DappFooter';
 
 import abis from "./contracts/abis";
@@ -41,13 +38,9 @@ export default function App() {
 
   const [srg, setSrg] = useState();
   const [goldList, setGoldList] = useState();
-  const [busd, setBusd] = useState();
   const [stablecoins, setStablecoins] = useState();
-  const [value, setValue] = useState("Native");
 
 
-  const [showSwap, setShowSwap] = useState();
-  const [showStake, setShowStake] = useState();
   const [coldStaking, setColdStaking] = useState();
 
 
@@ -55,8 +48,7 @@ export default function App() {
     provider,
     coinbase,
     netId,
-    loadWeb3Modal,
-    logoutOfWeb3Modal,
+    loadWeb3Modal
   } = useWeb3Modal();
 
   const {
@@ -65,12 +57,29 @@ export default function App() {
     getStablecoins
   } = useGraphClient();
 
+
+  const getStablecoinsBalance = useCallback(async () => {
+    for(const stablecoin of stablecoins){
+      const erc20 = new ethers.Contract(stablecoin.id,abis.srg,provider);
+      const balance = await erc20.balanceOf(state.coinbase);
+      return(Number(ethers.utils.parseEther(balance.toString()).toString()));
+
+    }
+  },[provider,stablecoins,state.coinbase])
+
+
   useEffect(() => {
     actions.setProvider(provider)
   },[provider])
   useEffect(() => {
     actions.setCoinbase(coinbase)
   },[coinbase]);
+
+
+  useEffect(() => {
+    actions.setGetStablecoinsBalance(getStablecoinsBalance);
+  },[getStablecoinsBalance])
+
   useEffect(() => {
     if(coinbase && goldList){
       goldList.goldList(coinbase).then(newWhitelisted => {
@@ -141,7 +150,7 @@ export default function App() {
   useEffect(() => {
     // Goerli
 
-    let newSrg, newGoldList, newColdStaking, newBusd
+    let newSrg, newGoldList, newColdStaking
     if (netId === 5) {
       newSrg = new ethers.Contract(addresses.srg.goerli, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.goerli, abis.goldList, provider);
@@ -170,7 +179,6 @@ export default function App() {
         stablecoinsResult.data.stablecoins.map(async item => {
           const contract = new ethers.Contract(item.id, abis.srg, provider);
           const name = await contract.name();
-          console.log(name)
           return ({
             id: item.id,
             name: name
@@ -180,6 +188,7 @@ export default function App() {
       setStablecoins(newStablecoins);
     }
   }, [client])
+
 
 
   const stakeTokens = async (totalSRG, todalDays) => {

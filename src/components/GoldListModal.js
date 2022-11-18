@@ -24,11 +24,10 @@ export default function GoldListModal(props) {
     if(total > 0 && props.value==="Native"){
       try{
         props.getExpectedSrg(total).then(amount => {
-          console.log(amount)
           setSrgExpect(amount)
         })
       }catch(err){
-        console.log(err)
+
       }
     }
     if(total > 0  &&  props.value==="Stablecoin"){
@@ -99,7 +98,6 @@ export default function GoldListModal(props) {
               try{
                 await props.buyTokens(total);
               } catch(err){
-                console.log(err)
                 setMsg(err.reason)
               }
               setTimeout(() => {

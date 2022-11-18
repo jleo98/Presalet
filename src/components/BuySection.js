@@ -1,21 +1,14 @@
-import { useState,useEffect,useMemo } from 'react';
+import { useState,useEffect,useCallback } from 'react';
 
 import {
   Box,
   Button,
   Layer,
-  Paragraph,
-  Heading,
   Text,
-  Anchor,
-  RadioButtonGroup,
-  Image,
   Spinner,
   Notification,
-  ThemeContext
 } from 'grommet';
 
-import Countdown from "react-countdown";
 
 import crypto from 'crypto-browserify'
 
@@ -29,14 +22,6 @@ import { fromString } from 'uint8arrays'
 import GoldListModal from './GoldListModal';
 import Stablecoins from './Stablecoins';
 import VeriffLayer from './VeriffLayer';
-
-
-const StyledText = styled(Text)`
-  font-weight: 600;
-  line-height: 1.6;
-  font: normal normal bold Poppins;
-
-`;
 
 const StyledLayerBuy = styled(Layer)`
   border: 1px solid var(--lines);
@@ -55,10 +40,8 @@ export default function BuySection(props) {
 
   const { state } = useAppContext();
   const {
-    orbisClient,
     connectSeed,
     addWallet,
-    removeWallet,
     isUnderVerification
    } = useOrbis();
 
@@ -102,7 +85,7 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
-  const checkVeriffStatus = async() => {
+  const checkVeriffStatus = useCallback(async() => {
 
     const payloadAsString = underVerification;
 
@@ -123,7 +106,6 @@ export default function BuySection(props) {
 
     const result = await fetch(`https://stationapi.veriff.com/v1/sessions/${underVerification}/decision`, requestOptions)
     const obj = JSON.parse(await result.text());
-    console.log(obj)
     if(obj.verification?.status !== "approved" && obj.verification){
       setVeriffReason(obj.verification.reason);
       setShowNotification(true)
@@ -133,7 +115,9 @@ export default function BuySection(props) {
       setUnderVerification();
     }
     return(obj)
-  }
+  },[
+    underVerification
+  ]);
 
 
   useEffect(() => {
@@ -199,10 +183,15 @@ export default function BuySection(props) {
               />
 
             }
-            <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" className="btn-primary" onClick={() => {
-              setVeriffReason();
-              setShowNotification(false);
-              setShowVeriff(true);
+            <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
+              const stableBalance = await state.getStablecoinsBalance();
+              if(stableBalance >= 300){
+                setVeriffReason();
+                setShowNotification(false);
+                setShowVeriff(true);
+              } else {
+                alert("Insufficient usd")
+              }
             }} label="Verify" />
 
           </Box> :

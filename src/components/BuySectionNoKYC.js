@@ -4,16 +4,10 @@ import {
   Box,
   Button,
   Layer,
-  Paragraph,
-  Heading,
   Text,
-  Anchor,
-  RadioButtonGroup,
-  Image,
   Spinner
 } from 'grommet';
 
-import Countdown from "react-countdown";
 
 import { fromString } from 'uint8arrays'
 
@@ -27,12 +21,6 @@ import GoldListModal from './GoldListModal';
 import Stablecoins from './Stablecoins';
 
 
-const StyledText = styled(Text)`
-  font-weight: 600;
-  line-height: 1.6;
-  font: normal normal bold Poppins;
-
-`;
 
 const StyledLayerBuy = styled(Layer)`
   border: 1px solid var(--lines);
@@ -49,7 +37,7 @@ const StyledLayerBuy = styled(Layer)`
 export default function BuySection(props) {
 
   const { state } = useAppContext();
-  const { orbisClient,connectSeed,addWallet,isUnderVerification } = useOrbis();
+  const { connectSeed,addWallet,isUnderVerification } = useOrbis();
 
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
@@ -125,8 +113,13 @@ export default function BuySection(props) {
           !underVerification ?
           <Box pad={{bottom:"xlarge"}}>
             <Button primary color="#ffcc00" size="large" className="btn-primary" style={{borderRadius: "8px"}} onClick={async () => {
-              setUnderVerification(true)
-              await addWallet(state.coinbase,true);
+              const stableBalance = await state.getStablecoinsBalance();
+              if(stableBalance >= 300){
+                setUnderVerification(true)
+                await addWallet(state.coinbase,true);
+              } else {
+                alert("Insufficient usd")
+              }
 
             }} label="WhiteList Me" style={{borderRadius: "8px"}} />
           </Box> :
