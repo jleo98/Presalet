@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo,useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 
 import {
   HashRouter as Router,
@@ -56,89 +56,91 @@ export default function App() {
 
 
   const getStablecoinsBalance = useCallback(async () => {
-    if(!stablecoins) return;
-    for(const stablecoin of stablecoins){
-      const erc20 = new ethers.Contract(stablecoin.id,abis.srg,provider);
-      const balance = await erc20.balanceOf(state.coinbase);
-      return(Number(ethers.utils.parseEther(balance.toString()).toString()));
+    if (!stablecoins) return;
+    let balance;
+    for (const stablecoin of stablecoins) {
+      let erc20 = new ethers.Contract(stablecoin.id, abis.srg, provider);
+      balance += await erc20.balanceOf(state.coinbase);
     }
-  },[provider,stablecoins,state.coinbase])
+    return (Number(ethers.utils.parseEther(balance.toString()).toString()));
+
+  }, [provider, stablecoins, state.coinbase])
 
 
   useEffect(() => {
     actions.setProvider(provider)
-  },[provider])
+  }, [provider])
   useEffect(() => {
     actions.setCoinbase(coinbase)
-  },[coinbase]);
+  }, [coinbase]);
 
 
   useEffect(() => {
     actions.setGetStablecoinsBalance(getStablecoinsBalance);
-  },[getStablecoinsBalance])
+  }, [getStablecoinsBalance])
 
   useEffect(() => {
-    if(coinbase && goldList){
+    if (coinbase && goldList) {
       goldList.goldList(coinbase).then(newWhitelisted => {
         actions.setWhitelisted(newWhitelisted);
-        goldList.on("GoldListAddition", async (address,status) => {
-          if(coinbase.toLowerCase() === address.toLowerCase()){
+        goldList.on("GoldListAddition", async (address, status) => {
+          if (coinbase.toLowerCase() === address.toLowerCase()) {
             const newWhitelisted = await goldList.goldList(coinbase);
             actions.setWhitelisted(newWhitelisted);
           }
         });
       })
     }
-  },[coinbase,goldList]);
+  }, [coinbase, goldList]);
   useEffect(() => {
-    if(coinbase && srg){
+    if (coinbase && srg) {
       srg.balanceOf(coinbase).then(newBalance => {
         actions.setCoinbaseBalance(newBalance);
-        srg.on("Transfer", async (from,to,value) => {
-          if(
+        srg.on("Transfer", async (from, to, value) => {
+          if (
             from.toLowerCase() === coinbase.toLowerCase() ||
             to.toLowerCase() === coinbase.toLowerCase()
-          ){
+          ) {
             const newBalance = await srg.balanceOf(coinbase);
             actions.setCoinbaseBalance(newBalance);
           }
         });
       });
     }
-  },[coinbase,srg]);
+  }, [coinbase, srg]);
 
   useEffect(() => {
-    if(goldList && srg){
+    if (goldList && srg) {
       srg.balanceOf(goldList.address).then(newGoldListBalance => {
         actions.setGoldListBalance(newGoldListBalance.toString());
-        srg.on("Transfer", async (from,to,value) => {
-          if(
+        srg.on("Transfer", async (from, to, value) => {
+          if (
             from.toLowerCase() === goldList.address.toLowerCase() ||
             to.toLowerCase() === goldList.address.toLowerCase()
-          ){
+          ) {
             const newGoldListBalance = await srg.balanceOf(goldList.address);
             actions.setGoldListBalance(newGoldListBalance.toString());
           }
         });
       });
     }
-  },[goldList,srg]);
+  }, [goldList, srg]);
   useEffect(() => {
     actions.setNetId(netId)
-  },[netId])
+  }, [netId])
   useEffect(() => {
     actions.setSrg(srg)
-  },[srg])
+  }, [srg])
   useEffect(() => {
     actions.setGoldList(goldList)
-  },[goldList])
+  }, [goldList])
   useEffect(() => {
     actions.setLoadWeb3Modal(loadWeb3Modal)
-  },[loadWeb3Modal])
+  }, [loadWeb3Modal])
 
   useEffect(() => {
     actions.setStablecoins(stablecoins)
-  },[stablecoins])
+  }, [stablecoins])
 
 
   useEffect(() => {
@@ -190,7 +192,7 @@ export default function App() {
       );
       setStablecoins(newStablecoins);
     }
-  }, [client,stablecoins])
+  }, [client, stablecoins])
 
 
 
@@ -201,71 +203,71 @@ export default function App() {
 
   return (
     <AppContext.Provider value={{ state, actions }} >
-    <ThemeContext.Extend
-       value={
-         {
-           global: {
-             hover: {
-               color: "white"
-             },
-             colors: {
-               control: '#ffcc00'
-             },
-             font: {
-               weight: 600,
-               family: "Poppins"
-             }
-           },
-           select: {
-             options: {
-               text: {
-                 color: "#ffcc00"
-               }
-             },
-             clear: {
-               text: {
-                 color: "black"
-               }
-             },
-             control: {
-               extend: {
-                 color: "black"
-               }
-             }
-           }
-         }
-       }
-     >
-    <Router >
-      <Box className="coins-bg">
-          <MainMenu/>
+      <ThemeContext.Extend
+        value={
           {
-            netId !== 80001 && netId !== 137 && netId !== 5 && netId !== 56 &&
-            <Box align="center" >
-              <Layer background="status-error" responsive={false}>
-                <Box width="medium" pad="large">
-                  <Text textAlign="center"><Anchor color="white" weight="bold" href="https://chainlist.network/" target="_blank">Please connect to Binance Smart Chain network</Anchor></Text>
-                </Box>
-              </Layer>
-            </Box>
+            global: {
+              hover: {
+                color: "white"
+              },
+              colors: {
+                control: '#ffcc00'
+              },
+              font: {
+                weight: 600,
+                family: "Poppins"
+              }
+            },
+            select: {
+              options: {
+                text: {
+                  color: "#ffcc00"
+                }
+              },
+              clear: {
+                text: {
+                  color: "black"
+                }
+              },
+              control: {
+                extend: {
+                  color: "black"
+                }
+              }
+            }
           }
-          <Box pad={{ top: "xxsmall", bottom: "large" }} height="large" >
-            <Routes>
-              <Route path="/:uri" element={<Buy/>}/>
-              <Route path="/" element={<Buy/>}/>
+        }
+      >
+        <Router >
+          <Box className="coins-bg">
+            <MainMenu />
+            {
+              netId !== 80001 && netId !== 137 && netId !== 5 && netId !== 56 &&
+              <Box align="center" >
+                <Layer background="status-error" responsive={false}>
+                  <Box width="medium" pad="large">
+                    <Text textAlign="center"><Anchor color="white" weight="bold" href="https://chainlist.network/" target="_blank">Please connect to Binance Smart Chain network</Anchor></Text>
+                  </Box>
+                </Layer>
+              </Box>
+            }
+            <Box pad={{ top: "xxsmall", bottom: "large" }} height="large" >
+              <Routes>
+                <Route path="/:uri" element={<Buy />} />
+                <Route path="/" element={<Buy />} />
 
-              <Route render={() => {
+                <Route render={() => {
 
-                return(
-                  <Navigate to="/" />
-                );
+                  return (
+                    <Navigate to="/" />
+                  );
 
-              }} />
-            </Routes>
+                }} />
+              </Routes>
+            </Box>
+            <DappFooter height="small" />
           </Box>
-          <DappFooter height="small"/>
-      </Box>
-      </Router>
+        </Router>
       </ThemeContext.Extend>
     </AppContext.Provider>
   )
