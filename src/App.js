@@ -60,9 +60,9 @@ export default function App() {
     let balance;
     for (const stablecoin of stablecoins) {
       let erc20 = new ethers.Contract(stablecoin.id, abis.srg, provider);
-      balance += await erc20.balanceOf(state.coinbase);
+      balance += ethers.utils.formatEther(await erc20.balanceOf(state.coinbase));
     }
-    return (Number(ethers.utils.parseEther(balance.toString()).toString()));
+    return (balance);
 
   }, [provider, stablecoins, state.coinbase])
 
