@@ -4,17 +4,26 @@ import { useState } from "react";
 // You can get a key for free at https://infura.io/register
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
-const APIURL_OPENSEA = "https://api.thegraph.com/subgraphs/name/henrique1837/coldstakingsrgmumbai"
+const APIURL_MUMBAI = "https://api.thegraph.com/subgraphs/name/henrique1837/coldstakingsrgmumbai";
+const APIURL_BSC = "https://api.thegraph.com/subgraphs/name/henrique1837/goldliststablecoins";
 
 function useGraphClient() {
   const [client, setClient] = useState();
 
   const initiateClient = (netId) => {
-    //if(!client && netId){
-    let newClient = new ApolloClient({
-      uri: APIURL_OPENSEA,
-      cache: new InMemoryCache()
-    });
+
+    let newClient;
+    if(netId === 80001){
+      newClient = new ApolloClient({
+        uri: APIURL_MUMBAI,
+        cache: new InMemoryCache()
+      });
+    } else {
+      newClient = new ApolloClient({
+        uri: APIURL_BSC,
+        cache: new InMemoryCache()
+      });
+    }
 
     setClient(newClient);
   }

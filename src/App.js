@@ -41,9 +41,6 @@ export default function App() {
   const [stablecoins, setStablecoins] = useState();
 
 
-  const [coldStaking, setColdStaking] = useState();
-
-
   const {
     provider,
     coinbase,
@@ -59,11 +56,11 @@ export default function App() {
 
 
   const getStablecoinsBalance = useCallback(async () => {
+    if(!stablecoins) return;
     for(const stablecoin of stablecoins){
       const erc20 = new ethers.Contract(stablecoin.id,abis.srg,provider);
       const balance = await erc20.balanceOf(state.coinbase);
       return(Number(ethers.utils.parseEther(balance.toString()).toString()));
-
     }
   },[provider,stablecoins,state.coinbase])
 
@@ -154,13 +151,11 @@ export default function App() {
     if (netId === 5) {
       newSrg = new ethers.Contract(addresses.srg.goerli, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.goerli, abis.goldList, provider);
-      newColdStaking = new ethers.Contract(addresses.coldStaking.goerli, abis.coldStaking, provider);
     }
     // Mumbai
     if (netId === 80001) {
       newSrg = new ethers.Contract(addresses.srg.mumbai, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.mumbai, abis.goldList, provider);
-      newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
 
     }
     if (netId === 97) {
@@ -168,39 +163,36 @@ export default function App() {
       newGoldList = new ethers.Contract(addresses.goldList.bsctestnet, abis.goldList, provider);
       newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
     }
-    setColdStaking(newColdStaking);
+
+    if (netId === 56) {
+      newSrg = new ethers.Contract(addresses.srg.bsc, abis.srg, provider);
+      newGoldList = new ethers.Contract(addresses.goldList.bsc, abis.goldList, provider);
+    }
     setSrg(newSrg);
     setGoldList(newGoldList);
   }, [netId]);
   useMemo(async () => {
-    if (client) {
+    if (client && !stablecoins) {
       const stablecoinsResult = await getStablecoins();
+      console.log(stablecoinsResult)
       const newStablecoins = await Promise.all(
         stablecoinsResult.data.stablecoins.map(async item => {
           const contract = new ethers.Contract(item.id, abis.srg, provider);
           const name = await contract.name();
+          const symbol = await contract.symbol();
+          console.log(symbol)
           return ({
             id: item.id,
-            name: name
+            name: name,
+            symbol: symbol
           });
         })
       );
       setStablecoins(newStablecoins);
     }
-  }, [client])
+  }, [client,stablecoins])
 
 
-
-  const stakeTokens = async (totalSRG, todalDays) => {
-    const signer = provider.getSigner();
-    const coldStakingWithSigner = coldStaking.connect(signer);
-    const amount = ethers.utils.parseEther(totalSRG).toString()
-    let tx;
-
-    tx = await coldStakingWithSigner.stake(amount, todalDays);
-
-    await tx.wait();
-  }
 
   const getExpectedSrg = async (total) => {
     const amount = await goldList.getAmountOfTokens(ethers.utils.parseEther(total).toString());
@@ -248,11 +240,11 @@ export default function App() {
       <Box className="coins-bg">
           <MainMenu/>
           {
-            netId !== 80001 && netId !== 137 && netId !== 5 &&
+            netId !== 80001 && netId !== 137 && netId !== 5 && netId !== 56 &&
             <Box align="center" >
               <Layer background="status-error" responsive={false}>
                 <Box width="medium" pad="large">
-                  <Text><Anchor color="white" weight="bold" href="https://chainlist.network/" target="_blank">Please connect to polygon network</Anchor></Text>
+                  <Text textAlign="center"><Anchor color="white" weight="bold" href="https://chainlist.network/" target="_blank">Please connect to Binance Smart Chain network</Anchor></Text>
                 </Box>
               </Layer>
             </Box>

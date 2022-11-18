@@ -14,7 +14,7 @@ function useOrbis() {
     if(orbisClient){
       await orbis.logout()
     }
-    orbis.connectWithSeed(seed).then(res => {
+    orbis.connectWithSeed(seed).then(async res => {
       setOrbisClient(res);
     });
   }

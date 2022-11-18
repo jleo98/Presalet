@@ -11,8 +11,7 @@ const providerOptions = {
     package: WalletConnectProvider, // required
     options: {
       rpc:{
-        100: "https://rpc.gnosischain.com/",
-        80001: "https://rpc-mumbai.maticvigil.com"
+        56: "https://data-seed-prebsc-1-s1.binance.org:8545"
       }
     }
   }
@@ -27,10 +26,10 @@ const web3Modal = new Web3Modal({
 });
 
 function useWeb3Modal(config = {}) {
-  const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
+  const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org/"));
   //const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/"+process.env.REACT_APP_INFURA));
   const [coinbase, setCoinbase] = useState();
-  const [netId , setNetId] = useState(80001);
+  const [netId , setNetId] = useState(56);
   const [connecting , setConnecting] = useState();
   const [autoLoaded, setAutoLoaded] = useState(false);
   // Web3Modal also supports many other wallets.
@@ -39,8 +38,9 @@ function useWeb3Modal(config = {}) {
     async function () {
       await web3Modal.clearCachedProvider();
       setCoinbase();
-      setNetId(80001);
-      setProvider(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
+      setNetId(56);
+      setProvider(new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org/"));
+      //setProvider(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
       //setProvider(new ethers.providers.JsonRpcProvider("https://goerli.infura.io/v3/"+process.env.REACT_APP_INFURA))
     },
     [],

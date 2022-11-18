@@ -75,9 +75,12 @@ export default function BuySection(props) {
   }
 
   useEffect(() => {
-    const seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC, 'base16'))
+    let seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC, 'base16'));
+    if(state.netId === 56){
+      seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC_BSC, 'base16'));
+    }
     connectSeed(seed);
-  },[])
+  },[state.netId])
 
   useEffect(() => {
     setUnderVerification()
