@@ -40,6 +40,7 @@ export default function VeriffLayer(props) {
                   break;
                 case MESSAGES.FINISHED:
                   // Add in orbis data
+                  await props.addWallet(state.coinbase, id); // TEST
                   props.isUnderVerification(state.coinbase).then(newUnderVerification => {
                     props.setUnderVerification(newUnderVerification)
                   })
