@@ -179,13 +179,11 @@ export default function App() {
   useMemo(async () => {
     if (client && !stablecoins) {
       const stablecoinsResult = await getStablecoins();
-      console.log(stablecoinsResult)
       const newStablecoins = await Promise.all(
         stablecoinsResult.data.stablecoins.map(async item => {
           const contract = new ethers.Contract(item.id, abis.srg, provider);
           const name = await contract.name();
           const symbol = await contract.symbol();
-          console.log(symbol)
           return ({
             id: item.id,
             name: name,
