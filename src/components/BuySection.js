@@ -111,7 +111,7 @@ export default function BuySection(props) {
       setShowNotification(true)
       setUnderVerification();
       setShowedNotification(true)
-    } else if (obj.verification?.status === "abandoned") {
+    } else if (obj.verification?.status === "abandoned" || !obj.verification) {
       setUnderVerification();
     }
     return (obj)
@@ -188,13 +188,13 @@ export default function BuySection(props) {
                     }
                     <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
                       const stableBalance = await state.getStablecoinsBalance();
-                      if (stableBalance >= 300) {
+                      //if (stableBalance >= 300) {
                         setVeriffReason();
                         setShowNotification(false);
                         setShowVeriff(true);
-                      } else {
-                        alert("In order to start Verification please ensure your personal wallet is funded with at least 300 worth of USD (USDT, USDC, DAI, BUSD)")
-                      }
+                      //} else {
+                      //  alert("In order to start Verification please ensure your personal wallet is funded with at least 300 worth of USD (USDT, USDC, DAI, BUSD)")
+                      //}
                     }} label="Verify" />
 
                   </Box> :
