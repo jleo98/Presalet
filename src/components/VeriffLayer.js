@@ -32,7 +32,7 @@ export default function VeriffLayer(props) {
               switch (msg) {
                 case MESSAGES.STARTED:
                   //
-                  props.addWallet(state.coinbase, id); // TEST
+                  await props.addWallet(state.coinbase, id); // TEST
                   break;
                 case MESSAGES.CANCELED:
                   //
