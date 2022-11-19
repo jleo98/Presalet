@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -15,7 +15,7 @@ import styled from "styled-components";
 import { ethers } from "ethers";
 
 import { useAppContext } from '../hooks/useAppState';
-import  useOrbis  from '../hooks/useOrbis';
+import useOrbis from '../hooks/useOrbis';
 
 import GoldListModal from './GoldListModal';
 import Stablecoins from './Stablecoins';
@@ -37,12 +37,12 @@ const StyledLayerBuy = styled(Layer)`
 export default function BuySection(props) {
 
   const { state } = useAppContext();
-  const { connectSeed,addWallet,isUnderVerification } = useOrbis();
+  const { connectSeed, addWallet, isUnderVerification } = useOrbis();
 
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
-  const [show,setShow] = useState();
-  const [underVerification,setUnderVerification] = useState()
+  const [show, setShow] = useState();
+  const [underVerification, setUnderVerification] = useState()
 
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
@@ -76,23 +76,23 @@ export default function BuySection(props) {
 
   useEffect(() => {
     let seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC, 'base16'));
-    if(state.netId === 56){
+    if (state.netId === 56) {
       seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC_BSC, 'base16'));
     }
     connectSeed(seed);
-  },[state.netId])
+  }, [state.netId])
 
   useEffect(() => {
     setUnderVerification()
-  },[state.coinbase])
+  }, [state.coinbase])
 
   useEffect(() => {
-    if(!underVerification){
+    if (!underVerification) {
       isUnderVerification(state.coinbase).then(newUnderVerification => {
         setUnderVerification(newUnderVerification)
       })
     }
-  },[
+  }, [
     underVerification,
     state.coinbase
   ])
@@ -100,86 +100,86 @@ export default function BuySection(props) {
 
 
   return (
-    <Box margin={{horizontal: "30%"}} >
-    {
-      !state.coinbase &&
-      <Box pad={{bottom: "xlarge"}}>
-        <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
-      </Box>
-    }
-    {
-      state.coinbase &&
-      <>
+    <Box margin={{ horizontal: "30%" }} >
       {
-        !state.whitelisted ?
-        (
-          !underVerification ?
-          <Box pad={{bottom:"xlarge"}}>
-            <Button primary color="#ffcc00" size="large" className="btn-primary" style={{borderRadius: "8px"}} onClick={async () => {
-              const stableBalance = await state.getStablecoinsBalance();
-              if(stableBalance >= 300){
-                setUnderVerification(true)
-                await addWallet(state.coinbase,true);
-              } else {
-                alert("Insufficient usd")
-              }
-
-            }} label="WhiteList Me" style={{borderRadius: "8px"}} />
-          </Box> :
-          <Box pad={{top:"xlarge"}} align="center">
-            <Spinner size="medium" color="white"/>
-            <Text size="medium" color="white">Being whitelisted</Text>
-            <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
-          </Box>
-        ):
-        show ?
-        <StyledLayerBuy
-          onEsc={() => {
-            setShow(false);
-          }}
-          onClickOutside={() => {
-            setShow(false);
-          }}
-        >
-        <Box align="left" pad="medium">
-            <Text style={{
-             textAlign: "left",
-             font: "normal normal 600 20px/40px Poppins",
-             letterSpacing: "0px",
-             color: "black",
-             opacity: 1,
-             paddingBottom: "20px"
-           }}>Payment method</Text>
-           <Stablecoins
-             provider={state.provider}
-             setBusd={setBusd}
-             busd={busd}
-           />
+        !state.coinbase &&
+        <Box pad={{ bottom: "xlarge" }}>
+          <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
         </Box>
-
-          {
-            (
-              value === "Native" ||
-              (
-                value === "Stablecoin" && busd
-              )
-            ) &&
-            <GoldListModal
-              value={value}
-              busd={busd}
-              buyTokens={buyTokens}
-              getExpectedSrg={getExpectedSrg}
-            />
-          }
-        </StyledLayerBuy> :
-        Number(state.goldListBalance) > 0 ?
-        <Box  pad={{bottom:"xlarge"}}>
-          <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy SRG" />
-        </Box> :
-        <Text size="medium" color="white">Sale ended</Text>
       }
-      </>
-    }
+      {
+        state.coinbase &&
+        <>
+          {
+            !state.whitelisted ?
+              (
+                !underVerification ?
+                  <Box pad={{ bottom: "xlarge" }}>
+                    <Button primary color="#ffcc00" size="large" className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
+                      const stableBalance = await state.getStablecoinsBalance();
+                      if (stableBalance >= 300) {
+                        setUnderVerification(true)
+                        await addWallet(state.coinbase, true);
+                      } else {
+                        alert("In order to start Verification please ensure your personal wallet is funded with at least 300 worth of USD (USDT, USDC, DAI, BUSD)")
+                      }
+
+                    }} label="WhiteList Me" style={{ borderRadius: "8px" }} />
+                  </Box> :
+                  <Box pad={{ top: "xlarge" }} align="center">
+                    <Spinner size="medium" color="white" />
+                    <Text size="medium" color="white">Being whitelisted</Text>
+                    <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
+                  </Box>
+              ) :
+              show ?
+                <StyledLayerBuy
+                  onEsc={() => {
+                    setShow(false);
+                  }}
+                  onClickOutside={() => {
+                    setShow(false);
+                  }}
+                >
+                  <Box align="left" pad="medium">
+                    <Text style={{
+                      textAlign: "left",
+                      font: "normal normal 600 20px/40px Poppins",
+                      letterSpacing: "0px",
+                      color: "black",
+                      opacity: 1,
+                      paddingBottom: "20px"
+                    }}>Payment method</Text>
+                    <Stablecoins
+                      provider={state.provider}
+                      setBusd={setBusd}
+                      busd={busd}
+                    />
+                  </Box>
+
+                  {
+                    (
+                      value === "Native" ||
+                      (
+                        value === "Stablecoin" && busd
+                      )
+                    ) &&
+                    <GoldListModal
+                      value={value}
+                      busd={busd}
+                      buyTokens={buyTokens}
+                      getExpectedSrg={getExpectedSrg}
+                    />
+                  }
+                </StyledLayerBuy> :
+                Number(state.goldListBalance) > 0 ?
+                  <Box pad={{ bottom: "xlarge" }}>
+                    <Button primary size="large" color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
+                  </Box> :
+                  <Text size="medium" color="white">Sale ended</Text>
+          }
+        </>
+      }
 
     </Box>
   )

@@ -1,4 +1,4 @@
-import { useState,useEffect,useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import {
   Box,
@@ -16,7 +16,7 @@ import styled from "styled-components";
 import { ethers } from "ethers";
 
 import { useAppContext } from '../hooks/useAppState';
-import  useOrbis  from '../hooks/useOrbis';
+import useOrbis from '../hooks/useOrbis';
 import { fromString } from 'uint8arrays'
 
 import GoldListModal from './GoldListModal';
@@ -43,17 +43,17 @@ export default function BuySection(props) {
     connectSeed,
     addWallet,
     isUnderVerification
-   } = useOrbis();
+  } = useOrbis();
 
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
-  const [show,setShow] = useState();
-  const [showVeriff,setShowVeriff] = useState();
-  const [underVerification,setUnderVerification] = useState()
-  const [veriffReason,setVeriffReason] = useState()
-  const [showNotification,setShowNotification] = useState()
-  const [notificationShowed,setShowedNotification] = useState()
-  const [canShowMessage,setCanShowMessage] = useState()
+  const [show, setShow] = useState();
+  const [showVeriff, setShowVeriff] = useState();
+  const [underVerification, setUnderVerification] = useState()
+  const [veriffReason, setVeriffReason] = useState()
+  const [showNotification, setShowNotification] = useState()
+  const [notificationShowed, setShowedNotification] = useState()
+  const [canShowMessage, setCanShowMessage] = useState()
 
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
@@ -85,7 +85,7 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
-  const checkVeriffStatus = useCallback(async() => {
+  const checkVeriffStatus = useCallback(async () => {
 
     const payloadAsString = underVerification;
 
@@ -96,59 +96,59 @@ export default function BuySection(props) {
       .toLowerCase();
 
     const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-HMAC-SIGNATURE': signature,
-            "X-AUTH-CLIENT":  process.env.REACT_APP_VERIFF_API
-        }
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-HMAC-SIGNATURE': signature,
+        "X-AUTH-CLIENT": process.env.REACT_APP_VERIFF_API
+      }
     };
 
     const result = await fetch(`https://stationapi.veriff.com/v1/sessions/${underVerification}/decision`, requestOptions)
     const obj = JSON.parse(await result.text());
-    if(obj.verification?.status !== "approved" && obj.verification){
+    if (obj.verification?.status !== "approved" && obj.verification) {
       setVeriffReason(obj.verification.reason);
       setShowNotification(true)
       setUnderVerification();
       setShowedNotification(true)
-    } else if(obj.verification?.status === "abandoned"){
+    } else if (obj.verification?.status === "abandoned") {
       setUnderVerification();
     }
-    return(obj)
-  },[
+    return (obj)
+  }, [
     underVerification
   ]);
 
 
   useEffect(() => {
     let seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED, 'base16'));
-    if(state.netId === 56){
+    if (state.netId === 56) {
       seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_BSC, 'base16'));
     }
     connectSeed(seed);
-  },[state.netId])
+  }, [state.netId])
 
   useEffect(() => {
-    if(state.coinbase && !state.whitelisted){
+    if (state.coinbase && !state.whitelisted) {
       isUnderVerification(state.coinbase).then(async newUnderVerification => {
         setUnderVerification(newUnderVerification);
         await checkVeriffStatus();
         setCanShowMessage(true);
       })
     }
-  },[
+  }, [
     state.coinbase,
     state.whitelisted
   ]);
   useEffect(() => {
 
     const interval = setInterval(() => {
-      if(underVerification && !state.whitelisted && !notificationShowed){
+      if (underVerification && !state.whitelisted && !notificationShowed) {
         checkVeriffStatus();
       }
-    },60000);
+    }, 60000);
     return () => clearInterval(interval);
-  },[
+  }, [
     notificationShowed,
     underVerification,
     state.whitelisted,
@@ -156,129 +156,129 @@ export default function BuySection(props) {
 
 
   return (
-    <Box margin={{horizontal: "22%"}}>
+    <Box margin={{ horizontal: "22%" }}>
 
-    {
-      !state.coinbase &&
-      <Box pad={{bottom: "xlarge"}}>
-        <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
-      </Box>
-    }
-    {
-      state.coinbase &&
-      <>
       {
-        !state.whitelisted ?
-        (
-          !underVerification ?
-          <Box pad={{bottom: "xlarge"}}>
-            {
-              veriffReason && showNotification &&
-              <Notification
-                toast
-                status="warning"
-                title="Error in Veriff Verification"
-                message={veriffReason}
-                onClose={() => {
-                  setShowNotification(false)
-                  setShowedNotification(true)
-                }}
-              />
-
-            }
-            <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
-              const stableBalance = await state.getStablecoinsBalance();
-              if(stableBalance >= 300){
-                setVeriffReason();
-                setShowNotification(false);
-                setShowVeriff(true);
-              } else {
-                alert("Insufficient usd")
-              }
-            }} label="Verify" />
-
-          </Box> :
-          <Box align="center" pad={{bottom:"xlarge"}}>
+        !state.coinbase &&
+        <Box pad={{ bottom: "xlarge" }}>
+          <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
+        </Box>
+      }
+      {
+        state.coinbase &&
+        <>
           {
-            canShowMessage ?
-            <>
-            <Spinner size="medium" color="white"/>
-            <Text size="small" color="white">Under verification</Text>
-            <Text size="xsmall" color="white">It can take up to 10 minutes</Text>
-            </> :
-            <Button primary style={{borderRadius: "8px"}} color="#ffcc00" size="large" className="btn-primary" disabled label="Verify" />
+            !state.whitelisted ?
+              (
+                !underVerification ?
+                  <Box pad={{ bottom: "xlarge" }}>
+                    {
+                      veriffReason && showNotification &&
+                      <Notification
+                        toast
+                        status="warning"
+                        title="Error in Veriff Verification"
+                        message={veriffReason}
+                        onClose={() => {
+                          setShowNotification(false)
+                          setShowedNotification(true)
+                        }}
+                      />
+
+                    }
+                    <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="large" className="btn-primary" onClick={async () => {
+                      const stableBalance = await state.getStablecoinsBalance();
+                      if (stableBalance >= 300) {
+                        setVeriffReason();
+                        setShowNotification(false);
+                        setShowVeriff(true);
+                      } else {
+                        alert("In order to start Verification please ensure your personal wallet is funded with at least 300 worth of USD (USDT, USDC, DAI, BUSD)")
+                      }
+                    }} label="Verify" />
+
+                  </Box> :
+                  <Box align="center" pad={{ bottom: "xlarge" }}>
+                    {
+                      canShowMessage ?
+                        <>
+                          <Spinner size="medium" color="white" />
+                          <Text size="small" color="white">Under verification</Text>
+                          <Text size="xsmall" color="white">It can take up to 10 minutes</Text>
+                        </> :
+                        <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="large" className="btn-primary" disabled label="Verify" />
+                    }
+                  </Box>
+              ) :
+              show ?
+                <StyledLayerBuy
+                  onEsc={() => {
+                    setShow(false);
+                  }}
+                  onClickOutside={() => {
+                    setShow(false);
+                  }}
+                >
+                  <Box align="left" pad="medium">
+                    <Text style={{
+                      textAlign: "left",
+                      font: "normal normal 600 20px/40px Poppins",
+                      letterSpacing: "0px",
+                      color: "black",
+                      opacity: 1,
+                      paddingBottom: "20px"
+                    }}>Payment method</Text>
+                    <Stablecoins
+                      provider={state.provider}
+                      setBusd={setBusd}
+                      busd={busd}
+                    />
+                  </Box>
+
+                  {
+                    (
+                      value === "Native" ||
+                      (
+                        value === "Stablecoin" && busd
+                      )
+                    ) &&
+                    <GoldListModal
+                      value={value}
+                      busd={busd}
+                      buyTokens={buyTokens}
+                      getExpectedSrg={getExpectedSrg}
+                    />
+                  }
+                </StyledLayerBuy> :
+                Number(state.goldListBalance) > 0 ?
+                  <Box pad={{ bottom: "xlarge" }}>
+                    <Button primary size="large" color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
+                  </Box> :
+                  <Text size="medium" color="white">Sale ended</Text>
           }
-          </Box>
-        ):
-        show ?
+        </>
+      }
+
+      {
+        showVeriff &&
         <StyledLayerBuy
           onEsc={() => {
-            setShow(false);
+            setShowVeriff(false)
           }}
           onClickOutside={() => {
-            setShow(false);
+            setShowVeriff(false)
           }}
+          height="317px"
         >
-          <Box align="left" pad="medium">
-            <Text style={{
-             textAlign: "left",
-             font: "normal normal 600 20px/40px Poppins",
-             letterSpacing: "0px",
-             color: "black",
-             opacity: 1,
-             paddingBottom: "20px"
-           }}>Payment method</Text>
-           <Stablecoins
-             provider={state.provider}
-             setBusd={setBusd}
-             busd={busd}
-           />
-          </Box>
-
-          {
-            (
-              value === "Native" ||
-              (
-                value === "Stablecoin" && busd
-              )
-            ) &&
-            <GoldListModal
-              value={value}
-              busd={busd}
-              buyTokens={buyTokens}
-              getExpectedSrg={getExpectedSrg}
-            />
-          }
-        </StyledLayerBuy> :
-        Number(state.goldListBalance) > 0 ?
-        <Box  pad={{bottom:"xlarge"}}>
-          <Button primary size="large" color="#ffcc00" className="btn-primary" style={{borderRadius: "8px"}} onClick={() => setShow(true)} label="Buy SRG" />
-        </Box>  :
-        <Text size="medium" color="white">Sale ended</Text>
+          <VeriffLayer
+            setShowedNotification={setShowedNotification}
+            isUnderVerification={isUnderVerification}
+            setUnderVerification={setUnderVerification}
+            addWallet={addWallet}
+            setShowVeriff={setShowVeriff}
+          />
+        </StyledLayerBuy>
       }
-      </>
-    }
-
-    {
-      showVeriff &&
-      <StyledLayerBuy
-        onEsc={() => {
-          setShowVeriff(false)
-        }}
-        onClickOutside={() => {
-          setShowVeriff(false)
-        }}
-        height="317px"
-      >
-        <VeriffLayer
-          setShowedNotification={setShowedNotification}
-          isUnderVerification={isUnderVerification}
-          setUnderVerification={setUnderVerification}
-          addWallet={addWallet}
-          setShowVeriff={setShowVeriff}
-        />
-      </StyledLayerBuy>
-    }
 
     </Box>
   )
