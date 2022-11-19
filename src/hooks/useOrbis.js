@@ -17,6 +17,13 @@ function useOrbis() {
     orbis.connectWithSeed(seed).then(async res => {
       setOrbisClient(res);
     });
+
+    /*
+    await orbis.updateProfile({
+
+    });
+    */
+
   }
 
   const addWallet = async (address, sessionId) => {
