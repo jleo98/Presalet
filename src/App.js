@@ -172,6 +172,8 @@ export default function App() {
     if (netId === 56) {
       newSrg = new ethers.Contract(addresses.srg.bsc, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.bsc, abis.goldList, provider);
+      newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
+
     }
     setSrg(newSrg);
     setGoldList(newGoldList);
