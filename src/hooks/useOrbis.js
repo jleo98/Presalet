@@ -18,11 +18,6 @@ function useOrbis() {
       setOrbisClient(res);
     });
 
-    /*
-    await orbis.updateProfile({
-
-    });
-    */
 
   }
 
