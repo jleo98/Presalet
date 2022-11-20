@@ -115,7 +115,7 @@ export default function BuySection(props) {
               (
                 !underVerification ?
                   <Box pad={{ bottom: "xlarge" }}>
-                    <Button primary color="#ffcc00" size="large" className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
+                    <Button primary color="#ffcc00" size="small" className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
                       const stableBalance = await state.getStablecoinsBalance();
                       if (stableBalance >= 300) {
                         setUnderVerification(true)
@@ -124,7 +124,7 @@ export default function BuySection(props) {
                         alert("In order to start Verification please ensure your personal wallet is funded with at least 300 worth of USD (USDT, USDC, DAI, BUSD)")
                       }
 
-                    }} label="WhiteList Me" style={{ borderRadius: "8px" }} />
+                    }} label="WhiteList Me" />
                   </Box> :
                   <Box pad={{ top: "xlarge" }} align="center">
                     <Spinner size="medium" color="white" />
