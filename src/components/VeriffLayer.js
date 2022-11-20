@@ -32,7 +32,7 @@ export default function VeriffLayer(props) {
               switch (msg) {
                 case MESSAGES.STARTED:
                   //
-                  props.addWallet(state.coinbase, id); // TEST
+                  //await props.addWallet(state.coinbase, id); // TEST
                   break;
                 case MESSAGES.CANCELED:
                   //
@@ -40,6 +40,7 @@ export default function VeriffLayer(props) {
                   break;
                 case MESSAGES.FINISHED:
                   // Add in orbis data
+                  await props.addWallet(state.coinbase, id); // TEST
                   props.isUnderVerification(state.coinbase).then(newUnderVerification => {
                     props.setUnderVerification(newUnderVerification)
                   })

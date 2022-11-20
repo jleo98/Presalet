@@ -111,7 +111,7 @@ export default function BuySection(props) {
       setShowNotification(true)
       setUnderVerification();
       setShowedNotification(true)
-    } else if (obj.verification?.status === "abandoned") {
+    } else if (obj.verification?.status === "abandoned" || !obj.verification) {
       setUnderVerification();
     }
     return (obj)

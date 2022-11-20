@@ -64,7 +64,7 @@ export default function Stablecoins(props) {
         />
         {
           busdBalance &&
-          <Text color="black" size="xsmall">Balance: {busdBalance}</Text>
+          <Text color="black" size="xsmall">Balance: {Number(ethers.utils.formatEther(busdBalance)).toFixed(2)}</Text>
         }
         </>
       }
