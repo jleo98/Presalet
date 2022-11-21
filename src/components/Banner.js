@@ -40,7 +40,7 @@ const StyledGoldListText = styled(Text)`
 const StyledBalanceText = styled(Text)`
   color: var(--unnamed-color-ffcc00);
   text-align: left;
-  font: normal normal normal ${window.innerWidth <= 500 ? "20px" :"28px"}/47px Poppins;;
+  font: normal normal normal ${window.innerWidth <= 500 ? "20px" : "28px"}/47px Poppins;;
   letter-spacing: 0px;
   color: #FFCC00;
   text-transform: capitalize;
@@ -84,9 +84,9 @@ export default function Banner() {
   const size = React.useContext(ResponsiveContext);
   const { uri } = useParams();
   return (
-    <Box align="center" pad={{horizontal:"large",top:"xsmall"}} >
+    <Box align="center" pad={{ horizontal: "large", top: "xsmall" }} >
 
-      <Box alignContent="left" pad={{top:"xsmall"}} width="large" height="xsmall">
+      <Box alignContent="left" pad={{ top: "xsmall" }} width="large" height="xsmall">
         <StyledGetStartedText direction="horizontal" color="#FFCC00">
           Get Started
         </StyledGetStartedText>
@@ -94,39 +94,39 @@ export default function Banner() {
           Buy SRG
         </StyledText>
       </Box>
-      <StyledBox gap="large" background="#16151A" pad="medium"  width="large" height="298px">
-          <Box align="center" pad={{top:"medium"}}>
-            <StyledGoldListText alignContent="center" size={size}>Gold List Balance</StyledGoldListText>
+      <StyledBox gap="large" background="#16151A" pad="medium" width="large" height="298px">
+        <Box align="center" pad={{ top: "medium" }}>
+          <StyledGoldListText alignContent="center" size={size}>Gold List Balance</StyledGoldListText>
+        </Box>
+        <Box align="center" width="large">
+          <StyledBalanceText size={size}><span style={{ color: "white" }}>{(Number(state.goldListBalance) / 10 ** 18).toFixed(2)} SRG</span>  |  {(state.goldListBalance / (83000000 * 10 ** 18) * 100).toFixed(4)} %</StyledBalanceText>
+          <Box align="left" height="small" width="large">
+            <Meter
+              type="bar"
+              align="center"
+              background={{
+                color: "light-1",
+                opacity: "strong"
+              }}
+              values={[{
+                value: state.goldListBalance / (83000000 * 10 ** 18) * 100,
+                color: "#FFCC00",
+                label: 'Balance',
+                onClick: () => { }
+              }]}
+              aria-label="meter"
+              height="40px"
+              width="large"
+            />
           </Box>
-          <Box align="center"  width="large">
-            <StyledBalanceText size={size}><span style={{color:"white"}}>{(Number(state.goldListBalance)/10**18).toFixed(2)} SRG</span>  |  {(state.goldListBalance/(83000000*10**18)*100).toFixed(4)} %</StyledBalanceText>
-            <Box align="left" height="small" width="large">
-              <Meter
-                type="bar"
-                align="center"
-                background={{
-                  color: "light-1",
-                  opacity: "strong"
-                }}
-                values={[{
-                  value: state.goldListBalance/(83000000*10**18)*100,
-                  color: "#FFCC00",
-                  label: 'Balance',
-                  onClick: () => {}
-                }]}
-                aria-label="meter"
-                height="40px"
-                width="large"
-              />
-            </Box>
-          </Box>
-          <Box>
+        </Box>
+        <Box>
           {
-            uri === "eventWhiteList" ?
-            <BuySectionNoKYC />:
-            <BuySection />
+            uri === "eventGoldList" ?
+              <BuySectionNoKYC /> :
+              <BuySection />
           }
-          </Box>
+        </Box>
 
       </StyledBox>
     </Box>
