@@ -30,7 +30,7 @@ function useGraphClient() {
   const getStablecoins = async () => {
     let tokensQuery = `
     query{
-      stablecoins(where: {accepted: true}){
+      stablecoins(where: {accepted: true,id_not:"0x36c5a60c1c600c9405d9ca218cf8aea42042cedc"}) {
         id
         accepted
       }
