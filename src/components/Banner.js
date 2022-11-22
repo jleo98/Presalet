@@ -99,7 +99,7 @@ export default function Banner() {
           <StyledGoldListText alignContent="center" size={size}>Gold List Balance</StyledGoldListText>
         </Box>
         <Box align="center" width="large">
-          <StyledBalanceText size={size}><span style={{ color: "white" }}>{(Number(state.goldListBalance) / 10 ** 18).toFixed(2)} SRG</span>  |  {(state.goldListBalance / (83000000 * 10 ** 18) * 100).toFixed(4)} %</StyledBalanceText>
+          <StyledBalanceText size={size}><span style={{ color: "white" }}>{(Number(state.goldListBalance) / 10 ** 18).toFixed(2)} SRG</span>  |  {(state.goldListBalance / (83333333 * 10 ** 18) * 100).toFixed(4)} %</StyledBalanceText>
           <Box align="left" height="small" width="large">
             <Meter
               type="bar"
@@ -109,7 +109,7 @@ export default function Banner() {
                 opacity: "strong"
               }}
               values={[{
-                value: state.goldListBalance / (83000000 * 10 ** 18) * 100,
+                value: state.goldListBalance / (83333333 * 10 ** 18) * 100,
                 color: "#FFCC00",
                 label: 'Balance',
                 onClick: () => { }
