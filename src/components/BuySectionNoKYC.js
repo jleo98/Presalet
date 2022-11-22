@@ -104,7 +104,7 @@ export default function BuySection(props) {
       {
         !state.coinbase &&
         <Box pad={{ bottom: "xlarge" }}>
-          <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="large" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
+          <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="small" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
         </Box>
       }
       {
