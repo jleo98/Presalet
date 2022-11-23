@@ -124,7 +124,7 @@ export default function BuySection(props) {
                         alert("In order to start Verification please ensure your personal wallet is funded with at least 300 worth of USD (USDT, USDC, DAI, BUSD)")
                       }
 
-                    }} label="Goldlist Me" />
+                    }} label="Join PreSale" />
                   </Box> :
                   <Box pad={{ top: "xlarge" }} align="center">
                     <Spinner size="medium" color="white" />

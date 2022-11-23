@@ -103,8 +103,7 @@ export default function Banner() {
         */
       }
 
-      <BuySection />
-
+        <BuySectionNoKYC />
       </Box>
     </Box>
   )
