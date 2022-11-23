@@ -1,19 +1,16 @@
 import React,{ useState } from 'react';
 
 import About from '../components/About';
-import BuySection from '../components/BuySection';
 import Banner from '../components/Banner';
 import {
   Box,
   Button,
   Layer,
   Text,
-  Spinner,
   Anchor,
   Image,
-  Accordion,
-  AccordionPanel,
-  ResponsiveContext
+  ResponsiveContext,
+  InfiniteScroll
 } from 'grommet';
 import { Youtube } from "grommet-icons";
 
@@ -76,7 +73,8 @@ export default function PreSale() {
           setShowHow(false);
         }}
       >
-      <Box pad="large"  width="large" height="xlarge">
+
+      <Box pad="large"  width="large" height="large">
         <Box height={size}>
           <Text color="#060707" textAlign="center" size="large">
             YOUR GATE TO THE GOLDEN ERA IS NOW OPEN!
@@ -87,14 +85,6 @@ export default function PreSale() {
         </Box>
         <Box height={size} direction="row-responsive" gap="large" align="center" alignSelf="center" alignContent="center">
 
-          <Box alignSelf="center" alignContent="center" align="center" gap="small" direction={window.innerWidth <= 500 ? "row" : "column"}>
-            <Box height="xxsmall" >
-              <Image src={require('../assets/MetaMask_Fox.svg.png')} fit="contain"/>
-            </Box>
-            <Text color="#E4761B" textAlign="center" size={size}>
-              METAMASK
-            </Text>
-          </Box>
           <Box alignSelf="center" alignContent="center" align="center" gap="small"  direction={window.innerWidth <= 500 ? "row" : "column"}>
 
             <Box height="xxsmall" >
@@ -106,42 +96,78 @@ export default function PreSale() {
           </Box>
 
         </Box>
-        <Box height={"large"} gap="small">
-
-          <Box  background="#F9F9F9" direction="row-responsive" gap="medium">
-            <Box pad="small" gap="small" >
-              <Text color="#ffcc00" textAlign="left">
-                STEP 1
-              </Text>
-              <Text color="#060707" textAlign="left" style={{
-                font: "normal normal normal 20px/60px Poppins",
-                lineHeight: "1.25"
-              }}>
-                Tap the connect button to connect your wallet
-              </Text>
-            </Box>
-            <Box width="xsmall"></Box>
-            <Box width={size}  alignContent="center" alignSelf="center" >
-              <Image src={require('../assets/step1.png')}  fit="contain"/>
-            </Box>
-          </Box>
-          <Box  background="#F9F9F9" direction="row-responsive" gap="medium">
-            <Box pad="small" gap="small"  >
-              <Text color="#ffcc00" textAlign="left">
-                STEP 2
-              </Text>
-              <Text color="#060707" textAlign="left" style={{
-                font: "normal normal normal 20px/60px Poppins",
-                lineHeight: "1.25"
-              }}>
-                Choose or scan your crypto wallet. Make sure you are on the Binance Smart Chain network
-              </Text>
-            </Box>
-            <Box width={size} alignContent="center" alignSelf="center">
-              <Image src={require('../assets/step2.png')} fit="contain"/>
-            </Box>
-          </Box>
-
+        <Box overflow="auto" height={
+          window.innerWidth <= 500 ?
+          "medium":
+          "xxlarge"
+        }  gap="small" >
+          <InfiniteScroll items={[
+            {
+              step: "STEP 1",
+              text: "Tap the connect button to connect your wallet",
+              image: require('../assets/step1.png')
+            },
+            {
+              step: "STEP 2",
+              text: "Choose or scan your crypto wallet. Make sure you are on the Binance Smart Chain network",
+              image: require('../assets/step2.png')
+            },
+            {
+              step: "STEP 3",
+              text: "Tap Buy SRG",
+              image: require('../assets/step3.png')
+            },
+            {
+              step: "STEP 4",
+              text: "Choose your payment method and the amount",
+              image: require('../assets/step4.png')
+            },
+            {
+              step: "STEP 5",
+              text: "Tap Buy",
+              image: require('../assets/step5.png')
+            },
+            {
+              step: "STEP 6",
+              text: "Tap on the banner",
+              image: require('../assets/step6.png')
+            },
+            {
+              step: "STEP 7",
+              text: "Tap add custom token",
+              image: require('../assets/step7.png')
+            },
+            {
+              step: "STEP 8",
+              text: "Select Binance Smart Chain",
+              image: require('../assets/step9.png')
+            },
+            {
+              step: "STEP 9",
+              text: "Tap the connect button to connect your wallet",
+              image: require('../assets/step8.png')
+            }
+          ]}>
+            {(item) => (
+              <Box flex={false} background="#F9F9F9" direction="row-responsive" pad="medium">
+                <Box width="medium" pad="small" gap="small" >
+                  <Text color="#ffcc00" textAlign="left">
+                    {item.step}
+                  </Text>
+                  <Text color="#060707" textAlign="left" style={{
+                    font: "normal normal normal 20px/60px Poppins",
+                    lineHeight: "1.25"
+                  }}>
+                    {item.text}
+                  </Text>
+                </Box>
+                <Box width="xsmall"></Box>
+                <Box width={"small"}  alignContent="center" alignSelf="center" >
+                  <Image src={item.image} width="100px" fit="contain"/>
+                </Box>
+              </Box>
+            )}
+          </InfiniteScroll>
         </Box>
         <Button label="close" primary size="xsmall" onClick={() => setShowHow(false)} />
 
