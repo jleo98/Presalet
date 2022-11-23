@@ -142,7 +142,7 @@ export default function BuySection(props) {
     if(isUnderVerification){
       setTimeout(() => {
         checkVeriffStatus()
-      },5000)
+      },15000)
     }
   },[isUnderVerification])
 
