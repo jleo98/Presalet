@@ -140,12 +140,12 @@ export default function PreSale() {
             {
               step: "STEP 8",
               text: "Select Binance Smart Chain",
-              image: require('../assets/step9.png')
+              image: require('../assets/step8.png')
             },
             {
               step: "STEP 9",
               text: "Tap the connect button to connect your wallet",
-              image: require('../assets/step8.png')
+              image: require('../assets/step9.png')
             }
           ]}>
             {(item) => (
