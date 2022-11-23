@@ -15,7 +15,8 @@ import {
   ThemeContext
 } from 'grommet';
 import { ethers } from "ethers";
-
+import { ChatBox } from '@orbisclub/modules'
+import "@orbisclub/modules/dist/index.modern.css";
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
 
 
@@ -242,10 +243,11 @@ export default function App() {
         }
       >
         <Router >
+          <ChatBox context="kjzl6cwe1jw14808eb8yfpg3g3olvhi4os1n089xyoji6jekrsit97xtxyo9t0z" poweredByOrbis="black" />
           <Box className="coins-bg">
             <MainMenu />
             {
-              netId !== 80001 && netId !== 137 && netId !== 5 && netId !== 56 &&
+              netId !== 56 && //netId !== 80001 && //netId !== 137 && netId !== 5 && netId !== 56 &&
               <Box align="center" >
                 <Layer background="status-error" responsive={false}>
                   <Box width="medium" pad="large">

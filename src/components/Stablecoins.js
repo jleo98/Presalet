@@ -17,13 +17,13 @@ export default function Stablecoins(props) {
 
   const { state } = useAppContext();
 
-  const [value,setValue] = useState(state.stablecoins[0]?.name);
+  const [value,setValue] = useState(state.stablecoins[0]?.symbol);
   const [busdBalance, setBalance] = useState();
 
 
   useEffect(() => {
     const items = state.stablecoins.filter(item => {
-      return item.name === value
+      return item.symbol === value
     });
     const newBusd = new ethers.Contract(items[0].id,abis.srg,props.provider);
     props.setBusd(newBusd);
@@ -55,7 +55,7 @@ export default function Stablecoins(props) {
         <>
         <Select
 
-          options={state.stablecoins.map(item => item.name)}
+          options={state.stablecoins.map(item => item.symbol)}
           value={value}
           onChange={({ option }) => {
             setValue(option)

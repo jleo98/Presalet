@@ -84,7 +84,7 @@ export default function Banner() {
   const size = React.useContext(ResponsiveContext);
   const { uri } = useParams();
   return (
-    <Box align="center" pad={{ horizontal: "large", top: "xsmall" }} >
+    <Box align="center" gap="large" pad={{ horizontal: "large", top: "large" }} >
 
       <Box alignContent="left" pad={{ top: "xsmall" }} width="large" height="xsmall">
         <StyledGetStartedText direction="horizontal" color="#FFCC00">
@@ -94,45 +94,18 @@ export default function Banner() {
           Buy SRG
         </StyledText>
       </Box>
-      <StyledBox gap="large" background="#16151A" pad="medium" width="large" height="298px">
-        <Box align="center" pad={{ top: "medium" }}>
-          <StyledGoldListText alignContent="center" size={size}> {
-                      uri === "eventGoldList" ?
-                        "GoldList" :
-                        "Pre Sale"
-                    } Balance</StyledGoldListText>
-        </Box>
-        <Box align="center" width="large">
-          <StyledBalanceText size={size}><span style={{ color: "white" }}>{(Number(state.goldListBalance) / 10 ** 18).toFixed(2)} SRG</span>  |  {(state.goldListBalance / (83333333 * 10 ** 18) * 100).toFixed(4)} %</StyledBalanceText>
-          <Box align="left" height="small" width="large">
-            <Meter
-              type="bar"
-              align="center"
-              background={{
-                color: "light-1",
-                opacity: "strong"
-              }}
-              values={[{
-                value: state.goldListBalance / (83333333 * 10 ** 18) * 100,
-                color: "#FFCC00",
-                label: 'Balance',
-                onClick: () => { }
-              }]}
-              aria-label="meter"
-              height="40px"
-              width="large"
-            />
-          </Box>
-        </Box>
-        <Box>
-          {
-            uri === "eventGoldList" ?
-              <BuySectionNoKYC /> :
-              <BuySection />
-          }
-        </Box>
+      <Box pad={{top:"xlarge",horizontal:"medium"}} width="large" height="small">
+      {
+        /*
+        uri === "eventGoldList" ?
+          <BuySectionNoKYC /> :
+          <BuySection />
+        */
+      }
 
-      </StyledBox>
+      <BuySection />
+
+      </Box>
     </Box>
   )
 }

@@ -23,7 +23,7 @@ const About = () => {
   const { uri } = useParams();
 
   return(
-    <Box align="center" pad={{bottom:"small",horizontal:"medium" }} style={{minHeight: `${window.innerWidth <= 500 ? "300px" : "20px"}`}}>
+    <Box align="center" pad={{vertical:"small",horizontal:"medium" }} style={{minHeight: `${window.innerWidth <= 500 ? "300px" : "150px"}`}}>
       <Box align="center" gap="medium" width="large" >
           <StyledText color="#F1F1F1" textAlign="center">
             Welcome To The <StyledText color="#FFCC00">New Golden Era</StyledText>
@@ -32,7 +32,7 @@ const About = () => {
             uri === "eventGoldList" &&
             <StyledTextSub color="#F1F1F1" size="28px" textAlign="center">
               You Are Only <StyledTextSub color="#FFCC00">One Step Away</StyledTextSub> From Getting Into SRG's Gold List Spot
-            </StyledTextSub> 
+            </StyledTextSub>
           }
 
       </Box>

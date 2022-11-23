@@ -19,6 +19,7 @@ export default function GoldListModal(props) {
 
   const [srgExpect,setSrgExpect] = useState();
   const [msg,setMsg] = useState();
+  const [tx,setTx] = useState();
 
   useEffect(() => {
     if(total > 0 && props.value==="Native"){
@@ -112,12 +113,17 @@ export default function GoldListModal(props) {
         </Box>
         <Box width="large">
         {
-          total > 0 ?
+          total > 0 && !tx ?
             <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
               try{
+                setTx(true);
+                setMsg("Confirm transactions (token approval and buy token) and wait confirmation")
                 await props.buyTokens(total);
+                setTx(false);
+                setMsg("")
               } catch(err){
-                setMsg(err.reason)
+                setMsg(err.reason);
+                setTx(false)
               }
               setTimeout(() => {
                 setMsg()
