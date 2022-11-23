@@ -210,6 +210,9 @@ export default function App() {
       <ThemeContext.Extend
         value={
           {
+            anchor: {
+              color: "#ffcc00"
+            },
             global: {
               hover: {
                 color: "white"

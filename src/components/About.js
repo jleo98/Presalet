@@ -23,7 +23,7 @@ const About = () => {
   const { uri } = useParams();
 
   return(
-    <Box align="center" pad={{vertical:"small",horizontal:"medium" }} style={{minHeight: `${window.innerWidth <= 500 ? "300px" : "150px"}`}}>
+    <Box align="center" pad={{vertical:"small",horizontal:"large" }} style={{minHeight: `${window.innerWidth <= 500 ? "300px" : "150px"}`}}>
       <Box align="center" gap="medium" width="large" >
           <StyledText color="#F1F1F1" textAlign="center">
             Welcome To The <StyledText color="#FFCC00">New Golden Era</StyledText>

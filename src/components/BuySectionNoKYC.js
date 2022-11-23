@@ -5,7 +5,8 @@ import {
   Button,
   Layer,
   Text,
-  Spinner
+  Spinner,
+  Anchor
 } from 'grommet';
 
 
@@ -34,6 +35,8 @@ const StyledLayerBuy = styled(Layer)`
 `;
 
 
+
+
 export default function BuySection(props) {
 
   const { state } = useAppContext();
@@ -42,6 +45,7 @@ export default function BuySection(props) {
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
   const [show, setShow] = useState();
+
   const [underVerification, setUnderVerification] = useState()
 
   const buyTokens = async (total) => {
@@ -114,7 +118,7 @@ export default function BuySection(props) {
             !state.whitelisted ?
               (
                 !underVerification ?
-                  <Box pad={{ bottom: "xlarge" }}>
+                  <Box>
                     <Button primary color="#ffcc00" size="small" className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
                       const stableBalance = await state.getStablecoinsBalance();
                       if (stableBalance >= 300) {
@@ -126,8 +130,8 @@ export default function BuySection(props) {
 
                     }} label="Join PreSale" />
                   </Box> :
-                  <Box pad={{ top: "xlarge" }} align="center">
-                    <Spinner size="medium" color="white" />
+                  <Box align="center" size="small">
+                    <Spinner size="small" color="white" />
                     <Text size="medium" color="white">Being goldlisted</Text>
                     <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
                   </Box>
@@ -174,7 +178,7 @@ export default function BuySection(props) {
                 </StyledLayerBuy> :
                 Number(state.goldListBalance) > 0 ?
                   <Box pad={{ bottom: "xlarge" }}>
-                    <Button primary size="large" color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
+                    <Button primary size="small" color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
                   </Box> :
                   <Text size="medium" color="white">Sale ended</Text>
           }
