@@ -96,7 +96,11 @@ export default function Banner() {
       </Box>
       <StyledBox gap="large" background="#16151A" pad="medium" width="large" height="298px">
         <Box align="center" pad={{ top: "medium" }}>
-          <StyledGoldListText alignContent="center" size={size}>Gold List Balance</StyledGoldListText>
+          <StyledGoldListText alignContent="center" size={size}> {
+                      uri === "eventGoldList" ?
+                        "GoldList" :
+                        "Pre Sale"
+                    } Balance</StyledGoldListText>
         </Box>
         <Box align="center" width="large">
           <StyledBalanceText size={size}><span style={{ color: "white" }}>{(Number(state.goldListBalance) / 10 ** 18).toFixed(2)} SRG</span>  |  {(state.goldListBalance / (83333333 * 10 ** 18) * 100).toFixed(4)} %</StyledBalanceText>

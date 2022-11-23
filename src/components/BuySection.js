@@ -85,7 +85,7 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
-  const checkVeriffStatus = useCallback(async () => {
+  const checkVeriffStatus = async () => {
 
     const payloadAsString = underVerification;
 
@@ -115,9 +115,7 @@ export default function BuySection(props) {
       setUnderVerification();
     }
     return (obj)
-  }, [
-    underVerification
-  ]);
+  }
 
 
   useEffect(() => {
@@ -132,7 +130,6 @@ export default function BuySection(props) {
     if (state.coinbase && !state.whitelisted) {
       isUnderVerification(state.coinbase).then(async newUnderVerification => {
         setUnderVerification(newUnderVerification);
-        await checkVeriffStatus();
         setCanShowMessage(true);
       })
     }
@@ -140,14 +137,29 @@ export default function BuySection(props) {
     state.coinbase,
     state.whitelisted
   ]);
+
+  useEffect(() => {
+    if(isUnderVerification){
+      setTimeout(() => {
+        checkVeriffStatus()
+      },5000)
+    }
+  },[isUnderVerification])
+
   useEffect(() => {
 
     const interval = setInterval(() => {
       if (underVerification && !state.whitelisted && !notificationShowed) {
-        checkVeriffStatus();
+        try{
+          checkVeriffStatus();
+        } catch(err){
+
+        }
+      } else {
+        clearInterval(interval)
       }
     }, 60000);
-    return () => clearInterval(interval);
+    //return () => clearInterval(interval);
   }, [
     notificationShowed,
     underVerification,
