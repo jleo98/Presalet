@@ -243,7 +243,11 @@ export default function App() {
         }
       >
         <Router >
-          <ChatBox context="kjzl6cwe1jw14808eb8yfpg3g3olvhi4os1n089xyoji6jekrsit97xtxyo9t0z" poweredByOrbis="black" />
+          {
+            /*
+            <ChatBox context="kjzl6cwe1jw14808eb8yfpg3g3olvhi4os1n089xyoji6jekrsit97xtxyo9t0z" poweredByOrbis="black" />
+            */
+          }
           <Box className="coins-bg">
             <MainMenu />
             {
