@@ -45,6 +45,26 @@ export default function PreSale() {
         onClick={() => {setShowHow(true)}}>
         How to Buy ?
       </Anchor>
+      <Box alignSelf="center" align="center" height={size} pad={{top:"small"}}>
+        <Text
+        as={Anchor}
+        color="#060707"
+        textAlign="center"
+        style={{
+          font: "normal normal 600 16px/24px Poppins",
+        }}
+        width="xsmall"
+        target="_blank"
+        href="https://youtu.be/p-kcaFAs26A">
+          Check more details about SRG token at youtube
+        </Text>
+        <Anchor
+          target="_blank"
+          a11yTitle="Youtube"
+          href="https://youtu.be/p-kcaFAs26A"
+          icon={<Youtube color="#ffcc00" size="large" />}
+        />
+      </Box>
     </Box>
     {
       showHow &&
