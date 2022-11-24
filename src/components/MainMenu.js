@@ -51,7 +51,6 @@ export default function MainMenu(props) {
           window.innerWidth >= 500 &&
           <Text color="white" size="xsmall">{state.coinbase}</Text>
         }
-        <Text color="white" size="small">Unverified</Text>
         </>
       }
       </Nav>
