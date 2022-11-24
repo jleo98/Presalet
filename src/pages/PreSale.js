@@ -157,7 +157,7 @@ export default function PreSale() {
                   </Box>
                   <Box width="xsmall"></Box>
                   <Box width={"small"}  alignContent="center" alignSelf="center" >
-                    <Image src={item.image} width="100px" fit="contain"/>
+                    <Image src={item.image} width={size} fit="contain"/>
                   </Box>
                 </Box>
               )}
