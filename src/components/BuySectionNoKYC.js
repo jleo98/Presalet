@@ -105,12 +105,14 @@ export default function BuySection(props) {
 
   return (
     <Box margin={{ horizontal: "30%" }} >
+      <Box>
       {
         !state.coinbase &&
-        <Box pad={{ bottom: "xlarge" }}>
-          <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="small" label="Connect" onClick={state.loadWeb3Modal} className="btn-primary" />
-        </Box>
+          <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="medium" label="Connect" onClick={state.loadWeb3Modal} />
+
       }
+      </Box>
+      <Box>
       {
         state.coinbase &&
         <>
@@ -178,6 +180,7 @@ export default function BuySection(props) {
           }
         </>
       }
+      </Box>
 
     </Box>
   )

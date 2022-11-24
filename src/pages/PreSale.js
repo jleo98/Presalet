@@ -33,7 +33,8 @@ export default function PreSale() {
 
   return (
     <>
-    <About  />
+    <About />
+    <Box  gap="large">
     <Banner />
     <Box align="center" pad={{top: "medium"}}>
       <Anchor as={Text} color="#ffcc00" style={{
@@ -251,6 +252,7 @@ export default function PreSale() {
 
       </StyledLayerHow>
     }
+    </Box>
     </>
   )
 }
