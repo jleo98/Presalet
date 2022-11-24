@@ -120,19 +120,13 @@ export default function BuySection(props) {
                 !underVerification ?
                   <Box>
                     <Button primary color="#ffcc00" size="small" className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
-                      const stableBalance = await state.getStablecoinsBalance();
-                      if (stableBalance >= 300) {
-                        setUnderVerification(true)
-                        await addWallet(state.coinbase, true);
-                      } else {
-                        alert("In order to start Verification please ensure your personal wallet is funded with at least 300 worth of USD (USDT, USDC, DAI, BUSD)")
-                      }
-
+                      setUnderVerification(true)
+                      await addWallet(state.coinbase, true);
                     }} label="Join PreSale" />
                   </Box> :
                   <Box align="center" size="small">
                     <Spinner size="small" color="white" />
-                    <Text size="medium" color="white">Being goldlisted</Text>
+                    <Text size="medium" color="white">Joining PreSale</Text>
                     <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
                   </Box>
               ) :
