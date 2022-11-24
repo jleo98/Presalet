@@ -174,7 +174,7 @@ export default function BuySection(props) {
                 </StyledLayerBuy> :
                 Number(state.goldListBalance) > 0 ?
                   <Box pad={{ bottom: "xlarge" }}>
-                    <Button primary size="small" color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
+                    <Button primary size="medium" color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
                   </Box> :
                   <Text size="medium" color="white">Sale ended</Text>
           }

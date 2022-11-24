@@ -34,7 +34,7 @@ export default function PreSale() {
   return (
     <>
     <About />
-    <Box  gap="large">
+    <Box  flex={false}>
     <Banner />
     <Box align="center" pad={{top: "medium"}}>
       <Anchor as={Text} color="#ffcc00" style={{
