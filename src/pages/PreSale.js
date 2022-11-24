@@ -10,7 +10,9 @@ import {
   Anchor,
   Image,
   ResponsiveContext,
-  InfiniteScroll
+  InfiniteScroll,
+  Tab,
+  Tabs
 } from 'grommet';
 import { Youtube } from "grommet-icons";
 
@@ -75,7 +77,7 @@ export default function PreSale() {
       >
 
       <Box pad="large"  width="large" height="large">
-        <Box height={size}>
+        <Box height={"small"}>
           <Text color="#060707" textAlign="center" size="large">
             YOUR GATE TO THE GOLDEN ERA IS NOW OPEN!
           </Text>
@@ -83,91 +85,165 @@ export default function PreSale() {
             A FEW SIMPLE STEPS TO BUY SRG TOKEN WITH
           </Text>
         </Box>
-        <Box height={size} direction="row-responsive" gap="large" align="center" alignSelf="center" alignContent="center">
-
-          <Box alignSelf="center" alignContent="center" align="center" gap="small"  direction={window.innerWidth <= 500 ? "row" : "column"}>
-
-            <Box height="xxsmall" >
-              <Image src={require('../assets/trust_wallet.png')} fit="contain"/>
-            </Box>
-            <Text color="#3375BB" textAlign="center" size={size}>
-              TRUST WALLET
-            </Text>
-          </Box>
-
-        </Box>
         <Box overflow="auto" height={
           window.innerWidth <= 500 ?
           "medium":
           "xxlarge"
         }  gap="small" >
-          <InfiniteScroll items={[
-            {
-              step: "STEP 1",
-              text: "Tap the connect button to connect your wallet",
-              image: require('../assets/step1.png')
-            },
-            {
-              step: "STEP 2",
-              text: "Choose or scan your crypto wallet. Make sure you are on the Binance Smart Chain network",
-              image: require('../assets/step2.png')
-            },
-            {
-              step: "STEP 3",
-              text: "Tap Buy SRG",
-              image: require('../assets/step3.png')
-            },
-            {
-              step: "STEP 4",
-              text: "Choose your payment method and the amount",
-              image: require('../assets/step4.png')
-            },
-            {
-              step: "STEP 5",
-              text: "Tap Buy",
-              image: require('../assets/step5.png')
-            },
-            {
-              step: "STEP 6",
-              text: "Tap on the banner",
-              image: require('../assets/step6.png')
-            },
-            {
-              step: "STEP 7",
-              text: "Tap add custom token",
-              image: require('../assets/step7.png')
-            },
-            {
-              step: "STEP 8",
-              text: "Select Binance Smart Chain",
-              image: require('../assets/step8.png')
-            },
-            {
-              step: "STEP 9",
-              text: "Tap the connect button to connect your wallet",
-              image: require('../assets/step9.png')
-            }
-          ]}>
-            {(item) => (
-              <Box flex={false} background="#F9F9F9" direction="row-responsive" pad="medium">
-                <Box width="medium" pad="small" gap="small" >
-                  <Text color="#ffcc00" textAlign="left">
-                    {item.step}
-                  </Text>
-                  <Text color="#060707" textAlign="left" style={{
-                    font: "normal normal normal 20px/60px Poppins",
-                    lineHeight: "1.25"
-                  }}>
-                    {item.text}
-                  </Text>
-                </Box>
-                <Box width="xsmall"></Box>
-                <Box width={"small"}  alignContent="center" alignSelf="center" >
-                  <Image src={item.image} width="100px" fit="contain"/>
-                </Box>
+        <Tabs>
+
+          <Tab title={
+            <Box alignSelf="center" alignContent="center" align="center" gap="small"  direction={window.innerWidth <= 500 ? "row" : "column"}>
+
+              <Box height="xxsmall" >
+                <Image src={require('../assets/metamask.png')} fit="contain"/>
               </Box>
-            )}
-          </InfiniteScroll>
+              <Text color="#E4761B" textAlign="center" size={size}>
+                METAMASK
+              </Text>
+            </Box>
+
+          }>
+
+            <InfiniteScroll items={[
+              {
+                step: "STEP 1",
+                text: "Tap the connect button to connect your wallet",
+                image: require('../assets/step1.png')
+              },
+              {
+                step: "STEP 2",
+                text: "Choose or scan your crypto wallet. Make sure you are on the Binance Smart Chain network",
+                image: require('../assets/step2.png')
+              },
+              {
+                step: "STEP 3",
+                text: "Tap Buy SRG",
+                image: require('../assets/step3.png')
+              },
+              {
+                step: "STEP 4",
+                text: "Choose your payment method and the amount",
+                image: require('../assets/step4.png')
+              },
+              {
+                step: "STEP 5",
+                text: "Tap Buy",
+                image: require('../assets/step5.png')
+              },
+              {
+                step: "STEP 6",
+                text: "Tap import tokens",
+                image: require('../assets/step6_m.png')
+              },
+              {
+                step: "STEP 7",
+                text: "Put 0x5ae6862b92fe443d2c4addd9c6e65fc0c7ccddc0 in Token Address and tap IMPORT",
+                image: require('../assets/step7_m.png')
+              }
+            ]}>
+              {(item) => (
+                <Box flex={false} background="#F9F9F9" direction="row-responsive" pad="medium">
+                  <Box width="medium" pad="small" gap="small" >
+                    <Text color="#ffcc00" textAlign="left">
+                      {item.step}
+                    </Text>
+                    <Text color="#060707" textAlign="left" style={{
+                      font: "normal normal normal 20px/60px Poppins",
+                      lineHeight: "1.25"
+                    }}>
+                      {item.text}
+                    </Text>
+                  </Box>
+                  <Box width="xsmall"></Box>
+                  <Box width={"small"}  alignContent="center" alignSelf="center" >
+                    <Image src={item.image} width="100px" fit="contain"/>
+                  </Box>
+                </Box>
+              )}
+            </InfiniteScroll>
+          </Tab>
+          <Tab title={
+            <Box alignSelf="center" alignContent="center" align="center" gap="small"  direction={window.innerWidth <= 500 ? "row" : "column"}>
+
+              <Box height="xxsmall" >
+                <Image src={require('../assets/trust_wallet.png')} fit="contain"/>
+              </Box>
+              <Text color="#3375BB" textAlign="center" size={size}>
+                TRUST WALLET
+              </Text>
+            </Box>
+          }>
+
+            <InfiniteScroll items={[
+              {
+                step: "STEP 1",
+                text: "Tap the connect button to connect your wallet",
+                image: require('../assets/step1.png')
+              },
+              {
+                step: "STEP 2",
+                text: "Choose or scan your crypto wallet. Make sure you are on the Binance Smart Chain network",
+                image: require('../assets/step2.png')
+              },
+              {
+                step: "STEP 3",
+                text: "Tap Buy SRG",
+                image: require('../assets/step3.png')
+              },
+              {
+                step: "STEP 4",
+                text: "Choose your payment method and the amount",
+                image: require('../assets/step4.png')
+              },
+              {
+                step: "STEP 5",
+                text: "Tap Buy",
+                image: require('../assets/step5.png')
+              },
+              {
+                step: "STEP 6",
+                text: "Tap on the banner",
+                image: require('../assets/step6.png')
+              },
+              {
+                step: "STEP 7",
+                text: "Tap add custom token",
+                image: require('../assets/step7.png')
+              },
+              {
+                step: "STEP 8",
+                text: "Select Binance Smart Chain",
+                image: require('../assets/step8.png')
+              },
+              {
+                step: "STEP 9",
+                text: "Put 0x5ae6862b92fe443d2c4addd9c6e65fc0c7ccddc0 in Token Address and tap IMPORT",
+                image: require('../assets/step9.png')
+              }
+            ]}>
+              {(item) => (
+                <Box flex={false} background="#F9F9F9" direction="row-responsive" pad="medium">
+                  <Box width="medium" pad="small" gap="small" >
+                    <Text color="#ffcc00" textAlign="left">
+                      {item.step}
+                    </Text>
+                    <Text color="#060707" textAlign="left" style={{
+                      font: "normal normal normal 20px/60px Poppins",
+                      lineHeight: "1.25"
+                    }}>
+                      {item.text}
+                    </Text>
+                  </Box>
+                  <Box width="xsmall"></Box>
+                  <Box width={"small"}  alignContent="center" alignSelf="center" >
+                    <Image src={item.image} width="100px" fit="contain"/>
+                  </Box>
+                </Box>
+              )}
+            </InfiniteScroll>
+          </Tab>
+        </Tabs>
         </Box>
         <Button label="close" primary size="xsmall" onClick={() => setShowHow(false)} />
 
