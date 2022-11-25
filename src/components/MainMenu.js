@@ -10,9 +10,6 @@ import {
   Nav,
   Anchor,
 } from 'grommet';
-import {
-  Link
-} from 'react-router-dom';
 
 import { useAppContext } from '../hooks/useAppState';
 
@@ -25,12 +22,13 @@ export default function MainMenu(props) {
       boxShadow: "0px 3px 6px #0000001A",
     }}>
       <Box width={size}>
-        <Link to="/">
-          <Image
+        <Anchor href="https://illumisrg.io/" size="small"target="_blank">
+          <Image 
             src={require("../assets/logo.png")}
             style={{width:"150px"}}
+            href="https://illumisrg.io/" target="_blank"
           />
-        </Link>
+        </Anchor>
       </Box>
       <Nav align="center" width={size}>
       {
