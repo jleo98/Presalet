@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React,{ useState,useEffect } from 'react';
 
 import {
   Box,
@@ -6,7 +6,7 @@ import {
   Layer,
   Text,
   Spinner,
-  Anchor
+  ResponsiveContext,
 } from 'grommet';
 
 
@@ -47,6 +47,7 @@ export default function BuySection(props) {
   const [show, setShow] = useState();
 
   const [underVerification, setUnderVerification] = useState()
+  const size = React.useContext(ResponsiveContext);
 
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
@@ -78,6 +79,7 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
+
   useEffect(() => {
     let seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC, 'base16'));
     if (state.netId === 56) {
@@ -102,13 +104,12 @@ export default function BuySection(props) {
   ])
 
 
-
   return (
-    <Box margin={{ horizontal: "30%" }} >
+    <Box margin={{ horizontal: "7%" }} >
       <Box>
       {
         !state.coinbase &&
-          <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size="medium" label="Connect" onClick={state.loadWeb3Modal} />
+        <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size={size} label="Connect" onClick={state.loadWeb3Modal} />
 
       }
       </Box>
@@ -116,68 +117,68 @@ export default function BuySection(props) {
       {
         state.coinbase &&
         <>
-          {
-            !state.whitelisted ?
-              (
-                !underVerification ?
-                  <Box>
-                    <Button primary color="#ffcc00" size="small" className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
-                      setUnderVerification(true)
-                      await addWallet(state.coinbase, true);
-                    }} label="Join PreSale" />
-                  </Box> :
-                  <Box align="center" size="small">
-                    <Spinner size="small" color="white" />
-                    <Text size="medium" color="white">Joining PreSale</Text>
-                    <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
-                  </Box>
-              ) :
-              show ?
-                <StyledLayerBuy
-                  onEsc={() => {
-                    setShow(false);
-                  }}
-                  onClickOutside={() => {
-                    setShow(false);
-                  }}
-                >
-                  <Box align="left" pad="medium">
-                    <Text style={{
-                      textAlign: "left",
-                      font: "normal normal 600 20px/40px Poppins",
-                      letterSpacing: "0px",
-                      color: "black",
-                      opacity: 1,
-                      paddingBottom: "20px"
-                    }}>Payment method</Text>
-                    <Stablecoins
-                      provider={state.provider}
-                      setBusd={setBusd}
-                      busd={busd}
-                    />
-                  </Box>
+        {
+          !state.whitelisted ?
+          (
+            !underVerification ?
+              <Box>
+                <Button primary color="#ffcc00" size={size} className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
+                  setUnderVerification(true)
+                  await addWallet(state.coinbase, true);
+                }} label="Join PreSale" />
+              </Box> :
+              <Box align="center" size="small">
+                <Spinner size="small" color="white" />
+                <Text size={size} color="white">Joining PreSale</Text>
+                <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
+              </Box>
+          ) :
+          show ?
+          <StyledLayerBuy
+            onEsc={() => {
+              setShow(false);
+            }}
+            onClickOutside={() => {
+              setShow(false);
+            }}
+          >
+            <Box align="left" pad="medium">
+              <Text style={{
+                textAlign: "left",
+                font: "normal normal 600 20px/40px Poppins",
+                letterSpacing: "0px",
+                color: "black",
+                opacity: 1,
+                paddingBottom: "20px"
+              }}>Payment method</Text>
+              <Stablecoins
+                provider={state.provider}
+                setBusd={setBusd}
+                busd={busd}
+              />
+            </Box>
 
-                  {
-                    (
-                      value === "Native" ||
-                      (
-                        value === "Stablecoin" && busd
-                      )
-                    ) &&
-                    <GoldListModal
-                      value={value}
-                      busd={busd}
-                      buyTokens={buyTokens}
-                      getExpectedSrg={getExpectedSrg}
-                    />
-                  }
-                </StyledLayerBuy> :
-                Number(state.goldListBalance) > 0 ?
-                  <Box pad={{ bottom: "xlarge" }}>
-                    <Button primary size="medium" color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
-                  </Box> :
-                  <Text size="medium" color="white">Sale ended</Text>
-          }
+            {
+              (
+                value === "Native" ||
+                (
+                  value === "Stablecoin" && busd
+                )
+              ) &&
+              <GoldListModal
+                value={value}
+                busd={busd}
+                buyTokens={buyTokens}
+                getExpectedSrg={getExpectedSrg}
+              />
+            }
+          </StyledLayerBuy> :
+          Number(state.goldListBalance) > 0 ?
+          <Box pad={{ bottom: "xlarge" }}>
+            <Button primary size={size} color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
+          </Box> :
+          <Text size="medium" textAlign="center" color="white">Sale ended</Text>
+        }
         </>
       }
       </Box>

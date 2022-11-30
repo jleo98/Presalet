@@ -56,7 +56,7 @@ export default function GoldListModal(props) {
             "USD"
           }
         </Text>
-        <Box pad="small" width="large">
+        <Box pad="small" width="large" >
           <input
             placeholder="Amount"
             onChange={(e) => {
@@ -112,31 +112,29 @@ export default function GoldListModal(props) {
         }
         </Box>
         <Box width="large">
-        {
-          total > 0 && !tx ?
-            <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
-              try{
-                setTx(true);
-                setMsg("Confirm transactions (token approval and buy token) and wait confirmation")
-                await props.buyTokens(total);
-                setTx(false);
-                setMsg("")
-              } catch(err){
-                setMsg(err.reason);
-                setTx(false)
-              }
-              setTimeout(() => {
-                setMsg()
-              },3000)
-            }} label="Buy" /> :
-            <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" disabled label="Buy" />
-        }
+          <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
+            try{
+              setTx(true);
+              setMsg("Confirm transactions (token approval and buy)")
+              await props.buyTokens(total);
+              setTx(false);
+              setMsg("")
+            } catch(err){
+              setMsg(err.reason);
+              setTx(false)
+            }
+            setTimeout(() => {
+              setMsg()
+            },3000)
+          }} label={!msg && !tx ? "Buy" : "Confirm and Wait"}
+          disabled={(total === 0 || tx || msg)} />
         </Box>
-
+        <Box>
         {
           msg &&
-          <Text size="small">{msg}</Text>
+          <Text size="xsmall">{msg}</Text>
         }
+        </Box>
         </>
 
       }

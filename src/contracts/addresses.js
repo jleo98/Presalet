@@ -11,7 +11,7 @@ const addresses = {
     goerli: "0xf68a7fea591bfa6d0e912d9acb0278a7d2cd928d",
     bsctestnet: "0x5c19ec2dfd13cbdc5efa34f77f4bc83669604fa6",
     mumbai: "0x1390746a374ED3c7e38eb5D099ef9D6Ed4cA457C",
-    bsc: "0xa0139aa6994E9126Fa108863d0f314d970306F46"
+    bsc: "0xa0139aa6994e9126fa108863d0f314d970306f46" // bsc: "0x38f6dd59ec1269c04df5e4906eddabcf3ed4bca0" version no goldlisted
   },
   coldStaking: {
     goerli: "0x65c307AB0d8a745C8Ba2D81a3436dE16bb4c4050",

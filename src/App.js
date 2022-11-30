@@ -85,6 +85,13 @@ export default function App() {
 
   useEffect(() => {
     if (coinbase && goldList) {
+      const interval = setInterval(async () => {
+        const newWhitelisted = await goldList.goldList(coinbase);
+        actions.setWhitelisted(newWhitelisted);
+        if(newWhitelisted){
+          clearInterval(interval)
+        }
+      },10000);
       goldList.goldList(coinbase).then(newWhitelisted => {
         actions.setWhitelisted(newWhitelisted);
         goldList.on("GoldListAddition", async (address, status) => {
@@ -263,7 +270,7 @@ export default function App() {
                 </Layer>
               </Box>
             }
-            <Box pad={{ top: "xxsmall", bottom: "large" }} height="large" >
+            <Box pad={{ top: "xxsmall", bottom: "large" }} flex={false}>
               <Routes>
                 <Route path="/:uri" element={<Buy />} />
                 <Route path="/" element={<Buy />} />

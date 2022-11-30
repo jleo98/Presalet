@@ -23,7 +23,7 @@ export default function MainMenu(props) {
     }}>
       <Box width={size}>
         <Anchor href="https://illumisrg.io/" size="small"target="_blank">
-          <Image 
+          <Image
             src={require("../assets/logo.png")}
             style={{width:"150px"}}
             href="https://illumisrg.io/" target="_blank"
@@ -33,7 +33,7 @@ export default function MainMenu(props) {
       <Nav align="center" width={size}>
       {
         !state.coinbase ?
-        <Button style={{borderRadius: "8px"}} primary size="medium" label="Connect" color="#ffcc00" className="btn-primary" onClick={state.loadWeb3Modal}/> :
+        <Button style={{borderRadius: "8px"}} primary size={size} label="Connect" color="#ffcc00" className="btn-primary" onClick={state.loadWeb3Modal}/> :
         state.whitelisted ?
         <>
           <Text color="white" size="xsmall">Connected</Text>

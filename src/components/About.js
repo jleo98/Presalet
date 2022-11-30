@@ -1,40 +1,33 @@
 import React from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 
-import { Box, Heading, Text, Image } from "grommet";
-
-const StyledText = styled(Text)`
-    font: normal normal 600 ${window.innerWidth >= 500 ? "42px":"30px"}/62px Poppins;;
-    letter-spacing: 0px;
-    text-transform: capitalize;
-    opacity: 1;
-`;
-const StyledTextSub = styled(Text)`
-    font: normal normal 600 ${window.innerWidth >= 500 ? "28px":"22px"}/62px Poppins;;
-    letter-spacing: 0px;
-    text-transform: capitalize;
-    opacity: 1;
-`;
+import {
+  Box,
+  Text,
+  ResponsiveContext
+} from "grommet";
 
 
 
 const About = () => {
-  const { uri } = useParams();
+  const size = React.useContext(ResponsiveContext);
+
+  const StyledText = styled(Text)`
+      font: normal normal 600 ${size !== "small" ? "42px":"30px"}/62px Poppins;
+      letter-spacing: 0px;
+      height: ${size !== "small" ? "42px":"30px"}/62px Poppins
+      text-transform: capitalize;
+      opacity: 1;
+      ${size === "small" && "height: 45px;" }
+  `;
 
   return(
-    <Box align="center" pad={{vertical:"small",horizontal:"large" }} style={{minHeight: `${window.innerWidth <= 500 ? "300px" : "150px"}`}}>
-      <Box align="center" gap="medium" width="large" >
+    <Box align="center" pad={{vertical:"small",horizontal:"large" }} style={{minHeight: size}}>
+      <Box align="center" width="large" direction="row-responsive"  >
           <StyledText color="#F1F1F1" textAlign="center">
-            Welcome To The <StyledText color="#FFCC00">New Golden Era</StyledText>
+            Welcome To The 
           </StyledText>
-          {
-            uri === "eventGoldList" &&
-            <StyledTextSub color="#F1F1F1" size="28px" textAlign="center">
-              You Are Only <StyledTextSub color="#FFCC00">One Step Away</StyledTextSub> From Getting Into SRG's Gold List Spot
-            </StyledTextSub>
-          }
-
+          <StyledText  textAlign="center" color="#FFCC00">New Golden Era</StyledText>
       </Box>
     </Box>
   )
