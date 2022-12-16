@@ -2,6 +2,7 @@ import { useCallback,useMemo, useState } from "react";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 
 
 
@@ -14,7 +15,13 @@ const providerOptions = {
         56: "https://bsc-dataseed1.binance.org/"
       }
     }
-  }
+  },
+  coinbasewallet: {
+    package: CoinbaseWalletSDK,
+    options: {
+      appName: "Web3Modal Example App"
+    }
+},
 
 
 };
