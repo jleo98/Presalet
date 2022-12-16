@@ -16,14 +16,6 @@ const providerOptions = {
       }
     }
   },
-  coinbasewallet: {
-    package: CoinbaseWalletSDK,
-    options: {
-      appName: "Web3Modal Example App"
-    }
-},
-
-
 };
 
 
