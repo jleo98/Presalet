@@ -34,6 +34,25 @@ export default function HowToBuy() {
   return (
     <>
     <Box align="center" pad={{top: "medium"}}>
+      <Box align="center" alignSelf="center" width="large">
+        <Text color="white"
+          style={{
+            font: "normal normal 600 16px/24px Poppins",
+          }}
+        >
+          Please Contact a Telegram Mod for any Questions | Or Email us at: Info@Lumishare.io <br/>
+          Please use only these 3 browsers for Safe Purchase of SRG Tokens: Chrome, Mozilla or Brave.
+          Our Official Smart Contract address for SRG Tokens on Binance Smart Chain (BSC) is:
+          <Anchor
+            href="https://bscscan.com/address/0x5AE6862B92Fe443D2C4addD9C6e65Fc0C7ccdDc0"
+            target="_blank"
+            color="white"
+          > 0x5AE6862B92Fe443D2C4addD9C6e65Fc0C7ccdDc0.</Anchor> <br/>
+        </Text>
+        <Text color="red">
+          Please be aware of scams
+        </Text>
+      </Box>
       <Anchor as={Text} color="#ffcc00" style={{
         font: "normal normal 600 16px/24px Poppins",
         letterSpacing: "0px",

@@ -24,8 +24,8 @@ export default function MainMenu(props) {
       <Box width={size}>
         <Anchor href="https://illumisrg.io/" size="small"target="_blank">
           <Image
-            src={require("../assets/logo.png")}
-            style={{width:"150px"}}
+            src={require("../assets/logo-2.png")}
+            style={{maxWidth:"200px"}}
             href="https://illumisrg.io/" target="_blank"
           />
         </Anchor>
