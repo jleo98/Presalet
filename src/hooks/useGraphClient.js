@@ -39,6 +39,7 @@ function useGraphClient() {
     const results = await client.query({
       query: gql(tokensQuery)
     });
+    console.log(results)
     return (results);
   }
 

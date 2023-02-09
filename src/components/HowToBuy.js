@@ -34,7 +34,7 @@ export default function HowToBuy() {
   const size = React.useContext(ResponsiveContext);
   return (
     <>
-    <Box align="center" pad={{top: "medium"}}>
+    <Box align="center" pad={{top: "medium",horizontal: size}}>
       <Box align="center" alignSelf="center" pad={{bottom: "medium"}} width={size}>
         <Text color="white"
           style={{
@@ -51,10 +51,12 @@ export default function HowToBuy() {
             size="small"
           > 0x5AE6862B92Fe443D2C4addD9C6e65Fc0C7ccdDc0.</Anchor>
         </Text>
-        <Paragraph color="red"
+        <Paragraph
+          color="#FC5C5C"
           style={{
             font: "normal normal 600 16px/24px Poppins",
           }}
+          textAlign="center"
         >
           Please be aware of scams
         </Paragraph>

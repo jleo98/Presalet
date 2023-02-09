@@ -17,6 +17,8 @@ import {
 import { ethers } from "ethers";
 import { ChatBox } from '@orbisclub/modules'
 import "@orbisclub/modules/dist/index.modern.css";
+import TagManager from 'react-gtm-module'
+
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
 
 
@@ -32,6 +34,12 @@ import DappFooter from './components/DappFooter';
 
 import abis from "./contracts/abis";
 import addresses from "./contracts/addresses";
+
+const tagManagerArgs = {
+    gtmId: 'G-DW0T7403L8'
+};
+
+TagManager.initialize(tagManagerArgs)
 
 export default function App() {
 
@@ -82,7 +90,7 @@ export default function App() {
   useEffect(() => {
     actions.setGetStablecoinsBalance(getStablecoinsBalance);
   }, [getStablecoinsBalance])
-
+  /*
   useEffect(() => {
     if (coinbase && goldList) {
       const interval = setInterval(async () => {
@@ -103,6 +111,7 @@ export default function App() {
       })
     }
   }, [coinbase, goldList]);
+  */
   useEffect(() => {
     if (coinbase && srg) {
       srg.balanceOf(coinbase).then(newBalance => {
@@ -136,6 +145,27 @@ export default function App() {
       });
     }
   }, [goldList, srg]);
+
+  useEffect(() => {
+
+    if(TagManager && srg){
+      srg.on("TokensClaimed", async (amount,referralId) => {
+        if(referralId){
+          const args = {
+            dataLayer: {
+              event: "refferal",
+              amount: amount,
+              referralId: referralId
+            },
+            dataLayerName: "Referral Data"
+          };
+          TagManager.dataLayer(args);
+        }
+      });
+    }
+
+  }, [TagManager,srg]);
+
   useEffect(() => {
     actions.setNetId(netId)
   }, [netId])
@@ -261,7 +291,7 @@ export default function App() {
           <Box className="coins-bg">
             <MainMenu />
             {
-              netId !== 56 && //netId !== 80001 && //netId !== 137 && netId !== 5 && netId !== 56 &&
+              netId !== 56 && netId !== 80001 && //netId !== 137 && netId !== 5 && netId !== 56 &&
               <Box align="center" >
                 <Layer background="status-error" responsive={false}>
                   <Box width="medium" pad="large">
@@ -270,7 +300,7 @@ export default function App() {
                 </Layer>
               </Box>
             }
-            <Box pad={{ top: "xxsmall", bottom: "large" }} flex={false}>
+            <Box pad={{ top: "xxsmall", bottom: "small" }} flex={false}>
               <Routes>
                 <Route path="/:uri" element={<Buy />} />
                 <Route path="/" element={<Buy />} />

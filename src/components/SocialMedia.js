@@ -1,6 +1,6 @@
 import React from "react";
 import { Anchor, Box } from "grommet";
-import { FacebookOption, Instagram, Twitter,Youtube,Home } from "grommet-icons";
+import { FacebookOption, Instagram, Youtube,Home } from "grommet-icons";
 
 const SocialMedia = () => (
   <Box direction="row" gap="xxsmall" justify="center">

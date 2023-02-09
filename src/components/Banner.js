@@ -3,13 +3,10 @@ import React from 'react';
 import {
   Box,
   Text,
-  Anchor,
-  Image,
   ResponsiveContext
 } from 'grommet';
 import styled from "styled-components";
 
-import { useAppContext } from '../hooks/useAppState';
 import BuySectionNoKYC from './BuySectionNoKYC';
 
 const StyledGetStartedText = styled(Text)`

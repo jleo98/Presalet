@@ -21,7 +21,7 @@ const useAppState = () => {
     client: null,
     loadWeb3Modal: null,
     stablecoins: null,
-    whitelisted: null,
+    whitelisted: true,
     goldListBalance: null,
     coinbaseBalance: null,
     setGetStablecoinsBalance: null,

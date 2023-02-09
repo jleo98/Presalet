@@ -9,6 +9,9 @@ import {
   ResponsiveContext,
 } from 'grommet';
 
+import {
+  useParams
+} from 'react-router-dom';
 
 import { fromString } from 'uint8arrays'
 
@@ -16,7 +19,7 @@ import styled from "styled-components";
 import { ethers } from "ethers";
 
 import { useAppContext } from '../hooks/useAppState';
-import useOrbis from '../hooks/useOrbis';
+//import useOrbis from '../hooks/useOrbis';
 
 import GoldListModal from './GoldListModal';
 import Stablecoins from './Stablecoins';
@@ -40,22 +43,23 @@ const StyledLayerBuy = styled(Layer)`
 export default function BuySection(props) {
 
   const { state } = useAppContext();
-  const { connectSeed, addWallet, isUnderVerification } = useOrbis();
+  //const { connectSeed, addWallet, isUnderVerification } = useOrbis();
 
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
   const [show, setShow] = useState();
-
+  const { uri } = useParams();
   const [underVerification, setUnderVerification] = useState()
   const size = React.useContext(ResponsiveContext);
 
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
     const goldListWithSigner = state.goldList.connect(signer);
-    const amount = ethers.utils.parseEther(total).toString()
+    const amount = ethers.utils.parseEther(total).toString();
+    const refAddr = localStorage.getItem("refAddr") ? localStorage.getItem("refAddr") : ethers.constants.AddressZero;
     let tx;
     if (value === "Native") {
-      tx = await goldListWithSigner.claimTokensWithNative({
+      tx = await goldListWithSigner.claimTokensWithNative(refAddr,false,{
         value: amount
       });
     } else {
@@ -65,8 +69,7 @@ export default function BuySection(props) {
         const txApproval = await busdWithSigner.approve(state.goldList.address, amount);
         await txApproval.wait();
       }
-      const goldListWithSigner = state.goldList.connect(signer);
-      tx = await goldListWithSigner.claimTokensWithStable(busd.address, amount);
+      tx = await goldListWithSigner.claimTokensWithStable(busd.address, amount,refAddr,true);
     }
 
     await tx.wait();
@@ -79,7 +82,7 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
-
+  /*
   useEffect(() => {
     let seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC, 'base16'));
     if (state.netId === 56) {
@@ -102,6 +105,20 @@ export default function BuySection(props) {
     underVerification,
     state.coinbase
   ])
+  */
+  useEffect(() => {
+    const ref = localStorage.getItem("refAddr");
+    console.log(uri)
+    console.log(ref)
+    if(!ref && uri){
+      try{
+        const refAddr = ethers.utils.getAddress(uri);
+        localStorage.setItem("refAddr",refAddr);
+      } catch(err){
+
+      }
+    }
+  },[uri])
 
 
   return (
@@ -124,7 +141,7 @@ export default function BuySection(props) {
               <Box>
                 <Button primary color="#ffcc00" size={size} className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
                   setUnderVerification(true)
-                  await addWallet(state.coinbase, true);
+                  //await addWallet(state.coinbase, true);
                 }} label="Join PreSale" />
               </Box> :
               <Box align="center" size="small">
@@ -173,6 +190,7 @@ export default function BuySection(props) {
               />
             }
           </StyledLayerBuy> :
+          state.goldList &&
           Number(state.goldListBalance) > 0 ?
           <Box pad={{ bottom: "xlarge" }}>
             <Button primary size={size} color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />

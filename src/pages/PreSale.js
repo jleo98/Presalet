@@ -10,9 +10,7 @@ import {
 
 
 
-
 export default function PreSale() {
-
   return (
     <>
     <About />

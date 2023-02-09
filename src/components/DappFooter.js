@@ -2,9 +2,6 @@
 import {
   Footer,
   Text,
-  Box,
-  Anchor,
-  Image
 } from 'grommet';
 
 import SocialMedia from './SocialMedia';
