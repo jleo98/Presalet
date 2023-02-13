@@ -4,19 +4,19 @@ const addresses = {
   srg: {
     goerli: "0x8D9a2BFd40B529Ca5F0a60b6606aec376554add0",
     bsctestnet: "0x58C388bb71Ff2a926963cf888Cd793De700d6E9e",
-    mumbai: "0x70cc31d0c12c2eefc6e2ba4a73bbca11c21ceef6",
+    mumbai: "0x4b58e1b080bfe041982238eb9c2274f3ec50f669",
     bsc: "0x5AE6862B92Fe443D2C4addD9C6e65Fc0C7ccdDc0"
   },
   goldList: {
     goerli: "0xf68a7fea591bfa6d0e912d9acb0278a7d2cd928d",
     bsctestnet: "0x5c19ec2dfd13cbdc5efa34f77f4bc83669604fa6",
-    mumbai: "0x70cc31d0c12c2eefc6e2ba4a73bbca11c21ceef6",
+    mumbai: "0x4b58e1b080bfe041982238eb9c2274f3ec50f669",
     bsc: "0xa0139aa6994e9126fa108863d0f314d970306f46" // bsc: "0x38f6dd59ec1269c04df5e4906eddabcf3ed4bca0" version no goldlisted
   },
   coldStaking: {
     goerli: "0x65c307AB0d8a745C8Ba2D81a3436dE16bb4c4050",
     bsctestnet: "0x3D2A57136B2458a175a7eE3C4781dBa5750659D0",
-    mumbai: "0x70cc31d0c12c2eefc6e2ba4a73bbca11c21ceef6",
+    mumbai: "0x4b58e1b080bfe041982238eb9c2274f3ec50f669",
     bsc: "0x577B2EecadF6D8cA93237C849d1AF0D0bB0919B1"
   }
 };

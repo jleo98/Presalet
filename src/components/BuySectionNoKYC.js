@@ -64,7 +64,7 @@ export default function BuySection(props) {
       });
     } else {
       const allowance = await busd.allowance(state.coinbase, state.goldList.address);
-      if (amount > allowance) {
+      if (Number(amount) > allowance) {
         const busdWithSigner = busd.connect(signer);
         const txApproval = await busdWithSigner.approve(state.goldList.address, amount);
         await txApproval.wait();
@@ -191,11 +191,11 @@ export default function BuySection(props) {
             }
           </StyledLayerBuy> :
           state.goldList &&
-          Number(state.goldListBalance) > 0 ?
+          state.stablecoins &&
+          Number(state.goldListBalance) > 0 &&
           <Box pad={{ bottom: "xlarge" }}>
             <Button primary size={size} color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
-          </Box> :
-          <Text size="medium" textAlign="center" color="white">Sale ended</Text>
+          </Box>
         }
         </>
       }
