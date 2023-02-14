@@ -5,7 +5,6 @@ import {
   Button,
   Layer,
   Text,
-  Spinner,
   ResponsiveContext,
 } from 'grommet';
 
@@ -13,7 +12,6 @@ import {
   useParams
 } from 'react-router-dom';
 
-import { fromString } from 'uint8arrays'
 
 import styled from "styled-components";
 import { ethers } from "ethers";
@@ -49,7 +47,6 @@ export default function BuySection(props) {
   const [value, setValue] = useState("Stablecoin");
   const [show, setShow] = useState();
   const { uri } = useParams();
-  const [underVerification, setUnderVerification] = useState()
   const size = React.useContext(ResponsiveContext);
 
   const buyTokens = async (total) => {
@@ -82,30 +79,6 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
-  /*
-  useEffect(() => {
-    let seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC, 'base16'));
-    if (state.netId === 56) {
-      seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC_BSC, 'base16'));
-    }
-    connectSeed(seed);
-  }, [state.netId])
-
-  useEffect(() => {
-    setUnderVerification()
-  }, [state.coinbase])
-
-  useEffect(() => {
-    if (!underVerification) {
-      isUnderVerification(state.coinbase).then(newUnderVerification => {
-        setUnderVerification(newUnderVerification)
-      })
-    }
-  }, [
-    underVerification,
-    state.coinbase
-  ])
-  */
   useEffect(() => {
     const ref = localStorage.getItem("refAddr");
     console.log(uri)
@@ -135,21 +108,6 @@ export default function BuySection(props) {
         state.coinbase &&
         <>
         {
-          !state.whitelisted ?
-          (
-            !underVerification ?
-              <Box>
-                <Button primary color="#ffcc00" size={size} className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
-                  setUnderVerification(true)
-                  //await addWallet(state.coinbase, true);
-                }} label="Join PreSale" />
-              </Box> :
-              <Box align="center" size="small">
-                <Spinner size="small" color="white" />
-                <Text size={size} color="white">Joining PreSale</Text>
-                <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
-              </Box>
-          ) :
           show ?
           <StyledLayerBuy
             onEsc={() => {
@@ -196,6 +154,7 @@ export default function BuySection(props) {
           <Box pad={{ bottom: "xlarge" }}>
             <Button primary size={size} color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
           </Box>
+
         }
         </>
       }

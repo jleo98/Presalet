@@ -90,28 +90,7 @@ export default function App() {
   useEffect(() => {
     actions.setGetStablecoinsBalance(getStablecoinsBalance);
   }, [getStablecoinsBalance])
-  /*
-  useEffect(() => {
-    if (coinbase && goldList) {
-      const interval = setInterval(async () => {
-        const newWhitelisted = await goldList.goldList(coinbase);
-        actions.setWhitelisted(newWhitelisted);
-        if(newWhitelisted){
-          clearInterval(interval)
-        }
-      },10000);
-      goldList.goldList(coinbase).then(newWhitelisted => {
-        actions.setWhitelisted(newWhitelisted);
-        goldList.on("GoldListAddition", async (address, status) => {
-          if (coinbase.toLowerCase() === address.toLowerCase()) {
-            const newWhitelisted = await goldList.goldList(coinbase);
-            actions.setWhitelisted(newWhitelisted);
-          }
-        });
-      })
-    }
-  }, [coinbase, goldList]);
-  */
+
   useEffect(() => {
     if (coinbase && srg) {
       srg.balanceOf(coinbase).then(newBalance => {
