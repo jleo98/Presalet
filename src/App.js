@@ -17,10 +17,11 @@ import {
 import { ethers } from "ethers";
 import { ChatBox } from '@orbisclub/modules'
 import "@orbisclub/modules/dist/index.modern.css";
-import TagManager from 'react-gtm-module'
-
+import ReactGA from 'react-ga';
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
-
+import {
+  useParams
+} from 'react-router-dom';
 
 import { AppContext, useAppState } from './hooks/useAppState'
 
@@ -35,11 +36,9 @@ import DappFooter from './components/DappFooter';
 import abis from "./contracts/abis";
 import addresses from "./contracts/addresses";
 
-const tagManagerArgs = {
-    gtmId: 'G-DW0T7403L8'
-};
+ReactGA.initialize('G-DW0T7403L8');
 
-TagManager.initialize(tagManagerArgs)
+
 
 export default function App() {
 
@@ -48,6 +47,7 @@ export default function App() {
   const [srg, setSrg] = useState();
   const [goldList, setGoldList] = useState();
   const [stablecoins, setStablecoins] = useState();
+  const { uri } = useParams();
 
 
   const {
@@ -127,24 +127,46 @@ export default function App() {
 
   useEffect(() => {
 
-    if(TagManager && srg){
+    if(ReactGA && srg){
       srg.on("TokensClaimed", async (amount,referralId) => {
         if(referralId){
-          const args = {
-            dataLayer: {
-              event: "refferal",
-              amount: amount,
-              referralId: referralId
-            },
-            dataLayerName: "Referral Data"
-          };
-          TagManager.dataLayer(args);
+          ReactGA.event({
+            category: 'User',
+            action: 'Referral Earn',
+            data: {
+              referralId: referralId,
+              amount: amount
+            }
+          });
         }
       });
     }
 
-  }, [TagManager,srg]);
+  }, [ReactGA,srg]);
 
+  useEffect(() => {
+
+    if(uri){
+      try{
+        const refAddr = ethers.utils.getAddress(uri);
+        ReactGA.event({
+          category: 'user_referral',
+          action: 'referral_page_view',
+          label: "address",
+          value: refAddr
+        });
+      } catch(err){
+
+      }
+    }
+  },[uri])
+  useEffect(() => {
+    // Test
+    ReactGA.event({
+      category: 'user_referral',
+      action: 'Added a component'
+    })
+  },[ReactGA])
   useEffect(() => {
     actions.setNetId(netId)
   }, [netId])

@@ -81,8 +81,6 @@ export default function BuySection(props) {
 
   useEffect(() => {
     const ref = localStorage.getItem("refAddr");
-    console.log(uri)
-    console.log(ref)
     if(!ref && uri){
       try{
         const refAddr = ethers.utils.getAddress(uri);
