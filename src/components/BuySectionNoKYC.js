@@ -20,6 +20,8 @@ import { useAppContext } from '../hooks/useAppState';
 //import useOrbis from '../hooks/useOrbis';
 
 import GoldListModal from './GoldListModal';
+import StakeModal from './StakeModal';
+
 import Stablecoins from './Stablecoins';
 
 
@@ -46,6 +48,8 @@ export default function BuySection(props) {
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
   const [show, setShow] = useState();
+  const [showStake, setShowStake] = useState();
+
   const { uri } = useParams();
   const size = React.useContext(ResponsiveContext);
 
@@ -79,6 +83,23 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
+  const claimV2 = async () => {
+    let tx;
+    const signer = state.provider.getSigner();
+    const allowance = await state.srgV1.allowance(state.coinbase, state.goldList.address);
+    const balance = await state.srgV1.balanceOf(state.coinbase);
+    if(balance > allowance){
+      const srgV1WithSigner = state.srgV1.connect(signer);
+      tx = await srgV1WithSigner.approve(state.srg.address, balance);
+      await tx.wait();
+    }
+
+    const srgWithSigner = state.srg.connect(signer);
+    tx = await srgWithSigner.claimAirdrop();
+    await tx.wait();
+
+  }
+
   useEffect(() => {
     const ref = localStorage.getItem("refAddr");
     if(!ref && uri){
@@ -106,7 +127,7 @@ export default function BuySection(props) {
         state.coinbase &&
         <>
         {
-          show ?
+          show &&
           <StyledLayerBuy
             onEsc={() => {
               setShow(false);
@@ -145,12 +166,59 @@ export default function BuySection(props) {
                 getExpectedSrg={getExpectedSrg}
               />
             }
-          </StyledLayerBuy> :
+          </StyledLayerBuy>
+        }
+        {
+          showStake &&
+          <StyledLayerBuy
+            onEsc={() => {
+              setShowStake(false);
+            }}
+            onClickOutside={() => {
+              setShowStake(false);
+            }}
+          >
+            <StakeModal />
+          </StyledLayerBuy>
+        }
+        {
           state.goldList &&
           state.stablecoins &&
           Number(state.goldListBalance) > 0 &&
-          <Box pad={{ bottom: "xlarge" }}>
-            <Button primary size={size} color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
+          <Box pad={{ bottom: "xlarge" }} direction="responsive-row" alignSelf="center" gap="medium">
+            <Button
+              primary
+              size={size}
+              color="#ffcc00"
+              className="btn-primary"
+              style={{ borderRadius: "8px" }}
+              onClick={() => setShow(true)}
+              label="Buy SRG"
+            />
+            {
+              state.srgV1Balance > 0 &&
+              <Button
+                primary
+                size={size}
+                color="#ffcc00"
+                className="btn-primary"
+                style={{ borderRadius: "8px" }}
+                onClick={() => claimV2()}
+                label="Migrate V2"
+              />
+            }
+            {
+              state.coinbaseBalance> 0 &&
+              <Button
+                primary
+                size={size}
+                color="#ffcc00"
+                className="btn-primary"
+                style={{ borderRadius: "8px" }}
+                onClick={() => setShowStake(true)}
+                label="Stake SRG"
+              />
+            }
           </Box>
 
         }

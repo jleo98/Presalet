@@ -45,6 +45,7 @@ export default function App() {
   const { state, actions } = useAppState();
 
   const [srg, setSrg] = useState();
+  const [srgV1, setSrgV1] = useState();
   const [goldList, setGoldList] = useState();
   const [stablecoins, setStablecoins] = useState();
   const { uri } = useParams();
@@ -126,6 +127,22 @@ export default function App() {
   }, [goldList, srg]);
 
   useEffect(() => {
+    if (srgV1 && coinbase) {
+      srgV1.balanceOf(coinbase).then(balance => {
+        actions.setSrgV1Balance(balance.toString());
+        srgV1.on("Transfer", async (from, to, value) => {
+          if (
+            from.toLowerCase() === coinbase.toLowerCase()
+          ) {
+            const newSrgV1Balance = await srgV1.balanceOf(coinbase);
+            actions.setSrgV1Balance(newSrgV1Balance.toString());
+          }
+        });
+      });
+    }
+  }, [srgV1, coinbase]);
+
+  useEffect(() => {
 
     if(ReactGA && srg){
       srg.on("TokensClaimed", async (amount,referralId) => {
@@ -174,6 +191,9 @@ export default function App() {
     actions.setSrg(srg)
   }, [srg])
   useEffect(() => {
+    actions.setSrgV1(srgV1)
+  }, [srgV1])
+  useEffect(() => {
     actions.setGoldList(goldList)
   }, [goldList])
   useEffect(() => {
@@ -191,7 +211,7 @@ export default function App() {
   useEffect(() => {
     // Goerli
 
-    let newSrg, newGoldList, newColdStaking
+    let newSrg, newGoldList, newColdStaking, newSrgV1
     if (netId === 5) {
       newSrg = new ethers.Contract(addresses.srg.goerli, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.goerli, abis.goldList, provider);
@@ -200,6 +220,7 @@ export default function App() {
     if (netId === 80001) {
       newSrg = new ethers.Contract(addresses.srg.mumbai, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.mumbai, abis.goldList, provider);
+      newSrgV1 = new ethers.Contract(addresses.srgV1.mumbai, abis.srg, provider);
 
     }
     if (netId === 97) {
@@ -216,6 +237,7 @@ export default function App() {
     }
     setSrg(newSrg);
     setGoldList(newGoldList);
+    setSrgV1(newSrgV1);
   }, [netId]);
   useMemo(async () => {
     if (client && !stablecoins) {

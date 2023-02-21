@@ -36,20 +36,22 @@ export default function Banner() {
     <Box align="center" flex={false} gap={size} pad={{ horizontal: "large", top: "small" }} >
 
       <Box alignContent={size === "small" ? "center" : "left"} pad={{ top: "xsmall" }} width="large" >
-        <StyledGetStartedText direction="horizontal" color="#FFCC00">
-          Get Started
-        </StyledGetStartedText>
-        <StyledText color="#F1F1F1">
-          Buy SRG
+        <StyledText direction="horizontal" color="#FFCC00">
+          Pre-Sale Is
         </StyledText>
-        <Box background="#F1F1F121" pad="medium" align="justify" gap="medium">
+        <StyledText color="#FFCC00">
+          Closed
+        </StyledText>
+        <Box background="black" direction="row" alignSelf="center" alignContent="center" pad="medium"  gap="medium">
           <Box gap="xsmall" align="center">
-            <Text weight="bold" color="white" size={size}>Pre Sale Price (Live Now, 4Q 2022):</Text>
-            <Text weight="bold" color="white" size={size}>US$ 0.12 per SRG token</Text>
+            <Text weight="bold" color="white" size={"small"}>Pre Sale Price</Text>
+            <Text weight="bold" color="#FFCC00" size={size}>US$ 0.12</Text>
+            <Text weight="bold" color="white" size={"small"}>Per SRG token</Text>
           </Box>
           <Box gap="xsmall" align="center">
-            <Text weight="bold" color="white" size={size}>CEX, DEX Listing Price (1Q 2023): </Text>
-            <Text weight="bold" color="white" size={size}>US$ 0.18 per SRG token (Starting price)</Text>
+          <Text weight="bold" color="white" size={"small"}>CEX, DEX Listing Price <small>(1Q 2023)</small></Text>
+            <Text weight="bold" color="#FFCC00">US$ 0.18</Text>
+            <Text weight="bold" color="white" size={"small"}>Per SRG token</Text>
           </Box>
         </Box>
       </Box>
