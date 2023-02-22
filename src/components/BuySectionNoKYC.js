@@ -49,6 +49,7 @@ export default function BuySection(props) {
   const [value, setValue] = useState("Stablecoin");
   const [show, setShow] = useState();
   const [showStake, setShowStake] = useState();
+  const [stakeActive, setStakingActive] = useState();
 
   const { uri } = useParams();
   const size = React.useContext(ResponsiveContext);
@@ -112,6 +113,13 @@ export default function BuySection(props) {
     }
   },[uri])
 
+  useEffect(() => {
+    if(state.srg){
+      state.srg.stakingActive(active => {
+        setStakingActive(active);
+      })
+    }
+  },[state.srg])
 
   return (
     <Box margin={{ horizontal: "7%" }} >
@@ -208,7 +216,7 @@ export default function BuySection(props) {
               />
             }
             {
-              state.coinbaseBalance> 0 &&
+              state.coinbaseBalance> 0 && stakeActive &&
               <Button
                 primary
                 size={size}
