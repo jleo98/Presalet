@@ -3,11 +3,13 @@ import { useState,useEffect } from 'react';
 import {
   Box,
   Text,
-  Button
+  Button,
+  InfiniteScroll
 } from 'grommet';
 import { ethers } from "ethers";
 
 import { useAppContext } from '../hooks/useAppState';
+import useGraphClient from '../hooks/useGraphClient';
 
 
 
@@ -18,6 +20,7 @@ export default function StakeModal(props) {
 
   const [total, setTotal] = useState();
   const [totalMonths, setTotalMonths] = useState();
+  const [staked,setStaked] = useState();
 
   const [msg,setMsg] = useState();
   const [tx,setTx] = useState();
@@ -30,8 +33,19 @@ export default function StakeModal(props) {
     const tx = await srgWithSigner.stake(amount,Number(totalMonths)*24*30);
 
     await tx.wait();
-
+    await checkStakes();
   }
+
+  const checkStakes = async () => {
+    const newStaked = await state.getStakes(state.coinbase);
+    setStaked(newStaked);
+  }
+
+  useEffect(() => {
+    if(state.coinbase){
+      checkStakes();
+    }
+  },[state.coinbase])
 
 
   return (
@@ -115,6 +129,44 @@ export default function StakeModal(props) {
           <Text size="xsmall">{msg}</Text>
         }
         </Box>
+        <Box>
+        {
+          staked?.data.stakers[0] &&
+          <Text size="small">Total Staked: {(staked.data.stakers[0].totalStaked/10**18)} SRG</Text>
+        }
+        </Box>
+
+        {
+          staked?.data.stakes?.length > 0 &&
+          <Box height="xsmall" overflow="auto">
+            <Box
+              flex={false}
+              pad="xsmall"
+              direction="row-responsive"
+              gap="small"
+              alignSelf="center"
+            >
+              <Text size="xsmall">ID</Text>
+              <Text size="xsmall">Amount SRG</Text>
+              <Text size="xsmall">Deadline</Text>
+            </Box>
+            <InfiniteScroll items={staked.data.stakes}>
+              {(item) => (
+                <Box
+                  flex={false}
+                  pad="medium"
+                  direction="row-responsive"
+                  gap="small"
+                  background={`light-${(Number(item.id) % 3) + 1}`}
+                >
+                  <Text size="small">{item.id}</Text>
+                  <Text size="small">{item.amountStaked/10**18} SRG</Text>
+                  <Text size="small">{item.deadline}</Text>
+                </Box>
+              )}
+            </InfiniteScroll>
+          </Box>
+        }
         </>
 
       }

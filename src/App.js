@@ -61,7 +61,8 @@ export default function App() {
   const {
     client,
     initiateClient,
-    getStablecoins
+    getStablecoins,
+    getStakes
   } = useGraphClient();
 
 
@@ -205,6 +206,7 @@ export default function App() {
   }, [stablecoins])
 
 
+
   useEffect(() => {
     initiateClient(netId);
   }, [netId]);
@@ -255,6 +257,7 @@ export default function App() {
         })
       );
       setStablecoins(newStablecoins);
+      actions.setGetStakes(getStakes)
     }
   }, [client, stablecoins])
 

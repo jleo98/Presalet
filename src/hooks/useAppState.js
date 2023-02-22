@@ -26,7 +26,8 @@ const useAppState = () => {
     coinbaseBalance: null,
     setGetStablecoinsBalance: null,
     srgV1Balance: null,
-    srgV1: null
+    srgV1: null,
+    getStakes: null
   }
 
   // Manage the state using React.useState()
@@ -84,6 +85,9 @@ const getActions = (setState) => ({
   },
   setSrgV1Balance: (srgV1Balance) => {
     setState((state) => ({ ...state, srgV1Balance: srgV1Balance }))
+  },
+  setGetStakes: (getStakes) => {
+    setState((state) => ({ ...state, getStakes: getStakes }))
   },
 })
 
