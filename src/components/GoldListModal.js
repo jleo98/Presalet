@@ -92,22 +92,26 @@ export default function GoldListModal(props) {
            opacity: 1,
            lineHeight: 1.2
          }}>Buying {srgExpect} SRG</Text>
-         <Text size="xsmall" style={{
-          textAlign: "center",
-          font: "normal normal normal 16px/40px Poppins",
-          letterSpacing: "0px",
-          color: "#8F979E",
-          opacity: 1,
-          lineHeight: 1.2
-        }}>Fee {srgExpect*0.018} SRG</Text>
-        <Text size="xsmall" style={{
-         textAlign: "center",
-         font: "normal normal normal 16px/40px Poppins",
-         letterSpacing: "0px",
-         color: "#8F979E",
-         opacity: 1,
-         lineHeight: 1.2
-       }}>Receiving {srgExpect*0.982} SRG</Text>
+         {
+           /*
+           <Text size="xsmall" style={{
+            textAlign: "center",
+            font: "normal normal normal 16px/40px Poppins",
+            letterSpacing: "0px",
+            color: "#8F979E",
+            opacity: 1,
+            lineHeight: 1.2
+          }}>Fee {srgExpect*0.018} SRG</Text>
+          <Text size="xsmall" style={{
+           textAlign: "center",
+           font: "normal normal normal 16px/40px Poppins",
+           letterSpacing: "0px",
+           color: "#8F979E",
+           opacity: 1,
+           lineHeight: 1.2
+         }}>Receiving {srgExpect*0.982} SRG</Text>
+           */
+         }
          </>
         }
         </Box>

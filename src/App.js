@@ -311,7 +311,7 @@ export default function App() {
             <ChatBox context="kjzl6cwe1jw14808eb8yfpg3g3olvhi4os1n089xyoji6jekrsit97xtxyo9t0z" poweredByOrbis="black" />
             */
           }
-          <Box className="coins-bg">
+          <Box>
             <MainMenu />
             {
               netId !== 56 && netId !== 80001 && //netId !== 137 && netId !== 5 && netId !== 56 &&

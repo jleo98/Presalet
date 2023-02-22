@@ -17,22 +17,17 @@ export default function StakeModal(props) {
 
 
   const [total, setTotal] = useState();
-  const [totalHours, setTotalHours] = useState();
+  const [totalMonths, setTotalMonths] = useState();
 
   const [msg,setMsg] = useState();
   const [tx,setTx] = useState();
 
-  const stakeTokens = async (total) => {
+  const stakeTokens = async () => {
     const signer = state.provider.getSigner();
     const srgWithSigner = state.srg.connect(signer);
     const amount = ethers.utils.parseEther(total).toString();
 
-    const allowance = await state.srg.allowance(state.coinbase, state.srg.address);
-    if (Number(amount) > allowance) {
-      const txApproval = await srgWithSigner.approve(state.srg.address, amount);
-      await txApproval.wait();
-    }
-    const tx = await srgWithSigner.stake(state.srg.address, amount);
+    const tx = await srgWithSigner.stake(amount,Number(totalMonths)*24*30);
 
     await tx.wait();
 
@@ -73,22 +68,19 @@ export default function StakeModal(props) {
          />
         </Box>
         <Text style={{color: "black",font:"normal normal 600 20px/40px Poppins"}}>
-          Hours of Staking
+          Months of Staking
         </Text>
         <Box pad="small" width="large" >
           <input
-            placeholder="Hours"
+            placeholder="Month(s)"
             onChange={(e) => {
 
-              if(e.target.value <= 1){
-                e.target.value = 1
-              }
-              setTotalHours(e.target.value)
+              setTotalMonths(e.target.value)
             }}
             type="number"
             step="1"
             min={1}
-            value={totalHours}
+            value={totalMonths}
             style={{
               background: "#FFFFFF 0% 0% no-repeat padding-box",
               border: "3px solid #E6E6E6",
@@ -103,8 +95,8 @@ export default function StakeModal(props) {
           <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
             try{
               setTx(true);
-              setMsg("Confirm transactions (token approval and stake)")
-              await stakeTokens(total);
+              setMsg("Confirm transaction")
+              await stakeTokens();
               setTx(false);
               setMsg("")
             } catch(err){
