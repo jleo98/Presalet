@@ -20,8 +20,8 @@ const TrustedBy = () => (
       <Paragraph size="small" textAlign="center" color="white" style={{font: "normal normal normal 18px/27px Poppins"}}>
         Audit By
       </Paragraph>
-      <Box width="xsmall" as={Anchor} href="https://www.cyberscope.io/" target="_blank">
-        <Image src="https://illumisrg.io/wp-content/uploads/2022/07/Cyber-Scope-Logo@2x.d110a0.webp" fit="cover" />
+      <Box width="xsmall" as={Anchor} href="https://www.certik.com/" target="_blank">
+        <Image src={require("../assets/certik-logo.png")} fit="cover" />
       </Box>
     </Box>
   </Box>
