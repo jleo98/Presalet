@@ -18,6 +18,7 @@ import { ethers } from "ethers";
 import { ChatBox } from '@orbisclub/modules'
 import "@orbisclub/modules/dist/index.modern.css";
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
+import ReactGA from "react-ga4";
 
 import { AppContext, useAppState } from './hooks/useAppState'
 
@@ -33,6 +34,10 @@ import abis from "./contracts/abis";
 import addresses from "./contracts/addresses";
 
 
+ReactGA.initialize('G-DW0T7403L8',{
+  debug: true,
+  titleCase: false
+});
 
 
 export default function App() {

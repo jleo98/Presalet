@@ -40,7 +40,6 @@ const StyledLayerBuy = styled(Layer)`
 
 
 
-
 export default function BuySection(props) {
 
   const { state } = useAppContext();
@@ -83,10 +82,8 @@ export default function BuySection(props) {
       ReactGA.event({
         category: 'user_referral',
         action: 'referral_earn',
-        data: {
-          referralId: refAddr,
-          amount: amount
-        }
+        label: `addr:${refAddr}`,
+        value: amount
       });
     }
 
@@ -116,11 +113,6 @@ export default function BuySection(props) {
   }
 
   useEffect(()=>{
-    ReactGA.initialize('G-DW0T7403L8',{
-      debug: true,
-      titleCase: false,
-      siteSpeedSampleRate: 100
-    });
     // Send pageview with a custom path
     ReactGA.send({ hitType: "pageview", page: window.location.href });
   },[])
@@ -142,7 +134,7 @@ export default function BuySection(props) {
       ReactGA.event({
         category: 'user_referral',
         action: 'referral_page_view',
-        label: ref
+        label: `addr:${ref}`
       });
     }
   },[uri,state.coinbase])
