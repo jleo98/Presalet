@@ -17,11 +17,7 @@ import {
 import { ethers } from "ethers";
 import { ChatBox } from '@orbisclub/modules'
 import "@orbisclub/modules/dist/index.modern.css";
-import ReactGA from 'react-ga';
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
-import {
-  useParams
-} from 'react-router-dom';
 
 import { AppContext, useAppState } from './hooks/useAppState'
 
@@ -36,7 +32,6 @@ import DappFooter from './components/DappFooter';
 import abis from "./contracts/abis";
 import addresses from "./contracts/addresses";
 
-ReactGA.initialize('G-DW0T7403L8');
 
 
 
@@ -48,7 +43,6 @@ export default function App() {
   const [srgV1, setSrgV1] = useState();
   const [goldList, setGoldList] = useState();
   const [stablecoins, setStablecoins] = useState();
-  const { uri } = useParams();
 
 
   const {
@@ -143,48 +137,9 @@ export default function App() {
     }
   }, [srgV1, coinbase]);
 
-  useEffect(() => {
 
-    if(ReactGA && srg){
-      srg.on("TokensClaimed", async (amount,referralId) => {
-        if(referralId){
-          ReactGA.event({
-            category: 'User',
-            action: 'Referral Earn',
-            data: {
-              referralId: referralId,
-              amount: amount
-            }
-          });
-        }
-      });
-    }
 
-  }, [ReactGA,srg]);
 
-  useEffect(() => {
-
-    if(uri){
-      try{
-        const refAddr = ethers.utils.getAddress(uri);
-        ReactGA.event({
-          category: 'user_referral',
-          action: 'referral_page_view',
-          label: "address",
-          value: refAddr
-        });
-      } catch(err){
-
-      }
-    }
-  },[uri])
-  useEffect(() => {
-    // Test
-    ReactGA.event({
-      category: 'user_referral',
-      action: 'Added a component'
-    })
-  },[ReactGA])
   useEffect(() => {
     actions.setNetId(netId)
   }, [netId])

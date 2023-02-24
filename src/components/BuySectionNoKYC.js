@@ -15,6 +15,7 @@ import {
 
 import styled from "styled-components";
 import { ethers } from "ethers";
+import ReactGA from "react-ga4";
 
 import { useAppContext } from '../hooks/useAppState';
 //import useOrbis from '../hooks/useOrbis';
@@ -48,6 +49,8 @@ export default function BuySection(props) {
   const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
   const [show, setShow] = useState();
+  const [migratingV2, setMigratingV2] = useState();
+
   const [showStake, setShowStake] = useState();
   const [stakeActive, setStakingActive] = useState();
 
@@ -76,6 +79,17 @@ export default function BuySection(props) {
 
     await tx.wait();
 
+    if(refAddr !== ethers.constants.AddressZero){
+      ReactGA.event({
+        category: 'user_referral',
+        action: 'referral_earn',
+        data: {
+          referralId: refAddr,
+          amount: amount
+        }
+      });
+    }
+
   }
 
 
@@ -101,17 +115,37 @@ export default function BuySection(props) {
 
   }
 
+  useEffect(()=>{
+    ReactGA.initialize('G-DW0T7403L8',{
+      debug: true,
+      titleCase: false,
+      siteSpeedSampleRate: 100
+    });
+    // Send pageview with a custom path
+    ReactGA.send({ hitType: "pageview", page: window.location.href });
+  },[])
+
   useEffect(() => {
-    const ref = localStorage.getItem("refAddr");
-    if(!ref && uri){
+    let ref = localStorage.getItem("refAddr");
+    if(!ref && uri && state.coinbase){
       try{
         const refAddr = ethers.utils.getAddress(uri);
+        if(refAddr.toLowerCase() === state.coinbase.toLowerCase()) return;
         localStorage.setItem("refAddr",refAddr);
+        ref = refAddr
+
       } catch(err){
 
       }
     }
-  },[uri])
+    if(ref){
+      ReactGA.event({
+        category: 'user_referral',
+        action: 'referral_page_view',
+        label: ref
+      });
+    }
+  },[uri,state.coinbase])
 
   useEffect(() => {
     if(state.srg){
@@ -211,8 +245,19 @@ export default function BuySection(props) {
                 color="#ffcc00"
                 className="btn-primary"
                 style={{ borderRadius: "8px" }}
-                onClick={() => claimV2()}
-                label="Migrate V2"
+                onClick={async () => {
+                    try{
+                      setMigratingV2(true);
+                      await claimV2()
+                      setMigratingV2(false);
+                    } catch(err){
+                      console.log(err)
+                      setMigratingV2(false);
+                    }
+                  }
+                }
+                label={migratingV2 ? "Migrating" : "Migrate V2"}
+                disabled={migratingV2}
               />
             }
             {
