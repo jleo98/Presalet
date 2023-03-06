@@ -277,7 +277,7 @@ export default function App() {
           <Box>
             <MainMenu />
             {
-              netId !== 56 && netId !== 80001 && //netId !== 137 && netId !== 5 && netId !== 56 &&
+              netId !== 56 && // netId !== 80001 && //netId !== 137 && netId !== 5 && netId !== 56 &&
               <Box align="center" >
                 <Layer background="status-error" responsive={false}>
                   <Box width="medium" pad="large">
