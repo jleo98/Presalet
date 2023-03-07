@@ -23,7 +23,7 @@ const addresses = {
     goerli: "0x65c307AB0d8a745C8Ba2D81a3436dE16bb4c4050",
     bsctestnet: "0x3D2A57136B2458a175a7eE3C4781dBa5750659D0",
     mumbai: "0x5f4395996479eF6ff57da6f28779Cc8EA2350258",
-    bsc: "0x577B2EecadF6D8cA93237C849d1AF0D0bB0919B1"
+    bsc: "0x5ae6862b92fe443d2c4addd9c6e65fc0c7ccddc0"
   }
 };
 
