@@ -98,10 +98,7 @@ export default function BuySection(props) {
   const claimV2 = async () => {
     let tx;
     const signer = state.provider.getSigner();
-    alert(state.coinbase)
-    alert(state.srg.address)
     const allowance = await state.srgV1.allowance(state.coinbase, state.srg.address);
-    alert(allowance)
     const balance = await state.srgV1.balanceOf(state.coinbase);
     if(balance > allowance){
       const srgV1WithSigner = state.srgV1.connect(signer);
