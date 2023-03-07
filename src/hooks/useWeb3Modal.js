@@ -25,8 +25,8 @@ const web3Modal = new Web3Modal({
 });
 
 function useWeb3Modal(config = {}) {
-  //const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org/"));
-  const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
+  const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org/"));
+  //const [provider, setProvider] = useState(new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com"));
   const [coinbase, setCoinbase] = useState();
   const [netId , setNetId] = useState(56);
   const [connecting , setConnecting] = useState();

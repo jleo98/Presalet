@@ -129,13 +129,13 @@ export default function App() {
   useEffect(() => {
     if (srgV1 && coinbase) {
       srgV1.balanceOf(coinbase).then(balance => {
-        actions.setSrgV1Balance(balance.toString());
+        actions.setSrgV1Balance(balance);
         srgV1.on("Transfer", async (from, to, value) => {
           if (
             from.toLowerCase() === coinbase.toLowerCase()
           ) {
             const newSrgV1Balance = await srgV1.balanceOf(coinbase);
-            actions.setSrgV1Balance(newSrgV1Balance.toString());
+            actions.setSrgV1Balance(newSrgV1Balance);
           }
         });
       });
@@ -174,28 +174,17 @@ export default function App() {
     // Goerli
 
     let newSrg, newGoldList, newColdStaking, newSrgV1
-    if (netId === 5) {
-      newSrg = new ethers.Contract(addresses.srg.goerli, abis.srg, provider);
-      newGoldList = new ethers.Contract(addresses.goldList.goerli, abis.goldList, provider);
-    }
     // Mumbai
     if (netId === 80001) {
       newSrg = new ethers.Contract(addresses.srg.mumbai, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.mumbai, abis.goldList, provider);
       newSrgV1 = new ethers.Contract(addresses.srgV1.mumbai, abis.srg, provider);
-
     }
-    if (netId === 97) {
-      newSrg = new ethers.Contract(addresses.srg.bsctestnet, abis.srg, provider);
-      newGoldList = new ethers.Contract(addresses.goldList.bsctestnet, abis.goldList, provider);
-      newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
-    }
-
     if (netId === 56) {
       newSrg = new ethers.Contract(addresses.srg.bsc, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.bsc, abis.goldList, provider);
-      newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
-
+      newColdStaking = new ethers.Contract(addresses.coldStaking.bsc, abis.coldStaking, provider);
+      newSrgV1 = new ethers.Contract(addresses.srgV1.bsc, abis.srg, provider);
     }
     setSrg(newSrg);
     setGoldList(newGoldList);

@@ -98,7 +98,10 @@ export default function BuySection(props) {
   const claimV2 = async () => {
     let tx;
     const signer = state.provider.getSigner();
+    alert(state.coinbase)
+    alert(state.srg.address)
     const allowance = await state.srgV1.allowance(state.coinbase, state.srg.address);
+    alert(allowance)
     const balance = await state.srgV1.balanceOf(state.coinbase);
     if(balance > allowance){
       const srgV1WithSigner = state.srgV1.connect(signer);
@@ -156,7 +159,6 @@ export default function BuySection(props) {
 
       }
       </Box>
-      <Box>
       {
         state.coinbase &&
         <>
@@ -215,11 +217,11 @@ export default function BuySection(props) {
             <StakeModal />
           </StyledLayerBuy>
         }
+        <Box pad={{ bottom: "xlarge" }} direction="responsive-row" alignSelf="center" gap="medium">
         {
           state.goldList &&
           state.stablecoins &&
           Number(state.goldListBalance) > 0 &&
-          <Box pad={{ bottom: "xlarge" }} direction="responsive-row" alignSelf="center" gap="medium">
             <Button
               primary
               size={size}
@@ -229,48 +231,46 @@ export default function BuySection(props) {
               onClick={() => setShow(true)}
               label="Buy SRG"
             />
-            {
-              state.srgV1Balance > 0 &&
-              <Button
-                primary
-                size={size}
-                color="#ffcc00"
-                className="btn-primary"
-                style={{ borderRadius: "8px" }}
-                onClick={async () => {
-                    try{
-                      setMigratingV2(true);
-                      await claimV2()
-                      setMigratingV2(false);
-                    } catch(err){
-                      console.log(err)
-                      setMigratingV2(false);
-                    }
-                  }
+          }
+        {
+          state.srgV1Balance > 0 &&
+          <Button
+            primary
+            size={size}
+            color="#ffcc00"
+            className="btn-primary"
+            style={{ borderRadius: "8px" }}
+            onClick={async () => {
+                try{
+                  setMigratingV2(true);
+                  await claimV2()
+                  setMigratingV2(false);
+                } catch(err){
+                  console.log(err)
+                  setMigratingV2(false);
                 }
-                label={migratingV2 ? "Migrating" : "Migrate V2"}
-                disabled={migratingV2}
-              />
+              }
             }
-            {
-              state.coinbaseBalance> 0 && stakeActive &&
-              <Button
-                primary
-                size={size}
-                color="#ffcc00"
-                className="btn-primary"
-                style={{ borderRadius: "8px" }}
-                onClick={() => setShowStake(true)}
-                label="Stake SRG"
-              />
-            }
-          </Box>
-
+            label={migratingV2 ? "Migrating" : "Migrate V2"}
+            disabled={migratingV2}
+          />
         }
-        </>
-      }
-      </Box>
+        {
+          state.coinbaseBalance> 0 && stakeActive &&
+          <Button
+            primary
+            size={size}
+            color="#ffcc00"
+            className="btn-primary"
+            style={{ borderRadius: "8px" }}
+            onClick={() => setShowStake(true)}
+            label="Stake SRG"
+          />
+        }
+        </Box>
 
+      </>
+    }
     </Box>
   )
 }
