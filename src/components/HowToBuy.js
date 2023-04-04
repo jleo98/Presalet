@@ -27,8 +27,12 @@ const StyledLayerHow = styled(Layer)`
   opacity: 1;
 `;
 
+import { useAppContext } from '../hooks/useAppState';
+
+
 export default function HowToBuy() {
 
+  const { state } = useAppContext();
 
   const [showHow, setShowHow] = useState();
   const size = React.useContext(ResponsiveContext);
@@ -57,11 +61,11 @@ export default function HowToBuy() {
         >
           Our Official Smart Contract address for SRG Tokens on Binance Smart Chain (BSC) is:
           <Anchor
-            href="https://bscscan.com/address/0x5AE6862B92Fe443D2C4addD9C6e65Fc0C7ccdDc0"
+            href={`https://bscscan.com/address/${state.srg?.address}`}
             target="_blank"
             color="white"
             size="small"
-          > 0x5AE6862B92Fe443D2C4addD9C6e65Fc0C7ccdDc0.</Anchor>
+          >{state.srg?.address}</Anchor>
         </Text>
         <Paragraph
           color="#FC5C5C"
