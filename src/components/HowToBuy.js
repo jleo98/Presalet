@@ -16,6 +16,7 @@ import {
 import { Youtube } from "grommet-icons";
 
 import styled from "styled-components";
+import { useAppContext } from '../hooks/useAppState';
 
 
 const StyledLayerHow = styled(Layer)`
@@ -27,7 +28,6 @@ const StyledLayerHow = styled(Layer)`
   opacity: 1;
 `;
 
-import { useAppContext } from '../hooks/useAppState';
 
 
 export default function HowToBuy() {
