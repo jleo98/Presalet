@@ -33,7 +33,7 @@ export default function Banner() {
       <Box background="black" direction="row" alignSelf="center" alignContent="center" pad="medium"  gap="medium">
         <Box gap="small" align="center">
           <Text weight="bold" color="white" size={"medium"}>Exclusive Price</Text>
-          <Text weight="bold" className="golden_heading" size={"large"}>US$ 0.35</Text>
+          <Text weight="bold" className="golden_heading" size={"large"}>US$ 0.135</Text>
           <Text weight="bold" color="white" size={"medium"}>Per $LUMI Token</Text>
           <Text weight="bold" color="white" size={"xsmall"}>(10% discount on the Launchpad price of $0.15)</Text>
 

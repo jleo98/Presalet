@@ -3,7 +3,7 @@ import { Anchor, Box } from "grommet";
 import { FacebookOption, Instagram, Youtube,Home } from "grommet-icons";
 
 const SocialMedia = () => (
-  <Box direction="row" gap="xxsmall" justify="center">
+  <Box direction="row" gap="xxsmall" justify="center" alignSelf="center" alignContent="center">
     <Anchor
       icon={<Home color="white" size="medium" />}
       href="https://lumishare.io/"
