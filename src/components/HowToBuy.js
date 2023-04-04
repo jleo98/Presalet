@@ -34,15 +34,27 @@ export default function HowToBuy() {
   const size = React.useContext(ResponsiveContext);
   return (
     <>
-    <Box align="center" pad={{top: "medium",horizontal: size}}>
-      <Box align="center" alignSelf="center" pad={{bottom: "medium"}} width={size}>
+    <Box align="center" direction="row-responsive" gap="medium" pad={{top: "large",horizontal: size}}>
+      <Box align="left" alignSelf="center" width={"large"}>
         <Text color="white"
           style={{
             font: "normal normal 600 16px/24px Poppins",
           }}
         >
           Please Contact a Telegram Mod for any Questions | Or Email us at: Info@Lumishare.io
+        </Text>
+        <Text color="white"
+          style={{
+            font: "normal normal 600 16px/24px Poppins",
+          }}
+        >
           Please use only these 3 browsers for Safe Purchase of SRG Tokens: Chrome, Mozilla or Brave.
+        </Text>
+        <Text color="white"
+          style={{
+            font: "normal normal 600 16px/24px Poppins",
+          }}
+        >
           Our Official Smart Contract address for SRG Tokens on Binance Smart Chain (BSC) is:
           <Anchor
             href="https://bscscan.com/address/0x5AE6862B92Fe443D2C4addD9C6e65Fc0C7ccdDc0"
@@ -61,15 +73,19 @@ export default function HowToBuy() {
           Please be aware of scams
         </Paragraph>
       </Box>
-      <Anchor as={Text} color="#ffcc00" style={{
-        font: "normal normal 600 16px/24px Poppins",
-        letterSpacing: "0px",
-        textTransform: "capitalize",
-      }}
-        onClick={() => {setShowHow(true)}}>
-        How to Buy ?
-      </Anchor>
-      <Box alignSelf="center" align="center" height={size} pad={{top:"small"}}>
+      {
+        /*
+        <Anchor as={Text} color="#ffcc00" style={{
+          font: "normal normal 600 16px/24px Poppins",
+          letterSpacing: "0px",
+          textTransform: "capitalize",
+        }}
+          onClick={() => {setShowHow(true)}}>
+          How to Buy ?
+        </Anchor>
+        */
+      }
+      <Box alignSelf="center" align="center" >
         <Text
         as={Anchor}
         color="#060707"

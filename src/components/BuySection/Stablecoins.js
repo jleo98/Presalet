@@ -7,9 +7,9 @@ import {
 } from 'grommet';
 import { ethers } from "ethers";
 
-import abis from "../contracts/abis";
+import abis from "../../contracts/abis";
 
-import { useAppContext } from '../hooks/useAppState';
+import { useAppContext } from '../../hooks/useAppState';
 
 
 export default function Stablecoins(props) {

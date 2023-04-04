@@ -4,8 +4,8 @@ import {
   Text,
 } from 'grommet';
 
-import SocialMedia from './SocialMedia';
-import TrustedBy from './TrustedBy';
+import SocialMedia from './Footer/SocialMedia';
+import TrustedBy from './Footer/TrustedBy';
 
 export default function DappFooter() {
 

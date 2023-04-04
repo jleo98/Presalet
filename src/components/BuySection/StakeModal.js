@@ -8,8 +8,8 @@ import {
 } from 'grommet';
 import { ethers } from "ethers";
 
-import { useAppContext } from '../hooks/useAppState';
-import useGraphClient from '../hooks/useGraphClient';
+import { useAppContext } from '../../hooks/useAppState';
+import useGraphClient from '../../hooks/useGraphClient';
 
 
 

@@ -5,6 +5,7 @@ import {
   Button,
   Layer,
   Text,
+  Image,
   ResponsiveContext,
 } from 'grommet';
 
@@ -20,10 +21,10 @@ import ReactGA from "react-ga4";
 import { useAppContext } from '../hooks/useAppState';
 //import useOrbis from '../hooks/useOrbis';
 
-import GoldListModal from './GoldListModal';
-import StakeModal from './StakeModal';
+import GoldListModal from './BuySection/GoldListModal';
+import StakeModal from './BuySection/StakeModal';
 
-import Stablecoins from './Stablecoins';
+import Stablecoins from './BuySection/Stablecoins';
 
 
 
@@ -152,7 +153,7 @@ export default function BuySection(props) {
       <Box>
       {
         !state.coinbase &&
-        <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size={size} label="Connect" onClick={state.loadWeb3Modal} />
+        <Button primary className="btn-primary" size={size} label="Connect" onClick={state.loadWeb3Modal} />
 
       }
       </Box>
@@ -224,9 +225,10 @@ export default function BuySection(props) {
               size={size}
               color="#ffcc00"
               className="btn-primary"
-              style={{ borderRadius: "8px" }}
               onClick={() => setShow(true)}
-              label="Buy SRG"
+              label="Buy $LUMI"
+              reverse={true}
+              icon={<Image src={require("../assets/lumi_button_icon.png")} fit="cover" />}
             />
           }
         {
@@ -236,7 +238,6 @@ export default function BuySection(props) {
             size={size}
             color="#ffcc00"
             className="btn-primary"
-            style={{ borderRadius: "8px" }}
             onClick={async () => {
                 try{
                   setMigratingV2(true);
@@ -259,7 +260,6 @@ export default function BuySection(props) {
             size={size}
             color="#ffcc00"
             className="btn-primary"
-            style={{ borderRadius: "8px" }}
             onClick={() => setShowStake(true)}
             label="Stake SRG"
           />
@@ -268,6 +268,7 @@ export default function BuySection(props) {
 
       </>
     }
+
     </Box>
   )
 }

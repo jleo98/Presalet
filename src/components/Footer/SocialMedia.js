@@ -6,7 +6,7 @@ const SocialMedia = () => (
   <Box direction="row" gap="xxsmall" justify="center">
     <Anchor
       icon={<Home color="white" size="medium" />}
-      href="https://illumisrg.com/"
+      href="https://lumishare.io/"
       target="_blank"
       a11yTitle="Go to Homepage"
     />
