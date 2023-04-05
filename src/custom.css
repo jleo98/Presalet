@@ -35,6 +35,9 @@
   -webkit-text-fill-color: transparent;
   font-family: 'Exo 2'
 }
+.exo_heading {
+  font-family: 'Exo 2'
+}
 button {
   border-radius: 8px
 }

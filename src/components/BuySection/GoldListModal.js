@@ -32,7 +32,7 @@ export default function GoldListModal(props) {
       }
     }
     if(total > 0  &&  props.value==="Stablecoin"){
-      setSrgExpect(Number(total)/0.12);
+      setSrgExpect(Number(total)/0.135);
     }
   },[total,props]);
 
@@ -91,7 +91,7 @@ export default function GoldListModal(props) {
            color: "#8F979E",
            opacity: 1,
            lineHeight: 1.2
-         }}>Buying {srgExpect} SRG</Text>
+         }}>Buying {srgExpect} LUMI</Text>
          {
            /*
            <Text size="xsmall" style={{
@@ -124,6 +124,7 @@ export default function GoldListModal(props) {
               setTx(false);
               setMsg("")
             } catch(err){
+              console.log(err)
               setMsg(err.reason);
               setTx(false)
             }

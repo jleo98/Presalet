@@ -20,7 +20,7 @@ export default function Banner() {
           <Heading className="golden_heading">
             GOLDEN
           </Heading>
-          <Heading color="#FFFFFF">
+          <Heading className="exo_heading" color="#FFFFFF">
             LAUNCHPAD
           </Heading>
         </Box>

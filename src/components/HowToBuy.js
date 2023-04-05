@@ -65,7 +65,7 @@ export default function HowToBuy() {
             target="_blank"
             color="white"
             size="small"
-          >{state.srg?.address}</Anchor>
+          > {state.srg?.address}</Anchor>
         </Text>
         <Paragraph
           color="#FC5C5C"
