@@ -25,7 +25,7 @@ export default function Banner() {
           </Heading>
         </Box>
         <Box direction="row" >
-          <Text size="large" color="#FFFFFF">
+          <Text size="large" className="exo_heading" color="#FFFFFF">
             Pre-sale Achieved A <Text className="golden_heading" size="large">Success</Text> Rate Of <Text className="golden_heading" size="large">288%</Text>
           </Text>
         </Box>
