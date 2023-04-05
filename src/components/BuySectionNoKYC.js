@@ -232,6 +232,7 @@ export default function BuySection(props) {
             />
           }
         {
+          /*
           state.srgV1Balance > 0 &&
           <Button
             primary
@@ -252,6 +253,7 @@ export default function BuySection(props) {
             label={migratingV2 ? "Migrating" : "Migrate V2"}
             disabled={migratingV2}
           />
+          */
         }
         {
           state.coinbaseBalance> 0 && stakeActive &&
