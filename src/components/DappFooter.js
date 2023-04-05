@@ -16,7 +16,7 @@ export default function DappFooter() {
         color: "#F1F1F1",
         textAlign: "center"
       }}>
-        © All Rights Reserved - IllumiShare SRG.
+        © All Rights Reserved - LumiShare LUMI.
       </Text>
       <TrustedBy />
       <SocialMedia />
