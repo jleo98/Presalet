@@ -5,7 +5,10 @@ import {
   Button,
   Layer,
   Text,
+  Paragraph,
   Image,
+  Anchor,
+  Tip,
   ResponsiveContext,
 } from 'grommet';
 
@@ -17,6 +20,7 @@ import {
 import styled from "styled-components";
 import { ethers } from "ethers";
 import ReactGA from "react-ga4";
+import { Copy } from 'grommet-icons';
 
 import { useAppContext } from '../hooks/useAppState';
 //import useOrbis from '../hooks/useOrbis';
@@ -53,6 +57,8 @@ export default function BuySection(props) {
 
   const [showStake, setShowStake] = useState();
   const [stakeActive, setStakingActive] = useState();
+
+  const [copy_status,setCopyStats] = useState("Click to Copy")
 
   const { uri } = useParams();
   const size = React.useContext(ResponsiveContext);
@@ -149,7 +155,7 @@ export default function BuySection(props) {
   },[state.srg])
 
   return (
-    <Box margin={{ horizontal: "7%" }} >
+    <Box margin={{ horizontal: "7%" }} gap="small" >
       <Box>
       {
         !state.coinbase &&
@@ -215,7 +221,7 @@ export default function BuySection(props) {
             <StakeModal />
           </StyledLayerBuy>
         }
-        <Box pad={{ bottom: "xlarge" }} direction="responsive-row" alignSelf="center" gap="medium">
+        <Box direction="row" alignSelf="center" gap="medium">
         {
           state.goldList &&
           state.stablecoins &&
@@ -230,32 +236,9 @@ export default function BuySection(props) {
               reverse={true}
               icon={<Image src={require("../assets/lumi_button_icon.png")} fit="cover" />}
             />
-          }
-        {
-          /*
-          state.srgV1Balance > 0 &&
-          <Button
-            primary
-            size={size}
-            color="#ffcc00"
-            className="btn-primary"
-            onClick={async () => {
-                try{
-                  setMigratingV2(true);
-                  await claimV2()
-                  setMigratingV2(false);
-                } catch(err){
-                  console.log(err)
-                  setMigratingV2(false);
-                }
-              }
-            }
-            label={migratingV2 ? "Migrating" : "Migrate V2"}
-            disabled={migratingV2}
-          />
-          */
         }
         {
+          /*
           state.coinbaseBalance> 0 && stakeActive &&
           <Button
             primary
@@ -265,12 +248,32 @@ export default function BuySection(props) {
             onClick={() => setShowStake(true)}
             label="Stake SRG"
           />
+          */
         }
         </Box>
-
       </>
     }
+    {
+      state.coinbase &&
+      <Box>
+        <Paragraph className="golden_heading">
+          Your Referral Link
+        </Paragraph>
+        <Tip content={<Text id="tip_copy" className="golden_heading">{copy_status}</Text>}>
+          <Anchor as={Text} className="golden_heading" size="small" onClick={(e) => {
+              navigator.clipboard.writeText(`https://launchpad.lumishare.io/#/${state.coinbase}`)
+              setCopyStats("Copied !");
+              setTimeout(() => {
+                setCopyStats("Click to Copy");
+              },1000);
 
+          }}>
+            <Copy size="small" /> {`https://launchpad.lumishare.io/#/${state.coinbase}`}
+          </Anchor>
+        </Tip>
+      </Box>
+
+    }
     </Box>
   )
 }
