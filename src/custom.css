@@ -44,6 +44,7 @@ button {
 body {
   background: transparent url('./assets/mainbackground.png');
   background-attachment: fixed;
+  background-color: black;
   background-position-x: center;
   background-position-y: center;
   font-family: Poppins;

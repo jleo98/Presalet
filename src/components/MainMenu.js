@@ -18,11 +18,7 @@ export default function MainMenu(props) {
   const size = React.useContext(ResponsiveContext);
 
   return (
-    <Header background="#060707" pad="small" height="xsmall"  style={{
-      boxShadow: "0px 3px 6px #0000001A",
-      position: "fixed",
-      width: "100%"
-    }}>
+    <Header background="#060707" pad="small">
       <Box width={size}>
         <Anchor href="https://lumishare.io/" target="_blank">
           <Image
