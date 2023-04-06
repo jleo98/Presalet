@@ -52,14 +52,14 @@ export default function HowToBuy() {
             font: "normal normal 600 16px/24px Poppins",
           }}
         >
-          Please use only these 3 browsers for Safe Purchase of SRG Tokens: Chrome, Mozilla or Brave.
+          Please use only these 3 browsers for Safe Purchase of LUMI Tokens: Chrome, Mozilla or Brave.
         </Text>
         <Text color="white"
           style={{
             font: "normal normal 600 16px/24px Poppins",
           }}
         >
-          Our Official Smart Contract address for SRG Tokens on Binance Smart Chain (BSC) is:
+          Our Official Smart Contract address for LUMI Tokens on Binance Smart Chain (BSC) is:
           <Anchor
             href={`https://bscscan.com/address/${state.srg?.address}`}
             target="_blank"
@@ -100,7 +100,7 @@ export default function HowToBuy() {
         width="xsmall"
         target="_blank"
         href="https://youtu.be/p-kcaFAs26A">
-          Check more details about SRG token at youtube
+          Check more details about LUMI token at youtube
         </Text>
         <Anchor
           target="_blank"
@@ -127,7 +127,7 @@ export default function HowToBuy() {
             YOUR GATE TO THE GOLDEN ERA IS NOW OPEN!
           </Text>
           <Text color="#060707" textAlign="center" size="large">
-            A FEW SIMPLE STEPS TO BUY SRG TOKEN WITH
+            A FEW SIMPLE STEPS TO BUY LUMI TOKEN WITH
           </Text>
         </Box>
         <Box overflow="auto" height={
@@ -163,7 +163,7 @@ export default function HowToBuy() {
               },
               {
                 step: "STEP 3",
-                text: "Tap Buy SRG",
+                text: "Tap Buy LUMI",
                 image: require('../assets/step3.png')
               },
               {
@@ -233,7 +233,7 @@ export default function HowToBuy() {
               },
               {
                 step: "STEP 3",
-                text: "Tap Buy SRG",
+                text: "Tap Buy LUMI",
                 image: require('../assets/step3.png')
               },
               {
