@@ -13,10 +13,10 @@ const TrustedBy = () => (
         SMART-CONTRACT AUDIT BY
       </Paragraph>
       <Box direction="row" gap="small">
-        <Box width="xsmall" as={Anchor} href="https://cyesec.com/" target="_blank">
+        <Box width="xsmall">
           <Image src={require("../../assets/cyber_scope_logo.png")} fit="cover" />
         </Box>
-        <Box width="xsmall" as={Anchor} href="https://www.certik.com/" target="_blank">
+        <Box width="xsmall" as={Anchor} href="https://www.certik.com/projects/lumishare" target="_blank">
           <Image src={require("../../assets/certik_logo.png")} fit="cover" />
         </Box>
       </Box>
@@ -26,10 +26,10 @@ const TrustedBy = () => (
         SECURED BY
       </Paragraph>
       <Box direction="row" gap="small">
-        <Box width="xsmall" as={Anchor} href="https://www.certik.com/" target="_blank">
+        <Box width="xsmall">
           <Image src={require("../../assets/brain_shield_logo.png")} fit="cover" />
         </Box>
-        <Box width="xsmall" as={Anchor} href="https://cyesec.com/" target="_blank">
+        <Box width="xsmall">
           <Image src={require("../../assets/cye_logo.png")} fit="cover" />
         </Box>
       </Box>
