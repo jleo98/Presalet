@@ -27,7 +27,7 @@ import { useAppContext } from '../hooks/useAppState';
 
 import GoldListModal from './BuySection/GoldListModal';
 import StakeModal from './BuySection/StakeModal';
-
+import BarMeter from './BuySection/BarMeter';
 import Stablecoins from './BuySection/Stablecoins';
 
 
@@ -179,7 +179,7 @@ export default function BuySection(props) {
             <Box align="left" pad="medium">
               <Text style={{
                 textAlign: "left",
-                font: "normal normal 600 20px/40px Poppins",
+                font: "normal normal 600 20px/40px Exo 2",
                 letterSpacing: "0px",
                 color: "black",
                 opacity: 1,
@@ -222,21 +222,22 @@ export default function BuySection(props) {
           </StyledLayerBuy>
         }
         <Box direction="row" alignSelf="center" gap="medium">
-        {
-          state.goldList &&
-          state.stablecoins &&
-          Number(state.goldListBalance) > 0 &&
-            <Button
-              primary
-              size={size}
-              color="#ffcc00"
-              className="btn-primary"
-              onClick={() => setShow(true)}
-              label="Buy $LUMI"
-              reverse={true}
-              icon={<Image src={require("../assets/lumi_button_icon.png")} fit="cover" />}
-            />
-        }
+          <Button
+            primary
+            size={size}
+            color="#ffcc00"
+            className="btn-primary"
+            onClick={() => setShow(true)}
+            label="Buy $LUMI"
+            reverse={true}
+            icon={<Image src={require("../assets/lumi_button_icon.png")} fit="cover" />}
+            disabled={!(
+              state.goldList &&
+              state.stablecoins &&
+              Number(state.goldListBalance) > 0
+            )}
+          />
+
         {
           /*
           state.coinbaseBalance> 0 && stakeActive &&
@@ -253,6 +254,7 @@ export default function BuySection(props) {
         </Box>
       </>
     }
+    <BarMeter />
     {
       state.coinbase &&
       <Box>
@@ -260,7 +262,11 @@ export default function BuySection(props) {
           Your Referral Link
         </Paragraph>
         <Tip content={<Text id="tip_copy" className="golden_heading">{copy_status}</Text>}>
-          <Anchor as={Text} className="golden_heading" size="small" onClick={(e) => {
+          <Anchor as={Text} className="golden_heading" size="small"
+            style={{
+              overflowX: "hidden"
+            }}
+            onClick={(e) => {
               navigator.clipboard.writeText(`https://launchpad.lumishare.io/#/${state.coinbase}`)
               setCopyStats("Copied !");
               setTimeout(() => {
@@ -268,7 +274,7 @@ export default function BuySection(props) {
               },1000);
 
           }}>
-            <Copy size="small" /> {`https://launchpad.lumishare.io/#/${state.coinbase}`}
+            <Copy size="small" color="white" /> {`https://launchpad.lumishare.io/#/${state.coinbase}`}
           </Anchor>
         </Tip>
       </Box>

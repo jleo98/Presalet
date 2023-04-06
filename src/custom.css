@@ -47,10 +47,16 @@ body {
   background-color: black;
   background-position-x: center;
   background-position-y: center;
-  font-family: Poppins;
+  font-family: 'Exo 2';
 }
 
-
+.white-anchor {
+  color: #FFFFFF
+}
+.text-decorated {
+  color: #FAC73F;
+  text-decoration: underline;
+}
 .coins-bg{
   background: transparent url('./assets/coins.png');
   background-size: contain;

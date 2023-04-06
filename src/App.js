@@ -222,6 +222,14 @@ export default function App() {
       <ThemeContext.Extend
         value={
           {
+            text: {
+              font: {
+                family: "'Exo 2'"
+              }
+            },
+            meter: {
+              color: "#FAC73F"
+            },
             anchor: {
               color: "#ffcc00"
             },
@@ -234,7 +242,7 @@ export default function App() {
               },
               font: {
                 weight: 600,
-                family: "Poppins"
+                family: "Exo 2"
               }
             },
             select: {

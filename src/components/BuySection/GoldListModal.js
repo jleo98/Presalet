@@ -44,7 +44,7 @@ export default function GoldListModal(props) {
       {
         state.provider && state.coinbase &&
         <>
-        <Text style={{color: "black",font:"normal normal 600 20px/40px Poppins"}}>
+        <Text style={{color: "black"}}>
           Amount of {' '}
           {
             props.value === "Native" ?
@@ -76,7 +76,7 @@ export default function GoldListModal(props) {
               borderRadius: "8px",
               opacity: 1,
               height: "46px",
-              font: "normal normal normal 16px/40px Poppins",
+              font: "normal normal normal 16px/40px",
             }}
          />
         </Box>
@@ -86,7 +86,7 @@ export default function GoldListModal(props) {
           <>
           <Text size="xsmall" style={{
            textAlign: "center",
-           font: "normal normal normal 16px/40px Poppins",
+           font: "normal normal normal 16px/40px ",
            letterSpacing: "0px",
            color: "#8F979E",
            opacity: 1,
@@ -96,7 +96,7 @@ export default function GoldListModal(props) {
            /*
            <Text size="xsmall" style={{
             textAlign: "center",
-            font: "normal normal normal 16px/40px Poppins",
+            font: "normal normal normal 16px/40px ",
             letterSpacing: "0px",
             color: "#8F979E",
             opacity: 1,
@@ -104,7 +104,7 @@ export default function GoldListModal(props) {
           }}>Fee {srgExpect*0.018} SRG</Text>
           <Text size="xsmall" style={{
            textAlign: "center",
-           font: "normal normal normal 16px/40px Poppins",
+           font: "normal normal normal 16px/40px ",
            letterSpacing: "0px",
            color: "#8F979E",
            opacity: 1,

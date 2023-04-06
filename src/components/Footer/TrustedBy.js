@@ -9,7 +9,7 @@ const TrustedBy = () => (
     align="center"
   >
     <Box align="center" margin="medium" size="small">
-      <Paragraph size="small" textAlign="center" className="golden_heading" style={{font: "normal normal normal 18px/27px Poppins"}}>
+      <Paragraph size="small" textAlign="center" className="golden_heading" style={{font: "normal normal normal 18px/27px"}}>
         SMART-CONTRACT AUDIT BY
       </Paragraph>
       <Box direction="row" gap="small">
@@ -22,7 +22,7 @@ const TrustedBy = () => (
       </Box>
     </Box>
     <Box align="center" margin="medium">
-      <Paragraph size="small" textAlign="center" className="golden_heading" style={{font: "normal normal normal 18px/27px Poppins"}}>
+      <Paragraph size="small" textAlign="center" className="golden_heading" style={{font: "normal normal normal 18px/27px"}}>
         SECURED BY
       </Paragraph>
       <Box direction="row" gap="small">

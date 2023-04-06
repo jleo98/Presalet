@@ -38,44 +38,27 @@ export default function HowToBuy() {
   const size = React.useContext(ResponsiveContext);
   return (
     <>
-    <Box align="center" direction="row-responsive" gap="medium" pad={{top: "large",horizontal: size}}>
-      <Box align="left" alignSelf="center" width={"large"}>
-        <Text color="white"
-          style={{
-            font: "normal normal 600 16px/24px Poppins",
-          }}
-        >
-          Please Contact a Telegram Mod for any Questions | Or Email us at: Info@Lumishare.io
+    <Box align="center" direction="row-responsive" gap="large" pad={{top: "large",horizontal: size}}>
+      <Box align="left" alignSelf="center" gap="medium">
+        <Text color="#FFFFFF" size="small">
+          Please Contact a <span className="text-decorated">Telegram Mod</span> for any Questions | Or Email us at: <span className="text-decorated">Info@Lumishare.io</span>
         </Text>
-        <Text color="white"
-          style={{
-            font: "normal normal 600 16px/24px Poppins",
-          }}
-        >
-          Please use only these 3 browsers for Safe Purchase of LUMI Tokens: Chrome, Mozilla or Brave.
+        <Text color="#FFFFFF" size="small">
+          Please use only these 3 browsers for Safe Purchase of LUMI Tokens: <b>Chrome</b>, <b>Mozilla</b> or <b>Brave</b>.
         </Text>
-        <Text color="white"
-          style={{
-            font: "normal normal 600 16px/24px Poppins",
-          }}
-        >
+        <Text color="#FFFFFF" size="small">
           Our Official Smart Contract address for LUMI Tokens on Binance Smart Chain (BSC) is:
           <Anchor
             href={`https://bscscan.com/address/${state.srg?.address}`}
             target="_blank"
             color="white"
-            size="small"
+            size={"small"}
+            style={{
+              overflowX: "hidden"
+            }}
           > {state.srg?.address}</Anchor>
         </Text>
-        <Paragraph
-          color="#FC5C5C"
-          style={{
-            font: "normal normal 600 16px/24px Poppins",
-          }}
-          textAlign="center"
-        >
-          Please be aware of scams
-        </Paragraph>
+
       </Box>
       {
         /*
@@ -89,27 +72,33 @@ export default function HowToBuy() {
         </Anchor>
         */
       }
-      <Box alignSelf="center" align="center" >
+      <Box alignSelf="center" align="center" width="large">
         <Text
         as={Anchor}
-        color="#060707"
+        className="white-anchor"
         textAlign="center"
-        style={{
-          font: "normal normal 600 16px/24px Poppins",
-        }}
-        width="xsmall"
+        size="small"
         target="_blank"
         href="https://youtu.be/p-kcaFAs26A">
-          Check more details about LUMI token at youtube
+          How To Buy LUMI ?
         </Text>
-        <Anchor
-          target="_blank"
-          a11yTitle="Youtube"
-          href="https://youtu.be/p-kcaFAs26A"
-          icon={<Youtube color="#ffcc00" size="large" />}
-        />
+        <Box pad="medium" >
+          <Anchor
+            target="_blank"
+            a11yTitle="Youtube"
+            href="https://youtu.be/p-kcaFAs26A"
+            pad="large"
+            icon={<Youtube color="red" size="xlarge" />}
+          />
+        </Box>
       </Box>
     </Box>
+    <Paragraph
+      color="#FC5C5C"
+      textAlign="center"
+    >
+      Please be aware of scams
+    </Paragraph>
     {
       showHow &&
       <StyledLayerHow
@@ -193,10 +182,7 @@ export default function HowToBuy() {
                     <Text color="#ffcc00" textAlign="left">
                       {item.step}
                     </Text>
-                    <Text color="#060707" textAlign="left" style={{
-                      font: "normal normal normal 20px/60px Poppins",
-                      lineHeight: "1.25"
-                    }}>
+                    <Text color="#060707" textAlign="left">
                       {item.text}
                     </Text>
                   </Box>
@@ -273,10 +259,7 @@ export default function HowToBuy() {
                     <Text color="#ffcc00" textAlign="left">
                       {item.step}
                     </Text>
-                    <Text color="#060707" textAlign="left" style={{
-                      font: "normal normal normal 20px/60px Poppins",
-                      lineHeight: "1.25"
-                    }}>
+                    <Text color="#060707" textAlign="left">
                       {item.text}
                     </Text>
                   </Box>
