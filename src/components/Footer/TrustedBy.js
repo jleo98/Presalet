@@ -12,7 +12,7 @@ const TrustedBy = () => (
       <Paragraph size="small" textAlign="center" className="golden_heading" style={{font: "normal normal normal 18px/27px Poppins"}}>
         SMART-CONTRACT AUDIT BY
       </Paragraph>
-      <Box direction="row-responsive" gap="small">
+      <Box direction="row" gap="small">
         <Box width="xsmall" as={Anchor} href="https://cyesec.com/" target="_blank">
           <Image src={require("../../assets/cyber_scope_logo.png")} fit="cover" />
         </Box>
@@ -25,7 +25,7 @@ const TrustedBy = () => (
       <Paragraph size="small" textAlign="center" className="golden_heading" style={{font: "normal normal normal 18px/27px Poppins"}}>
         SECURED BY
       </Paragraph>
-      <Box direction="row-responsive" gap="small">
+      <Box direction="row" gap="small">
         <Box width="xsmall" as={Anchor} href="https://www.certik.com/" target="_blank">
           <Image src={require("../../assets/brain_shield_logo.png")} fit="cover" />
         </Box>

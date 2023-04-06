@@ -24,15 +24,16 @@ export default function MainMenu(props) {
       width: "100%"
     }}>
       <Box width={size}>
-        <Anchor href="https://lumishare.io/" size="small"target="_blank">
+        <Anchor href="https://lumishare.io/" target="_blank">
           <Image
             src={require("../assets/logo-2.png")}
             style={{maxWidth:"200px"}}
+            width={size}
             href="https://lumishare.io/" target="_blank"
           />
         </Anchor>
       </Box>
-      <Nav align="center" width={size}>
+      <Nav align="center" >
       {
         !state.coinbase ?
         <Button
@@ -41,7 +42,7 @@ export default function MainMenu(props) {
           icon={
             <Image src={require("../assets/icons/wallet.png")} fit="cover"/>
           }
-          label="Connect Your Wallet"
+          label={window.innerWidth >= 500 ? "Connect Your Wallet" : "Connect"}
           color="#ffcc00"
           className="btn-primary"
           onClick={state.loadWeb3Modal}
