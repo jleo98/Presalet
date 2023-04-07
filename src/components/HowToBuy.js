@@ -83,13 +83,7 @@ export default function HowToBuy() {
           How To Buy LUMI ?
         </Text>
         <Box pad="medium" >
-          <Anchor
-            target="_blank"
-            a11yTitle="Youtube"
-            href="https://youtu.be/p-kcaFAs26A"
-            pad="large"
-            icon={<Youtube color="red" size="xlarge" />}
-          />
+          <iframe width="100%" src="https://www.youtube.com/embed/WllalBUyd5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </Box>
       </Box>
     </Box>
