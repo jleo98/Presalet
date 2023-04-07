@@ -237,6 +237,11 @@ export default function App() {
               hover: {
                 color: "white"
               },
+              focus: {
+                border: {
+                  color: "none"
+                }
+              },
               colors: {
                 control: '#ffcc00'
               },

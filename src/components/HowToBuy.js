@@ -39,9 +39,9 @@ export default function HowToBuy() {
   return (
     <>
     <Box align="center" direction="row-responsive" gap="large" pad={{top: "large",horizontal: size}}>
-      <Box align="left" alignSelf="center" gap="medium">
+      <Box align="left" alignSelf="center" gap="medium" width="large">
         <Text color="#FFFFFF" size="small">
-          Please Contact a <span className="text-decorated">Telegram Mod</span> for any Questions | Or Email us at: <span className="text-decorated">Info@Lumishare.io</span>
+          Please Contact a <Anchor  href="https://t.me/LumiShareLUMI" target="_blank">Telegram Mod</Anchor> for any Questions | Or Email us at: <Anchor href="mailto:Info@Lumishare.io" target="_blank">Info@Lumishare.io</Anchor>
         </Text>
         <Text color="#FFFFFF" size="small">
           Please use only these 3 browsers for Safe Purchase of LUMI Tokens: <b>Chrome</b>, <b>Mozilla</b> or <b>Brave</b>.
@@ -72,18 +72,15 @@ export default function HowToBuy() {
         </Anchor>
         */
       }
-      <Box alignSelf="center" align="center" width="large">
+      <Box alignSelf="center" align="center" width="medium">
         <Text
-        as={Anchor}
         className="white-anchor"
         textAlign="center"
-        size="small"
-        target="_blank"
-        href="https://youtu.be/p-kcaFAs26A">
+        size="medium">
           How To Buy LUMI ?
         </Text>
-        <Box pad="medium" >
-          <iframe width="100%" src="https://www.youtube.com/embed/WllalBUyd5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <Box pad="small" >
+          <iframe width="100%" src="https://www.youtube.com/embed/WllalBUyd5c" title="How to Buy LUMI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </Box>
       </Box>
     </Box>
