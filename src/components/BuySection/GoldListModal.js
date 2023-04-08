@@ -92,26 +92,6 @@ export default function GoldListModal(props) {
            opacity: 1,
            lineHeight: 1.2
          }}>Buying {srgExpect} LUMI</Text>
-         {
-           /*
-           <Text size="xsmall" style={{
-            textAlign: "center",
-            font: "normal normal normal 16px/40px ",
-            letterSpacing: "0px",
-            color: "#8F979E",
-            opacity: 1,
-            lineHeight: 1.2
-          }}>Fee {srgExpect*0.018} SRG</Text>
-          <Text size="xsmall" style={{
-           textAlign: "center",
-           font: "normal normal normal 16px/40px ",
-           letterSpacing: "0px",
-           color: "#8F979E",
-           opacity: 1,
-           lineHeight: 1.2
-         }}>Receiving {srgExpect*0.982} SRG</Text>
-           */
-         }
          </>
         }
         </Box>
@@ -119,7 +99,7 @@ export default function GoldListModal(props) {
           <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
             try{
               setTx(true);
-              setMsg("Confirm transactions (token approval and buy)")
+              setMsg("Confirm transactions (token approval and buy)");
               await props.buyTokens(total);
               setTx(false);
               setMsg("")

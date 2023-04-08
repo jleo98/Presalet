@@ -5,9 +5,7 @@ import {
   Button,
   Layer,
   Text,
-  Paragraph,
   Image,
-  Anchor,
   Tip,
   ResponsiveContext,
 } from 'grommet';
@@ -26,7 +24,6 @@ import { useAppContext } from '../hooks/useAppState';
 //import useOrbis from '../hooks/useOrbis';
 
 import GoldListModal from './BuySection/GoldListModal';
-import StakeModal from './BuySection/StakeModal';
 import BarMeter from './BuySection/BarMeter';
 import Stablecoins from './BuySection/Stablecoins';
 
@@ -50,13 +47,9 @@ export default function BuySection(props) {
   const { state } = useAppContext();
   //const { connectSeed, addWallet, isUnderVerification } = useOrbis();
 
-  const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
+  const [busd, setBusd] = useState();
   const [show, setShow] = useState();
-  const [migratingV2, setMigratingV2] = useState();
-
-  const [showStake, setShowStake] = useState();
-  const [stakeActive, setStakingActive] = useState();
 
   const [copy_status,setCopyStats] = useState("Click to Copy")
 
@@ -102,22 +95,6 @@ export default function BuySection(props) {
     return (amount.toString() / 10 ** 18);
   }
 
-  const claimV2 = async () => {
-    let tx;
-    const signer = state.provider.getSigner();
-    const allowance = await state.srgV1.allowance(state.coinbase, state.srg.address);
-    const balance = await state.srgV1.balanceOf(state.coinbase);
-    if(balance > allowance){
-      const srgV1WithSigner = state.srgV1.connect(signer);
-      tx = await srgV1WithSigner.approve(state.srg.address, balance);
-      await tx.wait();
-    }
-
-    const srgWithSigner = state.srg.connect(signer);
-    tx = await srgWithSigner.claimAirdrop();
-    await tx.wait();
-
-  }
 
   useEffect(()=>{
     // Send pageview with a custom path
@@ -146,16 +123,9 @@ export default function BuySection(props) {
     }
   },[uri,state.coinbase])
 
-  useEffect(() => {
-    if(state.srg){
-      state.srg.stakingActive(active => {
-        setStakingActive(active);
-      })
-    }
-  },[state.srg])
 
   return (
-    <Box margin={{ horizontal: "7%" }} gap="small" >
+    <Box margin={{ horizontal: "7%" }} gap="medium" alignSelf="center" align="center" >
       <Box>
       {
         !state.coinbase &&
@@ -208,19 +178,6 @@ export default function BuySection(props) {
             }
           </StyledLayerBuy>
         }
-        {
-          showStake &&
-          <StyledLayerBuy
-            onEsc={() => {
-              setShowStake(false);
-            }}
-            onClickOutside={() => {
-              setShowStake(false);
-            }}
-          >
-            <StakeModal />
-          </StyledLayerBuy>
-        }
         <Box direction="row" alignSelf="center" gap="medium">
           <Button
             primary
@@ -237,45 +194,28 @@ export default function BuySection(props) {
               Number(state.goldListBalance) > 0
             )}
           />
-
-        {
-          /*
-          state.coinbaseBalance> 0 && stakeActive &&
-          <Button
-            primary
-            size={size}
-            color="#ffcc00"
-            className="btn-primary"
-            onClick={() => setShowStake(true)}
-            label="Stake SRG"
-          />
-          */
-        }
         </Box>
       </>
     }
     <BarMeter />
     {
       state.coinbase &&
-      <Box>
-        <Paragraph className="golden_heading">
-          Your Referral Link
-        </Paragraph>
+      <Box pad={{top: "10px"}}>
         <Tip content={<Text id="tip_copy" className="golden_heading">{copy_status}</Text>}>
-          <Anchor as={Text} className="golden_heading" size="small"
-            style={{
-              overflowX: "hidden"
-            }}
+          <Button
+            primary
+            label="Your Referral Link"
+            color="#ffcc00"
+            className="btn-primary"
+            icon={<Copy size="small" color="white" />}
             onClick={(e) => {
               navigator.clipboard.writeText(`https://launchpad.lumishare.io/#/${state.coinbase}`)
               setCopyStats("Copied !");
               setTimeout(() => {
                 setCopyStats("Click to Copy");
               },1000);
-
-          }}>
-            <Copy size="small" color="white" /> {`https://launchpad.lumishare.io/#/${state.coinbase}`}
-          </Anchor>
+            }}
+          />
         </Tip>
       </Box>
 

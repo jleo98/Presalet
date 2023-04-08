@@ -17,7 +17,7 @@ export default function Banner() {
 
       <Box align={"center"} pad={{ top: "xsmall" }} width="large" >
         <Box direction="row" gap="small" >
-          <Heading className="golden_heading">
+          <Heading className="golden_heading" size={"medium"}>
             GOLDEN
           </Heading>
           <Heading className="exo_heading" color="#FFFFFF">

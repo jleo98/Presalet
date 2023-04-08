@@ -35,7 +35,7 @@ const BarMeter = () => {
           value: value,
           label: value,
         }]}
-        thickness="small"
+        thickness="medium"
         round={true}
         aria-label="meter"
       />
