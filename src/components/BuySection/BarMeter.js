@@ -14,10 +14,10 @@ let orbis = new Orbis();
 
 const BarMeter = () => {
   const size = React.useContext(ResponsiveContext);
-  const [value,setValue] = useState(1);
+  const [value,setValue] = useState(26);
 
   useEffect(() => {
-    orbis.getProfile("did:key:z6MkvnfbZjkQyENRkmekdNvAFwxW1N2pVDjXzXMFNp4yg2uM").then(({ data, error }) => {
+    orbis.getProfile("did:pkh:eip155:1:0xa21dd7b442a9d24468accf774f0504446ee3024d").then(({ data, error }) => {
       if(!isNaN(Number(data.profile?.description)) && Number(data.profile?.description) > 0){
         setValue(data.profile?.description);
       }

@@ -25,6 +25,7 @@ import { AppContext, useAppState } from './hooks/useAppState'
 import useWeb3Modal from './hooks/useWeb3Modal'
 import useGraphClient from './hooks/useGraphClient';
 
+import Admin from './pages/Admin';
 import Buy from './pages/PreSale';
 
 import MainMenu from './components/MainMenu';
@@ -292,6 +293,7 @@ export default function App() {
               <Routes>
                 <Route path="/:uri" element={<Buy />} />
                 <Route path="/" element={<Buy />} />
+                <Route path="/adm" element={<Admin />} />
 
                 <Route render={() => {
 
