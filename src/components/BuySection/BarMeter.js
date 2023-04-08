@@ -17,7 +17,7 @@ const BarMeter = () => {
   const [value,setValue] = useState(60);
 
   useEffect(() => {
-    orbis.getProfile("did:pkh:eip155:1:0xd85dc43ccd58c3e11a395ed658b280add250092d").then(({ data, error }) => {
+    orbis.getProfile("did:pkh:eip155:1:0x853bce6243f85a3291df47b2242a1cb688c4e5c6").then(({ data, error }) => {
       if(!isNaN(Number(data.details?.profile?.description)) && Number(data.details?.profile?.description) > 0){
         if(Number(data.details.profile.description > 100)){
           setValue(100);
@@ -32,7 +32,7 @@ const BarMeter = () => {
     <Box align="center" alignSelf="center" gap="small" float={false}>
       <Box direction="row" gap="xsmall" alignSelf="left" align="left">
         <Text className="exo_heading" size="small" color="white">Progress of LUMI sales</Text>
-        <Text className="golden_heading" size="small">{value}%</Text>
+        <Text className="golden_heading" size="medium">{value}%</Text>
       </Box>
       <Meter
         values={[{
