@@ -14,7 +14,7 @@ let orbis = new Orbis();
 
 const BarMeter = () => {
   const size = React.useContext(ResponsiveContext);
-  const [value,setValue] = useState(26);
+  const [value,setValue] = useState(49);
 
   useEffect(() => {
     orbis.getProfile("did:pkh:eip155:1:0x853bce6243f85a3291df47b2242a1cb688c4e5c6").then(({ data, error }) => {
