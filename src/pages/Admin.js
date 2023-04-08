@@ -31,7 +31,7 @@ export default function Admin() {
   },[]);
 
   useEffect(() => {
-    orbis.getProfile("did:pkh:eip155:1:0xa21dd7b442a9d24468accf774f0504446ee3024d").then(({ data, error }) => {
+    orbis.getProfile("did:pkh:eip155:1:0x853bce6243f85a3291df47b2242a1cb688c4e5c6").then(({ data, error }) => {
       if(!isNaN(Number(data.profile?.description)) && Number(data.profile?.description) > 0){
         setValue(data.profile?.description);
       }
@@ -43,7 +43,7 @@ export default function Admin() {
     <Box flex={false} align="center">
       <Box pad={{top:"medium"}} alignContent="center"  width="large" >
         {
-          res?.did === "did:pkh:eip155:1:0xa21dd7b442a9d24468accf774f0504446ee3024d" &&
+          res?.did === "did:pkh:eip155:1:0x853bce6243f85a3291df47b2242a1cb688c4e5c6" &&
           <>
           <TextInput
             placeholder="% here"

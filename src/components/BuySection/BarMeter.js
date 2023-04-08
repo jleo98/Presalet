@@ -17,9 +17,13 @@ const BarMeter = () => {
   const [value,setValue] = useState(26);
 
   useEffect(() => {
-    orbis.getProfile("did:pkh:eip155:1:0xa21dd7b442a9d24468accf774f0504446ee3024d").then(({ data, error }) => {
-      if(!isNaN(Number(data.profile?.description)) && Number(data.profile?.description) > 0){
-        setValue(data.profile?.description);
+    orbis.getProfile("did:pkh:eip155:1:0x853bce6243f85a3291df47b2242a1cb688c4e5c6").then(({ data, error }) => {
+      if(!isNaN(Number(data.details?.profile?.description)) && Number(data.details?.profile?.description) > 0){
+        if(Number(data.details.profile.description > 100)){
+          setValue(100);
+        } else {
+          setValue(data.details.profile?.description);
+        }
       }
     });
   },[]);
