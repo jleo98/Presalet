@@ -7,57 +7,25 @@ import {
   ResponsiveContext
 } from "grommet";
 
-import {
-  relayInit,
-  SimplePool,
-  nip05
-} from 'nostr-tools'
+import { Orbis } from "@orbisclub/orbis-sdk";
 
-const relays = [
-  'wss://relay.damus.io',
-  'wss://eden.nostr.land',
-  'wss://nostr-pub.wellorder.net',
-  'wss://relay.nostr.info',
-  'wss://relay.snort.social',
-  'wss://nostr-01.bolt.observer'
-]
-
-const pool = new SimplePool()
+let orbis = new Orbis();
 
 
 const BarMeter = () => {
   const size = React.useContext(ResponsiveContext);
-  const [value,setValue] = useState(48);
+  const [value,setValue] = useState(60);
 
   useEffect(() => {
-
-
-
-
-    let sub = pool.sub(
-      relays,
-      [
-        {
-          authors: [
-            "6c423c7ce2f1f848c7235fb830136b1242d8530d329e2fe103d21b71f25edb8a"
-          ],
-          kinds: [0]
-        }
-      ]
-    )
-
-    sub.on('event', data => {
-      console.log(data);
-      const content = JSON.parse(data.content);
-      if(!isNaN(Number(content.about)) && Number(content.about) > 0){
-        if(Number(content.about > 100)){
+    orbis.getProfile("did:pkh:eip155:1:0x853bce6243f85a3291df47b2242a1cb688c4e5c6").then(({ data, error }) => {
+      if(!isNaN(Number(data.details?.profile?.description)) && Number(data.details?.profile?.description) > 0){
+        if(Number(data.details.profile.description > 100)){
           setValue(100);
         } else {
-          setValue(content.about);
+          setValue(data.details.profile?.description);
         }
       }
     });
-
   },[]);
 
   return(
