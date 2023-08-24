@@ -5,21 +5,27 @@ import {
   Button,
   Layer,
   Text,
-  Spinner,
+  Image,
+  Tip,
   ResponsiveContext,
 } from 'grommet';
 
+import {
+  useParams
+} from 'react-router-dom';
 
-import { fromString } from 'uint8arrays'
 
 import styled from "styled-components";
 import { ethers } from "ethers";
+import ReactGA from "react-ga4";
+import { Copy } from 'grommet-icons';
 
 import { useAppContext } from '../hooks/useAppState';
-import useOrbis from '../hooks/useOrbis';
+//import useOrbis from '../hooks/useOrbis';
 
-import GoldListModal from './GoldListModal';
-import Stablecoins from './Stablecoins';
+import GoldListModal from './BuySection/GoldListModal';
+import BarMeter from './BuySection/BarMeter';
+import Stablecoins from './BuySection/Stablecoins';
 
 
 
@@ -36,40 +42,50 @@ const StyledLayerBuy = styled(Layer)`
 
 
 
-
 export default function BuySection(props) {
 
   const { state } = useAppContext();
-  const { connectSeed, addWallet, isUnderVerification } = useOrbis();
+  //const { connectSeed, addWallet, isUnderVerification } = useOrbis();
 
-  const [busd, setBusd] = useState();
   const [value, setValue] = useState("Stablecoin");
+  const [busd, setBusd] = useState();
   const [show, setShow] = useState();
 
-  const [underVerification, setUnderVerification] = useState()
+  const [copy_status,setCopyStats] = useState("Click to Copy")
+
+  const { uri } = useParams();
   const size = React.useContext(ResponsiveContext);
 
   const buyTokens = async (total) => {
     const signer = state.provider.getSigner();
     const goldListWithSigner = state.goldList.connect(signer);
-    const amount = ethers.utils.parseEther(total).toString()
+    const amount = ethers.utils.parseEther(total).toString();
+    const refAddr = localStorage.getItem("refAddr") ? localStorage.getItem("refAddr") : ethers.constants.AddressZero;
     let tx;
     if (value === "Native") {
-      tx = await goldListWithSigner.claimTokensWithNative({
+      tx = await goldListWithSigner.claimTokensWithNative(refAddr,false,{
         value: amount
       });
     } else {
       const allowance = await busd.allowance(state.coinbase, state.goldList.address);
-      if (amount > allowance) {
+      if (Number(amount) > allowance) {
         const busdWithSigner = busd.connect(signer);
         const txApproval = await busdWithSigner.approve(state.goldList.address, amount);
         await txApproval.wait();
       }
-      const goldListWithSigner = state.goldList.connect(signer);
-      tx = await goldListWithSigner.claimTokensWithStable(busd.address, amount);
+      tx = await goldListWithSigner.claimTokensWithStable(busd.address, amount,refAddr,true);
     }
 
     await tx.wait();
+
+    if(refAddr !== ethers.constants.AddressZero){
+      ReactGA.event({
+        category: 'user_referral',
+        action: 'referral_earn',
+        label: `addr:${refAddr}`,
+        value: amount
+      });
+    }
 
   }
 
@@ -80,60 +96,48 @@ export default function BuySection(props) {
   }
 
 
-  useEffect(() => {
-    let seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC, 'base16'));
-    if (state.netId === 56) {
-      seed = new Uint8Array(fromString(process.env.REACT_APP_DID_SEED_NOKYC_BSC, 'base16'));
-    }
-    connectSeed(seed);
-  }, [state.netId])
+  useEffect(()=>{
+    // Send pageview with a custom path
+    ReactGA.send({ hitType: "pageview", page: window.location.href });
+  },[])
 
   useEffect(() => {
-    setUnderVerification()
-  }, [state.coinbase])
+    let ref = localStorage.getItem("refAddr");
+    if(!ref && uri && state.coinbase){
+      try{
+        const refAddr = ethers.utils.getAddress(uri);
+        if(refAddr.toLowerCase() === state.coinbase.toLowerCase()) return;
+        localStorage.setItem("refAddr",refAddr);
+        ref = refAddr
 
-  useEffect(() => {
-    if (!underVerification) {
-      isUnderVerification(state.coinbase).then(newUnderVerification => {
-        setUnderVerification(newUnderVerification)
-      })
+      } catch(err){
+
+      }
     }
-  }, [
-    underVerification,
-    state.coinbase
-  ])
+    if(ref){
+      ReactGA.event({
+        category: 'user_referral',
+        action: 'referral_page_view',
+        label: `addr:${ref}`
+      });
+    }
+  },[uri,state.coinbase])
 
 
   return (
-    <Box margin={{ horizontal: "7%" }} >
+    <Box margin={{ horizontal: "7%" }} gap="medium" alignSelf="center" align="center" >
       <Box>
       {
         !state.coinbase &&
-        <Button primary style={{ borderRadius: "8px" }} color="#ffcc00" size={size} label="Connect" onClick={state.loadWeb3Modal} />
+        <Button primary className="btn-primary" size={size} label="Connect" onClick={state.loadWeb3Modal} />
 
       }
       </Box>
-      <Box>
       {
         state.coinbase &&
         <>
         {
-          !state.whitelisted ?
-          (
-            !underVerification ?
-              <Box>
-                <Button primary color="#ffcc00" size={size} className="btn-primary" style={{ borderRadius: "8px" }} onClick={async () => {
-                  setUnderVerification(true)
-                  await addWallet(state.coinbase, true);
-                }} label="Join PreSale" />
-              </Box> :
-              <Box align="center" size="small">
-                <Spinner size="small" color="white" />
-                <Text size={size} color="white">Joining PreSale</Text>
-                <Text size="xsmall" color="white">It can take up to 2 minutes</Text>
-              </Box>
-          ) :
-          show ?
+          show &&
           <StyledLayerBuy
             onEsc={() => {
               setShow(false);
@@ -145,7 +149,7 @@ export default function BuySection(props) {
             <Box align="left" pad="medium">
               <Text style={{
                 textAlign: "left",
-                font: "normal normal 600 20px/40px Poppins",
+                font: "normal normal 600 20px/40px Exo 2",
                 letterSpacing: "0px",
                 color: "black",
                 opacity: 1,
@@ -172,17 +176,50 @@ export default function BuySection(props) {
                 getExpectedSrg={getExpectedSrg}
               />
             }
-          </StyledLayerBuy> :
-          Number(state.goldListBalance) > 0 ?
-          <Box pad={{ bottom: "xlarge" }}>
-            <Button primary size={size} color="#ffcc00" className="btn-primary" style={{ borderRadius: "8px" }} onClick={() => setShow(true)} label="Buy SRG" />
-          </Box> :
-          <Text size="medium" textAlign="center" color="white">Sale ended</Text>
+          </StyledLayerBuy>
         }
-        </>
-      }
+        <Box direction="row" alignSelf="center" gap="medium">
+          <Button
+            primary
+            size={size}
+            color="#ffcc00"
+            className="btn-primary"
+            onClick={() => setShow(true)}
+            label="Buy $LUMI"
+            reverse={true}
+            icon={<Image src={require("../assets/lumi_button_icon.png")} fit="cover" />}
+            disabled={!(
+              state.goldList &&
+              state.stablecoins &&
+              Number(state.goldListBalance) > 0
+            )}
+          />
+        </Box>
+      </>
+    }
+    <BarMeter />
+    {
+      state.coinbase &&
+      <Box pad={{top: "10px"}}>
+        <Tip content={<Text id="tip_copy" className="golden_heading">{copy_status}</Text>}>
+          <Button
+            primary
+            label="Your Referral Link"
+            color="#ffcc00"
+            className="btn-primary"
+            icon={<Copy size="small" color="white" />}
+            onClick={(e) => {
+              navigator.clipboard.writeText(`https://launchpad.lumishare.io/#/${state.coinbase}`)
+              setCopyStats("Copied !");
+              setTimeout(() => {
+                setCopyStats("Click to Copy");
+              },1000);
+            }}
+          />
+        </Tip>
       </Box>
 
+    }
     </Box>
   )
 }

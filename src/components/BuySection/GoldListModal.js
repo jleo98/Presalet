@@ -6,7 +6,7 @@ import {
   Button
 } from 'grommet';
 
-import { useAppContext } from '../hooks/useAppState';
+import { useAppContext } from '../../hooks/useAppState';
 
 
 
@@ -32,7 +32,7 @@ export default function GoldListModal(props) {
       }
     }
     if(total > 0  &&  props.value==="Stablecoin"){
-      setSrgExpect(Number(total)/0.12);
+      setSrgExpect(Number(total)/0.135);
     }
   },[total,props]);
 
@@ -44,7 +44,7 @@ export default function GoldListModal(props) {
       {
         state.provider && state.coinbase &&
         <>
-        <Text style={{color: "black",font:"normal normal 600 20px/40px Poppins"}}>
+        <Text style={{color: "black"}}>
           Amount of {' '}
           {
             props.value === "Native" ?
@@ -76,7 +76,7 @@ export default function GoldListModal(props) {
               borderRadius: "8px",
               opacity: 1,
               height: "46px",
-              font: "normal normal normal 16px/40px Poppins",
+              font: "normal normal normal 16px/40px",
             }}
          />
         </Box>
@@ -86,28 +86,12 @@ export default function GoldListModal(props) {
           <>
           <Text size="xsmall" style={{
            textAlign: "center",
-           font: "normal normal normal 16px/40px Poppins",
+           font: "normal normal normal 16px/40px ",
            letterSpacing: "0px",
            color: "#8F979E",
            opacity: 1,
            lineHeight: 1.2
-         }}>Buying {srgExpect} SRG</Text>
-         <Text size="xsmall" style={{
-          textAlign: "center",
-          font: "normal normal normal 16px/40px Poppins",
-          letterSpacing: "0px",
-          color: "#8F979E",
-          opacity: 1,
-          lineHeight: 1.2
-        }}>Fee {srgExpect*0.018} SRG</Text>
-        <Text size="xsmall" style={{
-         textAlign: "center",
-         font: "normal normal normal 16px/40px Poppins",
-         letterSpacing: "0px",
-         color: "#8F979E",
-         opacity: 1,
-         lineHeight: 1.2
-       }}>Receiving {srgExpect*0.982} SRG</Text>
+         }}>Buying {srgExpect} LUMI</Text>
          </>
         }
         </Box>
@@ -115,11 +99,12 @@ export default function GoldListModal(props) {
           <Button style={{height: "43px",borderRadius: "8px"}} primary color="#ffcc00" className="btn-primary" onClick={async () => {
             try{
               setTx(true);
-              setMsg("Confirm transactions (token approval and buy)")
+              setMsg("Confirm transactions (token approval and buy)");
               await props.buyTokens(total);
               setTx(false);
               setMsg("")
             } catch(err){
+              console.log(err)
               setMsg(err.reason);
               setTx(false)
             }

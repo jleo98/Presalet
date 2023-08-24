@@ -21,10 +21,13 @@ const useAppState = () => {
     client: null,
     loadWeb3Modal: null,
     stablecoins: null,
-    whitelisted: null,
+    whitelisted: true,
     goldListBalance: null,
     coinbaseBalance: null,
     setGetStablecoinsBalance: null,
+    srgV1Balance: null,
+    srgV1: null,
+    getStakes: null
   }
 
   // Manage the state using React.useState()
@@ -76,6 +79,15 @@ const getActions = (setState) => ({
   },
   setGetStablecoinsBalance: (getStablecoinsBalance) => {
     setState((state) => ({ ...state, getStablecoinsBalance: getStablecoinsBalance }))
+  },
+  setSrgV1: (srgV1) => {
+    setState((state) => ({ ...state, srgV1: srgV1 }))
+  },
+  setSrgV1Balance: (srgV1Balance) => {
+    setState((state) => ({ ...state, srgV1Balance: srgV1Balance }))
+  },
+  setGetStakes: (getStakes) => {
+    setState((state) => ({ ...state, getStakes: getStakes }))
   },
 })
 

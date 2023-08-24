@@ -18,7 +18,7 @@ import { ethers } from "ethers";
 import { ChatBox } from '@orbisclub/modules'
 import "@orbisclub/modules/dist/index.modern.css";
 //import { User,Connect,Nodes,Help,Projects,Clock } from 'grommet-icons';
-
+import ReactGA from "react-ga4";
 
 import { AppContext, useAppState } from './hooks/useAppState'
 
@@ -33,11 +33,19 @@ import DappFooter from './components/DappFooter';
 import abis from "./contracts/abis";
 import addresses from "./contracts/addresses";
 
+
+ReactGA.initialize('G-DW0T7403L8',{
+  debug: true,
+  titleCase: false
+});
+
+
 export default function App() {
 
   const { state, actions } = useAppState();
 
   const [srg, setSrg] = useState();
+  const [srgV1, setSrgV1] = useState();
   const [goldList, setGoldList] = useState();
   const [stablecoins, setStablecoins] = useState();
 
@@ -52,7 +60,8 @@ export default function App() {
   const {
     client,
     initiateClient,
-    getStablecoins
+    getStablecoins,
+    getStakes
   } = useGraphClient();
 
 
@@ -83,26 +92,6 @@ export default function App() {
     actions.setGetStablecoinsBalance(getStablecoinsBalance);
   }, [getStablecoinsBalance])
 
-  useEffect(() => {
-    if (coinbase && goldList) {
-      const interval = setInterval(async () => {
-        const newWhitelisted = await goldList.goldList(coinbase);
-        actions.setWhitelisted(newWhitelisted);
-        if(newWhitelisted){
-          clearInterval(interval)
-        }
-      },10000);
-      goldList.goldList(coinbase).then(newWhitelisted => {
-        actions.setWhitelisted(newWhitelisted);
-        goldList.on("GoldListAddition", async (address, status) => {
-          if (coinbase.toLowerCase() === address.toLowerCase()) {
-            const newWhitelisted = await goldList.goldList(coinbase);
-            actions.setWhitelisted(newWhitelisted);
-          }
-        });
-      })
-    }
-  }, [coinbase, goldList]);
   useEffect(() => {
     if (coinbase && srg) {
       srg.balanceOf(coinbase).then(newBalance => {
@@ -136,12 +125,35 @@ export default function App() {
       });
     }
   }, [goldList, srg]);
+
+  useEffect(() => {
+    if (srgV1 && coinbase) {
+      srgV1.balanceOf(coinbase).then(balance => {
+        actions.setSrgV1Balance(balance);
+        srgV1.on("Transfer", async (from, to, value) => {
+          if (
+            from.toLowerCase() === coinbase.toLowerCase()
+          ) {
+            const newSrgV1Balance = await srgV1.balanceOf(coinbase);
+            actions.setSrgV1Balance(newSrgV1Balance);
+          }
+        });
+      });
+    }
+  }, [srgV1, coinbase]);
+
+
+
+
   useEffect(() => {
     actions.setNetId(netId)
   }, [netId])
   useEffect(() => {
     actions.setSrg(srg)
   }, [srg])
+  useEffect(() => {
+    actions.setSrgV1(srgV1)
+  }, [srgV1])
   useEffect(() => {
     actions.setGoldList(goldList)
   }, [goldList])
@@ -154,37 +166,29 @@ export default function App() {
   }, [stablecoins])
 
 
+
   useEffect(() => {
     initiateClient(netId);
   }, [netId]);
   useEffect(() => {
     // Goerli
 
-    let newSrg, newGoldList, newColdStaking
-    if (netId === 5) {
-      newSrg = new ethers.Contract(addresses.srg.goerli, abis.srg, provider);
-      newGoldList = new ethers.Contract(addresses.goldList.goerli, abis.goldList, provider);
-    }
+    let newSrg, newGoldList, newColdStaking, newSrgV1
     // Mumbai
     if (netId === 80001) {
       newSrg = new ethers.Contract(addresses.srg.mumbai, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.mumbai, abis.goldList, provider);
-
+      newSrgV1 = new ethers.Contract(addresses.srgV1.mumbai, abis.srg, provider);
     }
-    if (netId === 97) {
-      newSrg = new ethers.Contract(addresses.srg.bsctestnet, abis.srg, provider);
-      newGoldList = new ethers.Contract(addresses.goldList.bsctestnet, abis.goldList, provider);
-      newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
-    }
-
     if (netId === 56) {
       newSrg = new ethers.Contract(addresses.srg.bsc, abis.srg, provider);
       newGoldList = new ethers.Contract(addresses.goldList.bsc, abis.goldList, provider);
-      newColdStaking = new ethers.Contract(addresses.coldStaking.mumbai, abis.coldStaking, provider);
-
+      newColdStaking = new ethers.Contract(addresses.coldStaking.bsc, abis.coldStaking, provider);
+      newSrgV1 = new ethers.Contract(addresses.srgV1.bsc, abis.srg, provider);
     }
     setSrg(newSrg);
     setGoldList(newGoldList);
+    setSrgV1(newSrgV1);
   }, [netId]);
   useMemo(async () => {
     if (client && !stablecoins) {
@@ -202,6 +206,7 @@ export default function App() {
         })
       );
       setStablecoins(newStablecoins);
+      actions.setGetStakes(getStakes)
     }
   }, [client, stablecoins])
 
@@ -217,6 +222,14 @@ export default function App() {
       <ThemeContext.Extend
         value={
           {
+            text: {
+              font: {
+                family: "'Exo 2'"
+              }
+            },
+            meter: {
+              color: "#FAC73F"
+            },
             anchor: {
               color: "#ffcc00"
             },
@@ -224,12 +237,17 @@ export default function App() {
               hover: {
                 color: "white"
               },
+              focus: {
+                border: {
+                  color: "none"
+                }
+              },
               colors: {
                 control: '#ffcc00'
               },
               font: {
                 weight: 600,
-                family: "Poppins"
+                family: "Exo 2"
               }
             },
             select: {
@@ -258,10 +276,10 @@ export default function App() {
             <ChatBox context="kjzl6cwe1jw14808eb8yfpg3g3olvhi4os1n089xyoji6jekrsit97xtxyo9t0z" poweredByOrbis="black" />
             */
           }
-          <Box className="coins-bg">
+          <Box>
             <MainMenu />
             {
-              netId !== 56 && //netId !== 80001 && //netId !== 137 && netId !== 5 && netId !== 56 &&
+              netId !== 56 && // netId !== 80001 && //netId !== 137 && netId !== 5 && netId !== 56 &&
               <Box align="center" >
                 <Layer background="status-error" responsive={false}>
                   <Box width="medium" pad="large">
@@ -270,7 +288,7 @@ export default function App() {
                 </Layer>
               </Box>
             }
-            <Box pad={{ top: "xxsmall", bottom: "large" }} flex={false}>
+            <Box pad={{ top: "xxsmall", bottom: "small" }} flex={false}>
               <Routes>
                 <Route path="/:uri" element={<Buy />} />
                 <Route path="/" element={<Buy />} />
